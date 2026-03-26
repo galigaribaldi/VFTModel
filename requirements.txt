@@ -1,0 +1,11 @@
+# Web y Asincronía
+fastapi==0.110.0
+uvicorn==0.29.0
+httpx==0.27.0
+pydantic==2.6.4
+
+# Análisis Espacial y Grafos (Core)
+geopandas==0.14.3
+networkx==3.2.1
+momepy==0.7.0
+shapely==2.0.3
