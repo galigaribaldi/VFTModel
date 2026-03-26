@@ -214,3 +214,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Archivos generados y datos crudos locales
+VFT_Render.jpg
+*.geojson

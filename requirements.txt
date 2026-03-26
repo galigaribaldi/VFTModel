@@ -9,3 +9,6 @@ geopandas==0.14.3
 networkx==3.2.1
 momepy==0.7.0
 shapely==2.0.3
+
+# Visualizacion
+matplotlib==3.8.3
