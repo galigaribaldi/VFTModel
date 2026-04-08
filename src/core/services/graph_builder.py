@@ -78,12 +78,6 @@ def build_and_plot_network(validated_data: GeoJSONTransportSchema):
     ## Apicacion de la impedancia matemática
     vft_logger.info("Llamando al Motor de Impedancia VFT...")
     motor = VFTImpedanceModel(G)
-    G = motor.apply_impedance()  
-      
-    #plot_vft_graph(G)
-    ## SOLO el panel 1 (Nodos) y 2 (Calles)
-    #plot_vft_graph(G, All=[1, 2])
+    G = motor.apply_impedance()
     
-    ## SOLO la dirección de IDA (Panel 3)
-    #plot_vft_graph(G, All=3)
     return G
