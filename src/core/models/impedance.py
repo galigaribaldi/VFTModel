@@ -64,7 +64,10 @@ class VFTImpedanceModel:
         return R * c
     
     def apply_impedance(self) -> nx.DiGraph:
-        """Itera sobre las aristas e inyecta el peso matemático en minutos."""
+        """
+        Itera sobre las aristas e inyecta el peso matemático en minutos.
+        
+        """
         vft_logger.info("Iniciando inyección de motor de impendancia sobre VFT:")
         
         aristas_procesadas = 0
