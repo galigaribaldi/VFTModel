@@ -2,7 +2,7 @@
 @author: Hernán Galileo Cabrera Garibaldi
 @description: Motor analítico para evaluar indicadores topológicos del grafo VFT.
 @date: 7/04/2026
-@route: src/core/algorithms/topological_indicators.py
+@route: src/core/algorithms/topologicalIndicators/capillar_strength.py
 @nothes: Se agrupan dos tipos indicadores "Fuerza Capilar (Grado Nodal)" y 
         "Factor de Desviación (Detour Factor)". Es importante hacer la división
         De Fuerza Capilar, ya que existe la función puramente matemática
@@ -13,16 +13,11 @@
 
 import networkx as nx
 import pandas as pd
-import random
-import math
-## Fórmula de Haversine
-from src.core.models.impedance import VFTImpedanceModel
 from src.core.utils.logger import vft_logger
-
-class TopologicalIndicatorAnalyzer:
+from src.core.models.impedance import VFTImpedanceModel 
+class CapillaryStrengthAnalyzer:
     """
-    Clase encargada de calcular métricas de centralidad y eficiencia espacial
-    sobre el Grafo Dirigido del sistema de Transporte
+    Clase encargada de calcular métricas de centralidad sobre el Grafo Dirigido.
     """
     
     def __init__(self, G: nx.DiGraph):
@@ -91,7 +86,7 @@ class TopologicalIndicatorAnalyzer:
                     if abs(lat_est - lat_t) > degree_tol or abs(lon_est - lon_t) > degree_tol:
                         continue
                         
-                    dist = self._haversine_internal(lon_est, lat_est, lon_t, lat_t)
+                    dist = VFTImpedanceModel.haversine(lon_est, lat_est, lon_t, lat_t)
                     
                     if dist <= snap_tolerance_m:
                         nodos_en_burbuja.add(t_node)
@@ -136,7 +131,7 @@ class TopologicalIndicatorAnalyzer:
             df_resultados = df_resultados.sort_values(by="Fuerza_Capilar_Total", ascending=False)
             
         return df_resultados
-    
+
     def calculate_geo_capillary_strength(self, tolerance_m: float = 100.0, snap_tolerance_m: float = 25.0) -> pd.DataFrame:
         """
         Calcula la Fuerza Capilar agrupando estaciones físicamente cercanas (Macro-Hubs).
@@ -188,7 +183,7 @@ class TopologicalIndicatorAnalyzer:
                 if abs(lat_u - lat_v) > degree_tol_geo or abs(lon_u - lon_v) > degree_tol_geo:
                     continue
                 
-                dist = self._haversine_internal(lon_u, lat_u, lon_v, lat_v)
+                dist = VFTImpedanceModel.haversine(lon_u, lat_u, lon_v, lat_v)
                 if dist <= tolerance_m:
                     G_prox.add_edge(u_id, v_id)
                     
@@ -246,7 +241,7 @@ class TopologicalIndicatorAnalyzer:
                     if abs(lat_est - lat_t) > degree_tol_snap or abs(lon_est - lon_t) > degree_tol_snap:
                         continue
                         
-                    dist = self._haversine_internal(lon_est, lat_est, lon_t, lat_t)
+                    dist = VFTImpedanceModel.haversine(lon_est, lat_est, lon_t, lat_t)
                     
                     if dist <= snap_tolerance_m:
                         for u, v in self.G.in_edges(t_node):
@@ -278,80 +273,3 @@ class TopologicalIndicatorAnalyzer:
             df_resultados = df_resultados.sort_values(by="Fuerza_Capilar_Total", ascending=False)
             
         return df_resultados
-
-
-    def calculate_detaur_factor(self, sample_size: int = 500, seed: int = 42) -> pd.DataFrame:
-        """
-        Calula el Factor de Desviación (Detaour Factor) de la red.
-        Matemáticamente: DF = Distancia de Red / Distancia en Línea Recta.
-        """
-        
-        random.seed(seed)
-        
-        # Filtramos para no hacer rutas hacia "trazos" o curvas de calles
-        nodos_validos = [n for n in self.G.nodes(data=True) if n[1].get('tipo') != 'trazo' and 'nombre' in n[1]]
-        
-        if len(nodos_validos) < 2:
-            return pd.DataFrame()
-            
-        resultados = []
-        intentos = 0
-        max_intentos = sample_size * 10
-        
-        while len(resultados) < sample_size and intentos < max_intentos:
-            intentos += 1
-            u = random.choice(nodos_validos)
-            v = random.choice(nodos_validos)
-            
-            if u[0] == v[0]:
-                continue
-                
-            try:
-                path = nx.shortest_path(self.G, source=u[0], target=v[0])
-                
-                lon_u, lat_u = u[1]['pos']
-                lon_v, lat_v = v[1]['pos']
-                dist_recta_m = self._haversine_internal(lon_u, lat_u, lon_v, lat_v)
-                
-                if dist_recta_m < 100:
-                    continue
-                    
-                dist_red_m = 0.0
-                for i in range(len(path) - 1):
-                    n_actual_pos = self.G.nodes[path[i]]['pos']
-                    n_siguiente_pos = self.G.nodes[path[i+1]]['pos']
-                    dist_red_m += self._haversine_internal(
-                        n_actual_pos[0], n_actual_pos[1], 
-                        n_siguiente_pos[0], n_siguiente_pos[1]
-                    )
-                
-                factor_desviacion = dist_red_m / dist_recta_m
-                
-                resultados.append({
-                    "Origen": u[1]['nombre'],
-                    "Destino": v[1]['nombre'],
-                    "Saltos_Topologicos": len(path) - 1,
-                    "Distancia_Recta_km": round(dist_recta_m / 1000, 2),
-                    "Distancia_Red_km": round(dist_red_m / 1000, 2),
-                    "Factor_Desviacion": round(factor_desviacion, 2)
-                })
-                
-            except nx.NetworkXNoPath:
-                pass
-                
-        df_resultados = pd.DataFrame(resultados)
-        
-        if not df_resultados.empty:
-            df_resultados = df_resultados.sort_values(by="Factor_Desviacion", ascending=False)
-            
-        return df_resultados
-        
-    def _haversine_internal(self, lon1: float, lat1: float, lon2: float, lat2: float) -> float:
-        """Calcula la distancia Haversine en metros."""
-        R = 6371000.0
-        phi1, phi2 = math.radians(lat1), math.radians(lat2)
-        delta_phi = math.radians(lat2 - lat1)
-        delta_lambda = math.radians(lon2 - lon1)
-        a = math.sin(delta_phi / 2.0)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2.0)**2
-        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-        return R * c
