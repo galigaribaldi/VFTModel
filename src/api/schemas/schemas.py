@@ -58,7 +58,9 @@ class PropertiesSchema(BaseModel):
     nombre: Optional[str] = Field(default=None)
     tipo_entidad: TipoEntidad
     
-    jerarquia_transporte: Optional[JerarquiaTransporte] = Field(default=None)    
+    jerarquia_transporte: Optional[JerarquiaTransporte] = Field(default=None)
+    es_cetram: Optional[bool] = False
+    nombre_cetram: Optional[str] = None
     
     # Variables de Rutas (Aristas)
     capacidad_vehiculo: Optional[int] = Field(default=None)
