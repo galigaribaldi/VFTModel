@@ -3,8 +3,7 @@
 **¿Qué hace este archivo en resumen?**
 Es el "arquitecto" de nuestra red. Toma todas las estaciones y líneas de transporte sueltas y las teje para formar un grafo (una red conectada). Su trabajo más importante es simular la realidad: conectar estaciones cercanas para que el usuario pueda transbordar caminando, cobrándole el tiempo de caminata más el tiempo de espera en el andén.
 
----
-
+<hr/>
 ## 1. Los Diccionarios Base (Los Acuerdos de la Realidad)
 
 Antes de conectar cosas, la clase `VFTGraphBuilder` define las reglas del juego usando diccionarios:
@@ -29,8 +28,7 @@ FALLBACK_FRECUENCIA = {
 }
 ```
 
----
-
+<hr/>
 ## 2. El Director de Orquesta: `build_graph()`
 
 Es la función principal. Lo que hace es:
@@ -38,8 +36,7 @@ Es la función principal. Lo que hace es:
 1. Construye las vías normales (trenes y camiones avanzando de estación a estación).
 2. Si le decimos que opere en modo `"REALISTIC_INTEGRATION"`, manda llamar a la función de "snapping" para crear los caminos peatonales invisibles entre estaciones cercanas.
 
----
-
+<hr/>
 ## 3. La Magia de los Transbordos: `_apply_pedestrian_snapping()`
 
 Aquí es donde ocurre la integración intermodal. El algoritmo agarra un compás, se para en una estación y busca si hay otras estaciones dentro del radio de tolerancia (ej. 85 metros). Si encuentra una, crea un puente peatonal de ida y vuelta.
@@ -62,8 +59,7 @@ wait_v = self.FALLBACK_FRECUENCIA.get(sistema_v, 10.0) / 2.0
 peso_total = tiempo_caminata_min + wait_v
 ```
 
----
-
+<hr/>
 ## 🚨 Justificación Técnica de la Velocidad Peatonal
 
 Para calcular el `tiempo_caminata_min`, en el código hacemos una conversión equivalente a caminar a **5 km/h (1.38 m/s)**.
@@ -74,8 +70,7 @@ Para calcular el `tiempo_caminata_min`, en el código hacemos una conversión eq
 
 Como nuestro modelo asume un trayecto de transferencia (población económicamente activa en movimiento continuo dentro de un nodo de transbordo sin esperar semáforos), adoptamos el límite superior de **1.38 m/s (5 km/h)**, logrando un balance entre la norma urbana y los cálculos de isócronas globales.
 
----
-
+<hr/>
 ## ⚠️ Limitante de Datos: Cobertura Incompleta de Cablebús (CBB)
 
 El backend Go (`apimetro_db`) reporta únicamente **19 estaciones de Cablebús** en la tabla `lineas` (verificado 2026-04-18). El sistema real opera con más estaciones distribuidas en las Líneas 1 y 2.
@@ -84,8 +79,7 @@ El backend Go (`apimetro_db`) reporta únicamente **19 estaciones de Cablebús**
 - **Impacto en Fuerza Capilar:** los nodos masivos de CBB reciben menos conexiones de superficie de las reales.
 - **Acción requerida:** verificar tabla `lineas` en `apimetro_db` filtrando `sistema = 'CBB'` y completar el registro de estaciones faltantes. Hasta entonces, los indicadores de CBB deben interpretarse como estimaciones conservadoras.
 
----
-
+<hr/>
 ## 📐 Fundamento del Coeficiente de Fricción Vial (CF) — alpha por derecho de vía
 
 El `FrictionCalculator` en `src/core/models/impedance.py` usa la siguiente tabla de `alpha` para calcular `CF = 1 + (alpha × BETA_SATURACION_CDMX)`:
@@ -103,8 +97,7 @@ El `FrictionCalculator` en `src/core/models/impedance.py` usa la siguiente tabla
 
 **Nota metodológica:** Los `FALLBACK_VELOCIDAD` en `VFTImpedanceModel` representan **velocidad de flujo libre** (sin congestión). El CF aplica la penalización. Esta separación evita el double-counting que ocurriría si el fallback ya incorporara congestión y el CF la volviera a aplicar.
 
----
-
+<hr/>
 ## 🔬 Observación de Semántica de Datos: Banqueta vs. Carril (Apimetro ↔ VFTModel)
 
 ### El problema

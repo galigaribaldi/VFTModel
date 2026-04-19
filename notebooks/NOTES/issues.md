@@ -5,13 +5,13 @@
 ### Correcciones Aplicadas
 
 | # | Archivo | Cambio | Estado |
-|---|---|---|---|
+|<hr/>|<hr/>|<hr/>|<hr/>|
 | 1 | `src/core/models/impedance.py` | `FALLBACK_VELOCIDAD["INTERURBANO"]`: 160 km/h → **70 km/h** (velocidad comercial real) | ✅ RESUELTO |
 | 2 | `src/core/services/graph_builder.py` | `FALLBACK_FRECUENCIA["CBB"]`: 1.0 min → **10.0 min** (alineado con `impedance.py`) | ✅ RESUELTO |
 | 3 | `notebooks/01_Analisis_Impedancia_VFT.ipynb` | Separación de `df_edges` (servicio real) vs `df_transfers` (transbordo peatonal). Antes se mezclaban, contaminando el análisis. | ✅ RESUELTO |
 | 4 | `apimetro_db` (docker-dev, puerto 5433) | `historico_operacion.velocidad_promedio_kmh` para ramal Interurbano corregida a 70.0 km/h vía UPDATE directo. | ✅ RESUELTO |
 
----
+<hr/>
 
 ### Issues Abiertos (pendientes)
 
@@ -40,7 +40,7 @@
 - **Descripción:** Los valores `alpha = {0.0, 0.2, 0.5, 1.0}` para los cuatro tipos de derecho de vía requieren cita exacta del Manual de Calles SEDATU 2019 (tabla y párrafo).
 - **Archivo:** `src/core/models/impedance.py` — `FrictionCalculator.alpha_map`; `notebooks/NOTES/impedance.md` — Sección 1
 
----
+<hr/>
 
 ### Contexto de corrida (2026-04-16)
 

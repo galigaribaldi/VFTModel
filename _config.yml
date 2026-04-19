@@ -3,3 +3,12 @@ author: Hernán Galileo Cabrera Garibaldi
 #logo: notebooks/ASSETS/logo.png
 execute:
   execute_notebooks: "off"
+
+exclude_patterns:
+  - venv
+  - src
+  - tmp
+  - ASSETS
+  - .github
+  - .claude
+  - .vscode
