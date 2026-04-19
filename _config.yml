@@ -8,7 +8,6 @@ exclude_patterns:
   - venv
   - src
   - tmp
-  - ASSETS
   - .github
   - .claude
   - .vscode
