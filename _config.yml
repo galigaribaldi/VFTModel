@@ -1,8 +1,22 @@
 title: Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo
 author: Hernán Galileo Cabrera Garibaldi
 #logo: notebooks/ASSETS/logo.png
+
 execute:
   execute_notebooks: "off"
+
+repository:
+  url: https://github.com/galigaribaldi/VFTModel
+  branch: main
+
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+parse:
+  myst_enable_extensions:
+    - html_image
+    - colon_fence
 
 exclude_patterns:
   - venv
