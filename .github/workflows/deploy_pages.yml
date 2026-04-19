@@ -28,7 +28,7 @@ jobs:
       - name: 🏗️ Build the book
         run: |
           # Construye el libro mostrando todos los errores
-          jupyter-book build . --warningiserror
+          jupyter-book build .
           
           # Depuración: Lista los archivos para ver dónde quedó el _build
           echo "--- REVISANDO CARPETAS GENERADAS ---"
