@@ -1,0 +1,5 @@
+title: Modelo VFT - Reportes de Ingeniería
+author: Tu Nombre
+#logo: notebooks/ASSETS/logo.png
+execute:
+  execute_notebooks: "off"

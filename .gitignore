@@ -215,6 +215,14 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+#CLAUDE
+.claude/
 # Archivos generados y datos crudos locales
 VFT_Render.jpg
 *.geojson
+*.PNG
+*.png
+dataEstacion.json
+dataLinea.json
+dataLine.json
+tesis.pdf

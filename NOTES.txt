@@ -1,0 +1,27 @@
+1.-Checar la fórumla de Haversine para checar veolicades y tramos enrre estaciones, 
+al igual que velocidades promedio de promedio_m ya que las gráficas aprecen datros irreales:. 
+Checar de donde se saca el EBTA_CDMX de impedance
+
+    2.- Con base en eso, corregir el notebok y el código 1 de analisis impedancia del pirmer indicador
+3.- Checarel análisis por AGEBS en CDMX y EdoMex (Sólo área meetropolitano) Para datos más específicos
+4.- Tener mejor dicción en fuerza capilar: Explicar componentes de forumal. 
+Definir el radio de 100m en trasbordo ideal para la comodidad del peaton. 
+Hacer Match de CETRAMS exclusivamente de fuerza cpailar
+
+
+
+
+
+####
+Las paradas de autobús están en la banqueta o cordón; el trazo sigue el centro de la calle. ST_LineLocatePoint   
+  proyecta la parada al punto más cercano de la línea (en el centro), no a la coordenada de la parada. El          
+  resultado:                                                                                                       
+                                                                                                                 
+  Parada registrada:   (-99.18234, 19.42811)  ← coordenada en banqueta                                             
+  Endpoint sublínea:   (-99.18227, 19.42809)  ← proyección en centro de calle                                      
+  Diferencia:          ~8 metros              ← no hay match                                                       
+                                                                                                                   
+  Los segmentos SÍ están a nivel interestación (el corte funcionó), pero los endpoints viven en el espacio del     
+  trazo, no en el espacio de las estaciones. Por eso MB muestra 7.9% de match a <1m pero 39.7 sublíneas/ramal (que 
+  es 3-4× el número esperado de segmentos): hay ramales con geometrías desconectadas que ST_LineMerge no puede     
+  fusionar → ST_Dump produce partes separadas → cada parte se corta independientemente.          

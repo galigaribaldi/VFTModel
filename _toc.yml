@@ -1,0 +1,24 @@
+format: jb-book
+root: notebooks/intro
+
+chapters:
+  # --- CAPÍTULO 1 ---
+  - file: notebooks/00_Construccion_grafo
+    sections:
+      - file: notebooks/NOTES/graph_builder
+        # Con esto, la nota aparecerá como un sub-menú desplegable debajo del notebook 00
+
+  # --- CAPÍTULO 2 ---
+  - file: notebooks/01_Analisis_Impedancia_VFT
+    sections:
+      - file: notebooks/NOTES/impedance
+
+  # --- CAPÍTULO 3 ---
+  - file: notebooks/02_Nivel_Cobertura
+    # sections:
+    #   - file: notebooks/NOTES/cobertura_notas
+
+  # --- CAPÍTULO 4 ---
+  - file: notebooks/03_Fuerza_capilar
+    # sections:
+    #   - file: notebooks/NOTES/fuerza_notas
