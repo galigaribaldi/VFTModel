@@ -57,8 +57,6 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/intro';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -186,7 +184,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -229,6 +227,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2Fnotebooks/intro.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -347,10 +392,10 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-resultados-en-una-tabla-historica">Guardar Resultados en una Tabla Histórica</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte (<span class="math notranslate nohighlight">\(C\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio (<span class="math notranslate nohighlight">\(T\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación (<span class="math notranslate nohighlight">\(B\)</span>) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial (<span class="math notranslate nohighlight">\(CF\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte ($C$)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio ($T$)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial ($CF$)</a></li>
 </ul>
 </li>
 </ul>
@@ -364,7 +409,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="bienvenido-al-modelo-vft-vanishing-fig-tree">
+  <section id="bienvenido-al-modelo-vft-vanishing-fig-tree">
 <h1>Bienvenido al Modelo VFT (Vanishing Fig-Tree)<a class="headerlink" href="#bienvenido-al-modelo-vft-vanishing-fig-tree" title="Link to this heading">#</a></h1>
 <blockquote>
 <div><p><strong>Motor analítico geoespacial y topológico para la evaluación de redes de transporte anillares y alimentadoras en la CDMX.</strong> Documentación generada a partir de los cuadernos de investigación y validación de la tesis TAICMAM.</p>
@@ -387,7 +432,7 @@ document.write(`
 </section>
 <section id="capa-2-modelado-topologico-y-dinamico">
 <h2>Capa 2: Modelado Topológico y Dinámico<a class="headerlink" href="#capa-2-modelado-topologico-y-dinamico" title="Link to this heading">#</a></h2>
-<p>El núcleo matemático del sistema. Usando <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> y <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, se construye el <strong>Grafo Dirigido (<span class="math notranslate nohighlight">\(G = V, E\)</span>)</strong>. Aquí ocurre el <em>Snapping Lógico</em> (para evitar nodos fantasma) y se inyecta la <strong>Impedancia Temporal</strong>, calculando el tiempo de traslado continuo castigado por la congestión.</p>
+<p>El núcleo matemático del sistema. Usando <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> y <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, se construye el <strong>Grafo Dirigido ($G = V, E$)</strong>. Aquí ocurre el <em>Snapping Lógico</em> (para evitar nodos fantasma) y se inyecta la <strong>Impedancia Temporal</strong>, calculando el tiempo de traslado continuo castigado por la congestión.</p>
 <p><img alt="Esquema Capa 2" src="notebooks/ASSETS/introIMG/IMG_3302.PNG" /></p>
 </section>
 <section id="capa-3-evaluacion-y-salida-indicadores">
@@ -491,7 +536,7 @@ document.write(`
 </section>
 </section>
 <section id="nivel-de-cobertura-de-la-red-de-transporte-c">
-<h3>1. Nivel de Cobertura de la Red de Transporte (<span class="math notranslate nohighlight">\(C\)</span>)<a class="headerlink" href="#nivel-de-cobertura-de-la-red-de-transporte-c" title="Link to this heading">#</a></h3>
+<h3>1. Nivel de Cobertura de la Red de Transporte ($C$)<a class="headerlink" href="#nivel-de-cobertura-de-la-red-de-transporte-c" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Transit network analysis using a graph-oriented method and GTFS data</em></p></li>
 </ul>
@@ -513,9 +558,9 @@ document.write(`
 <li><p><strong>Desarrollo Práctico:</strong> Supongamos que la CDMX tiene 1,500 km² de área urbana. Cada estación genera un círculo de 2 km² de cobertura.</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Bad Case:</strong> Solo hay Metro en la alcaldía Cuauhtémoc. Área cubierta = 150 km². <span class="math notranslate nohighlight">\(C = 150 / 1500 = 0.10\)</span> (10% de cobertura).</p></li>
-<li><p><strong>Best Case:</strong> Hay una estación cada 1.5 km en toda la ciudad. <span class="math notranslate nohighlight">\(C = 1500 / 1500 = 1.0\)</span> (100% de cobertura).</p></li>
-<li><p><strong>Real Case (CDMX):</strong> Actualmente la red masiva cubre unos 450 km² (<span class="math notranslate nohighlight">\(C = 0.30\)</span>). Al trazar la línea de Periférico en QGIS, se agregan 60 nuevas estaciones. La cobertura sube a 600 km² (<span class="math notranslate nohighlight">\(C = 0.40\)</span>).</p></li>
+<li><p><strong>Bad Case:</strong> Solo hay Metro en la alcaldía Cuauhtémoc. Área cubierta = 150 km². $C = 150 / 1500 = 0.10$ (10% de cobertura).</p></li>
+<li><p><strong>Best Case:</strong> Hay una estación cada 1.5 km en toda la ciudad. $C = 1500 / 1500 = 1.0$ (100% de cobertura).</p></li>
+<li><p><strong>Real Case (CDMX):</strong> Actualmente la red masiva cubre unos 450 km² ($C = 0.30$). Al trazar la línea de Periférico en QGIS, se agregan 60 nuevas estaciones. La cobertura sube a 600 km² ($C = 0.40$).</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> En Python se usa la librería GeoPandas. Se carga el GeoJSON de nodos, se aplica la función <code class="docutils literal notranslate"><span class="pre">gdf.buffer(800)</span></code> y luego <code class="docutils literal notranslate"><span class="pre">unary_union</span></code> para fusionar los círculos superpuestos. Finalmente, se divide el área resultante entre el polígono de la CDMX.</p></li>
@@ -524,7 +569,7 @@ document.write(`
 ### Grupo 2: Eficiencia (Tiempo y Forma)
 </section>
 <section id="tiempo-de-viaje-promedio-t">
-<h3>2. Tiempo de Viaje Promedio (<span class="math notranslate nohighlight">\(T\)</span>)<a class="headerlink" href="#tiempo-de-viaje-promedio-t" title="Link to this heading">#</a></h3>
+<h3>2. Tiempo de Viaje Promedio ($T$)<a class="headerlink" href="#tiempo-de-viaje-promedio-t" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>The optimal geometry of transportation networks</em></p></li>
 </ul>
@@ -533,7 +578,7 @@ document.write(`
 <li><p><strong>Descripción:</strong> En los papers sobre cómo la forma (geometría) de una red afecta su eficiencia, los autores plantean el tiempo de viaje como la métrica absoluta a optimizar:</p>
 <ul>
 <li><p>El criterio de optimidad en su modelo general consiste en minimizar el tiempo promedio de viaje entre pares de puntos (elegidos independientemente según su distribución).</p></li>
-<li><p>Para calcular este tiempo, se considera que la ruta de viaje se compone de segmentos en el plano que se recorren a una velocidad baja (caminando) y cualquier ruta dentro de la red que se recorre a una velocidad mayor. Matemáticamente, el tiempo de viaje promedio (<span class="math notranslate nohighlight">\(\tau\)</span>) se define a través de una integral doble que considera el tiempo mínimo de viaje entre pares de puntos ponderado por sus densidades.</p></li>
+<li><p>Para calcular este tiempo, se considera que la ruta de viaje se compone de segmentos en el plano que se recorren a una velocidad baja (caminando) y cualquier ruta dentro de la red que se recorre a una velocidad mayor. Matemáticamente, el tiempo de viaje promedio ($\tau$) se define a través de una integral doble que considera el tiempo mínimo de viaje entre pares de puntos ponderado por sus densidades.</p></li>
 <li><p><strong>Al evaluar formas simples como la red en estrella (puramente radial) y combinaciones con anillos, los autores demuestran que a medida que la longitud de la red aumenta, ocurre una transición brusca en un valor crítico en el que aparece un bucle o anillo.</strong></p></li>
 <li><p><strong>Input:</strong> Se utilizará el grafo de la CDMX mapeado en Python (NetworkX) donde cada arista ya tiene asignado un “peso” en tiempo (que ya incluye el Factor de Fricción - Coeficiente de Fricción Vial).</p></li>
 <li><p><strong>Proceso:</strong> Mediante algoritmos de caminos mínimos (Dijkstra), el código hecho en Python calculará cuánto tiempo toma ir del Nodo A al Nodo B. Luego, sumará y promediará los tiempos de viaje de todas las combinaciones posibles de estaciones (o de una muestra representativa de orígenes y destinos).</p></li>
@@ -549,9 +594,9 @@ document.write(`
 <li><p><strong>Desarrollo Práctico:</strong> Imaginemos una red de 5 estaciones. Se calculan todos los viajes posibles (Estación 1 a 2, 1 a 3… 4 a 5) y se promedian los minutos.</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Best Case:</strong> Todos los nodos están conectados directamente con tren bala. Promedio <span class="math notranslate nohighlight">\(T = 15\)</span> minutos.</p></li>
-<li><p><strong>Bad Case:</strong> Es una línea recta saturada; para ir del nodo 1 al 5 haces 2 horas. <span class="math notranslate nohighlight">\(T = 120\)</span> minutos.</p></li>
-<li><p><strong>Real Case (CDMX):</strong> En una red radial, ir de Perisur a Naucalpan te obliga a entrar hasta el centro y salir. El promedio global es <span class="math notranslate nohighlight">\(T = 85\)</span> mins. Al añadir el arco del Anillo Periférico en el grafo, el algoritmo encuentra un atajo por fuera, reduciendo el promedio matemático global a <span class="math notranslate nohighlight">\(T = 65\)</span> mins.</p></li>
+<li><p><strong>Best Case:</strong> Todos los nodos están conectados directamente con tren bala. Promedio $T = 15$ minutos.</p></li>
+<li><p><strong>Bad Case:</strong> Es una línea recta saturada; para ir del nodo 1 al 5 haces 2 horas. $T = 120$ minutos.</p></li>
+<li><p><strong>Real Case (CDMX):</strong> En una red radial, ir de Perisur a Naucalpan te obliga a entrar hasta el centro y salir. El promedio global es $T = 85$ mins. Al añadir el arco del Anillo Periférico en el grafo, el algoritmo encuentra un atajo por fuera, reduciendo el promedio matemático global a $T = 65$ mins.</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> En Python, usando la librería NetworkX, se ejecuta la función <code class="docutils literal notranslate"><span class="pre">nx.average_shortest_path_length(G,</span> <span class="pre">weight='tiempo_minutos')</span></code>. Es una sola línea de código, altamente eficiente.</p></li>
@@ -561,7 +606,7 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Transit network analysis using a graph-oriented method and GTFS data</em></p></li>
 </ul>
-<p><img alt="Fórmula y diagrama del Detour Factor" src="notebooks/ASSETS/introIMG/formula_detour_factor.png" /></p>
+<!-- ![Fórmula y diagrama del Detour Factor](ASSETS/introIMG/formula_detour_factor.png) -->
 <ul class="simple">
 <li><p><strong>Descripción:</strong> El artículo aborda cómo la geometría de la red de transporte cambia constantemente y cómo es necesario caracterizarla sistemáticamente. Para lograrlo, los autores proponen un método orientado a grafos donde los datos GTFS se importan a una base de datos de grafos.</p>
 <ul>
@@ -574,9 +619,9 @@ document.write(`
 <li><p><strong>Desarrollo Práctico:</strong> Viaje de Xochimilco a Santa Fe. En línea recta son 15 km.</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Best Case:</strong> Vas en helicóptero. <span class="math notranslate nohighlight">\(DI = 15 / 15 = 1.0\)</span> (Eficiencia perfecta).</p></li>
-<li><p><strong>Bad Case:</strong> El transporte te hace ir hasta Indios Verdes y bajar. Distancia de red = 50 km. <span class="math notranslate nohighlight">\(DI = 50 / 15 = 3.33\)</span> (Pésimo diseño).</p></li>
-<li><p><strong>Real Case (CDMX):</strong> Actualmente la red te hace rodear por Mixcoac y Tacubaya (Distancia = 28 km). <span class="math notranslate nohighlight">\(DI = 1.86\)</span>. Con el Anillo Periférico, la distancia de red baja a 18 km. El nuevo <span class="math notranslate nohighlight">\(DI = 1.20\)</span>.</p></li>
+<li><p><strong>Best Case:</strong> Vas en helicóptero. $DI = 15 / 15 = 1.0$ (Eficiencia perfecta).</p></li>
+<li><p><strong>Bad Case:</strong> El transporte te hace ir hasta Indios Verdes y bajar. Distancia de red = 50 km. $DI = 50 / 15 = 3.33$ (Pésimo diseño).</p></li>
+<li><p><strong>Real Case (CDMX):</strong> Actualmente la red te hace rodear por Mixcoac y Tacubaya (Distancia = 28 km). $DI = 1.86$. Con el Anillo Periférico, la distancia de red baja a 18 km. El nuevo $DI = 1.20$.</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Media/Alta):</strong> Se usa la librería <strong>Shapely</strong> o <strong>Geopy</strong> para calcular la distancia euclidiana (haversine) entre dos coordenadas Lat/Lon, y se divide entre el resultado de distancia arrojado por el camino más corto de <strong>NetworkX</strong>.</p></li>
@@ -586,8 +631,8 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Artículos:</strong> <em>Aplicación de la Teoría de Grafos en la Optimización de Redes de Transporte</em>, <em>The optimal Geometry of Transportation Networks</em></p></li>
 </ul>
-<p><img alt="Fórmulas de Penalización por Transferencia" src="notebooks/ASSETS/introIMG/formula_penalizacion.png" /></p>
-<p><img alt="Diagrama del Transfer Hub" src="notebooks/ASSETS/introIMG/diagrama_transfer_hub.png" /></p>
+<!-- ![Fórmulas de Penalización por Transferencia](ASSETS/introIMG/formula_penalizacion.png) -->
+<!-- ![Diagrama del Transfer Hub](ASSETS/introIMG/diagrama_transfer_hub.png) -->
 <ul class="simple">
 <li><p><strong>Descripción:</strong> Se usan dos artículos para sustentar este indicador. El primero, <em>“The Optimal Geometry of Transportation Networks”</em>, habla de un criterio de optimidad principal en el diseño de redes: minimizar el tiempo promedio de viaje entre los pares de puntos del sistema. El segundo, <em>“Aplicación de la teoría de grafos en la optimización de redes de transporte”</em>, hace esto en un entorno real, modelando grafos y sus características. El problema se resuelve modelando la red como un grafo dirigido valorado, donde las aristas son ponderadas por <strong>tiempo y costo</strong>. La teoría de grafos provee algoritmos exactos de caminos mínimos (Dijkstra y Floyd-Warshall) para determinar la ruta óptima entre cada par de nodos. <strong>En la práctica, el uso de estos algoritmos logra reducir estadísticamente los tiempos promedio (ej. reducciones del 8%) y los costos totales de la red.</strong></p>
 <ul>
@@ -612,9 +657,9 @@ document.write(`
 <li><p><strong>Desarrollo Práctico:</strong> Un viaje toma 30 mins de rodamiento de trenes.</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Best Case:</strong> Es viaje directo en la misma línea. Total = <span class="math notranslate nohighlight">\(30 + (0 \times 12) = 30\)</span> mins.</p></li>
-<li><p><strong>Bad Case:</strong> Tienes que transbordar en Pantitlán, Chabacano y Tacubaya. Total = <span class="math notranslate nohighlight">\(30 + (3 \times 12) = 66\)</span> mins.</p></li>
-<li><p><strong>Real Case (CDMX):</strong> La ruta anillar, aunque sume más kilómetros de rodamiento (ej. 40 mins), evita 2 transbordos en el centro. Total Anillo = <span class="math notranslate nohighlight">\(40 + 0 = 40\)</span> mins (26 mins más rápido que el Bad Case).</p></li>
+<li><p><strong>Best Case:</strong> Es viaje directo en la misma línea. Total = $30 + (0 \times 12) = 30$ mins.</p></li>
+<li><p><strong>Bad Case:</strong> Tienes que transbordar en Pantitlán, Chabacano y Tacubaya. Total = $30 + (3 \times 12) = 66$ mins.</p></li>
+<li><p><strong>Real Case (CDMX):</strong> La ruta anillar, aunque sume más kilómetros de rodamiento (ej. 40 mins), evita 2 transbordos en el centro. Total Anillo = $40 + 0 = 40$ mins (26 mins más rápido que el Bad Case).</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> En el archivo GeoJSON, no se declara a “Pantitlán” como un solo punto, sino como <code class="docutils literal notranslate"><span class="pre">&quot;Pantitlan_L1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Pantitlan_L9&quot;</span></code>, etc. Python crea aristas peatonales que los unen y les asigna estáticamente un atributo <code class="docutils literal notranslate"><span class="pre">weight=12</span></code>. El algoritmo de Dijkstra hará el resto automáticamente sumándole los pesos ponderados correspondientes.</p></li>
@@ -623,7 +668,7 @@ document.write(`
 ### Grupo 3: Topología y Rigor Matemático
 </section>
 <section id="centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">
-<h3>5. Centralidad de Intermediación (<span class="math notranslate nohighlight">\(B\)</span>) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em><a class="headerlink" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas" title="Link to this heading">#</a></h3>
+<h3>5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em><a class="headerlink" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Artículos:</strong> <em>Statistical analysis of the Metropolitan Seoul Subway System</em>, <em>Aplicación de la Teoría de Grafos en la Optimización de Redes de Transporte</em></p></li>
 </ul>
@@ -632,7 +677,7 @@ document.write(`
 <li><p><strong>Descripción:</strong> Se divide en los dos argumentos de los papers:</p>
 <ul>
 <li><p><strong>El Concepto (Teoría de Grafos):</strong> Representar la red de transporte como un grafo permite realizar un análisis de centralidad para evaluar la importancia de los nodos (estaciones). Esto sirve fundamentalmente para identificar los nodos críticos y las rutas más importantes del sistema.</p></li>
-<li><p><strong>La Aplicación Física (Metro de Seúl):</strong> El estudio de Seúl demuestra que la red se define por los caminos más cortos (<span class="math notranslate nohighlight">\(n_{ij}\)</span>) entre las estaciones. El “peso” o importancia de una conexión representa el flujo real de pasajeros que transitan por ella, y la fuerza de una estación corresponde al volumen de pasajeros que la utilizan. En un sistema metropolitano, la mayoría de los flujos se concentran en estaciones específicas que actúan como núcleos urbanos.</p></li>
+<li><p><strong>La Aplicación Física (Metro de Seúl):</strong> El estudio de Seúl demuestra que la red se define por los caminos más cortos ($n_{ij}$) entre las estaciones. El “peso” o importancia de una conexión representa el flujo real de pasajeros que transitan por ella, y la fuerza de una estación corresponde al volumen de pasajeros que la utilizan. En un sistema metropolitano, la mayoría de los flujos se concentran en estaciones específicas que actúan como núcleos urbanos.</p></li>
 <li><p><strong>Input:</strong> El grafo de NetworkX ya construido con nodos y tiempos.</p></li>
 <li><p><strong>Proceso:</strong> Python tiene una función nativa llamada <code class="docutils literal notranslate"><span class="pre">nx.betweenness_centrality(G,</span> <span class="pre">weight='peso_real')</span></code>. Al ejecutarla, el algoritmo simula que millones de personas viajan desde todos los orígenes posibles hacia todos los destinos posibles usando la ruta más rápida. Cada vez que una persona <em>pasa</em> por una estación, esa estación gana un punto de centralidad.</p></li>
 <li><p><strong>Output (Dividido en Antes y Después):</strong></p>
@@ -646,17 +691,17 @@ document.write(`
 </li>
 <li><p><strong>Fórmula extra — variables:</strong></p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(B\)</span> = Centralidad de Intermediación de la estación <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\Delta(st)\)</span> = Número total de caminos más cortos desde la estación de origen <span class="math notranslate nohighlight">\(s\)</span> hasta el destino <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\Delta(st)_v\)</span> = Número de esos caminos más cortos que pasan forzosamente por la estación <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+<li><p>$B$ = Centralidad de Intermediación de la estación $v$.</p></li>
+<li><p>$\Delta(st)$ = Número total de caminos más cortos desde la estación de origen $s$ hasta el destino $t$.</p></li>
+<li><p>$\Delta(st)_v$ = Número de esos caminos más cortos que pasan forzosamente por la estación $v$.</p></li>
 </ul>
 </li>
 <li><p><strong>Desarrollo Práctico:</strong> ¿Cuántos viajes de la ciudad están obligados a usar la estación “Centro Médico” como puente?</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Best Case (Malla perfecta):</strong> Como en Manhattan, hay muchas opciones. Centro Médico tiene <span class="math notranslate nohighlight">\(B = 0.05\)</span> (solo el 5% de los viajes pasa por ahí).</p></li>
-<li><p><strong>Bad Case (Estrella perfecta):</strong> Todas las líneas cruzan por un único nodo central. Ese nodo tiene <span class="math notranslate nohighlight">\(B = 0.95\)</span> (Cuello de botella fatal).</p></li>
-<li><p><strong>Real Case (CDMX):</strong> Pantitlán y Pino Suárez tienen scores altísimos (<span class="math notranslate nohighlight">\(B \approx 0.40\)</span>). Al encender la línea del Periférico en Python, los viajes que iban de Norte a Sur por el poniente ya no entran al centro. El score de Pino Suárez caerá a <span class="math notranslate nohighlight">\(0.20\)</span>.</p></li>
+<li><p><strong>Best Case (Malla perfecta):</strong> Como en Manhattan, hay muchas opciones. Centro Médico tiene $B = 0.05$ (solo el 5% de los viajes pasa por ahí).</p></li>
+<li><p><strong>Bad Case (Estrella perfecta):</strong> Todas las líneas cruzan por un único nodo central. Ese nodo tiene $B = 0.95$ (Cuello de botella fatal).</p></li>
+<li><p><strong>Real Case (CDMX):</strong> Pantitlán y Pino Suárez tienen scores altísimos ($B \approx 0.40$). Al encender la línea del Periférico en Python, los viajes que iban de Norte a Sur por el poniente ya no entran al centro. El score de Pino Suárez caerá a $0.20$.</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> NetworkX tiene la función nativa <code class="docutils literal notranslate"><span class="pre">nx.betweenness_centrality(G,</span> <span class="pre">weight='tiempo')</span></code>. Retorna un diccionario con el score de cada estación.</p></li>
@@ -690,9 +735,9 @@ document.write(`
 <li><p><strong>Desarrollo Práctico:</strong> ¿Qué pasa si cerramos Indios Verdes por una inundación? O más nodos (no solo 1).</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Best Case:</strong> La red tiene tantas rutas alternativas (anillos) que la eficiencia casi no cambia. Caída del <span class="math notranslate nohighlight">\(2\%\)</span>.</p></li>
-<li><p><strong>Bad Case:</strong> La red se parte en dos mitades incomunicadas. Caída del <span class="math notranslate nohighlight">\(90\%\)</span>.</p></li>
-<li><p><strong>Real Case (CDMX):</strong> Sin el proyecto, apagar un nodo de transbordo en el centro tira la eficiencia de la red un <span class="math notranslate nohighlight">\(35\%\)</span>. Con el Anillo, el algoritmo de Python desvía a la gente por la periferia, y la caída del sistema es solo del <span class="math notranslate nohighlight">\(12\%\)</span>.</p></li>
+<li><p><strong>Best Case:</strong> La red tiene tantas rutas alternativas (anillos) que la eficiencia casi no cambia. Caída del $2%$.</p></li>
+<li><p><strong>Bad Case:</strong> La red se parte en dos mitades incomunicadas. Caída del $90%$.</p></li>
+<li><p><strong>Real Case (CDMX):</strong> Sin el proyecto, apagar un nodo de transbordo en el centro tira la eficiencia de la red un $35%$. Con el Anillo, el algoritmo de Python desvía a la gente por la periferia, y la caída del sistema es solo del $12%$.</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> Un bucle <code class="docutils literal notranslate"><span class="pre">for</span></code> en Python. Se clona el grafo, se usa <code class="docutils literal notranslate"><span class="pre">G.remove_node('Indios_Verdes')</span></code> y se vuelve a calcular la eficiencia global.</p></li>
@@ -701,11 +746,11 @@ document.write(`
 ### Grupo 4: Tráfico Mixto (RTP / Concesionados)
 </section>
 <section id="factor-de-friccion-vial-cf">
-<h3>7. Factor de Fricción Vial (<span class="math notranslate nohighlight">\(CF\)</span>)<a class="headerlink" href="#factor-de-friccion-vial-cf" title="Link to this heading">#</a></h3>
+<h3>7. Factor de Fricción Vial ($CF$)<a class="headerlink" href="#factor-de-friccion-vial-cf" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Transit network analysis using a graph-oriented method and GTFS data</em></p></li>
 </ul>
-<p><img alt="Fórmulas del Factor de Fricción Vial" src="notebooks/ASSETS/introIMG/formula_friccion.png" /></p>
+<!-- ![Fórmulas del Factor de Fricción Vial](ASSETS/introIMG/formula_friccion.png) -->
 <ul>
 <li><p><strong>Descripción:</strong> En su análisis sobre cómo los datos estáticos no siempre reflejan la realidad, los autores dedican un apartado a las limitaciones de los horarios programados y cómo el algoritmo debe adaptarse a la calle. Los autores reconocen que los datos estandarizados (como el GTFS normal) representan únicamente horarios planificados. Para solucionar esto al momento de correr el modelo matemático, explican que en horas pico algunos viajes entre paradas son inevitablemente más largos. Por lo tanto, afirman que utilizar estos tiempos ajustados devuelve estimaciones mucho más precisas al correr el algoritmo de Dijkstra.</p>
 <ul class="simple">
@@ -714,8 +759,8 @@ document.write(`
 <li><p><strong>Output:</strong> Al correr el algoritmo de caminos mínimos (Dijkstra), el software “aprenderá” que ir por la calle es lento e ineficiente. El output arrojará que los usuarios prefieren dar más vuelta en un sistema confinado. Esto justifica operativamente que el nuevo Anillo Periférico debe contar con carriles exclusivos.</p></li>
 </ul>
 </li>
-<li><p><strong>Factor de Fricción — Coeficiente de Fricción Vial:</strong> El Coeficiente de Fricción Vial (<span class="math notranslate nohighlight">\(CF\)</span>) es un multiplicador dinámico que permite calibrar los modelos topológicos de transporte. Su utilidad principal es corregir la sobrestimación de eficiencia en las rutas de transporte público que operan en tráfico mixto (sin carril confinado). Al integrar este coeficiente en los algoritmos de búsqueda de caminos mínimos (ej. Dijkstra), el “peso” temporal de las aristas en el grafo varía según la hora del día.</p></li>
-<li><p><strong>Metodología de Recolección de Datos:</strong> Para evitar el sesgo de los horarios teóricos institucionales, los tiempos de viaje (<span class="math notranslate nohighlight">\(T\)</span>) se extraerán mediante peticiones automatizadas a la API de Google Maps. Las peticiones se programarán para extraer un promedio representativo de los días hábiles (Lunes a Viernes) en los siguientes cortes horarios estratégicos (Supuestos):</p>
+<li><p><strong>Factor de Fricción — Coeficiente de Fricción Vial:</strong> El Coeficiente de Fricción Vial ($CF$) es un multiplicador dinámico que permite calibrar los modelos topológicos de transporte. Su utilidad principal es corregir la sobrestimación de eficiencia en las rutas de transporte público que operan en tráfico mixto (sin carril confinado). Al integrar este coeficiente en los algoritmos de búsqueda de caminos mínimos (ej. Dijkstra), el “peso” temporal de las aristas en el grafo varía según la hora del día.</p></li>
+<li><p><strong>Metodología de Recolección de Datos:</strong> Para evitar el sesgo de los horarios teóricos institucionales, los tiempos de viaje ($T$) se extraerán mediante peticiones automatizadas a la API de Google Maps. Las peticiones se programarán para extraer un promedio representativo de los días hábiles (Lunes a Viernes) en los siguientes cortes horarios estratégicos (Supuestos):</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Hora</p></th>
@@ -724,7 +769,7 @@ document.write(`
 </thead>
 <tbody>
 <tr class="row-even"><td><p>05:00 hrs</p></td>
-<td><p>Periodo de Flujo Libre — denominador <span class="math notranslate nohighlight">\(T_{ideal}\)</span></p></td>
+<td><p>Periodo de Flujo Libre — denominador $T_{ideal}$</p></td>
 </tr>
 <tr class="row-odd"><td><p>06:30 hrs</p></td>
 <td><p>Inicio de rampa ascendente de demanda matutina</p></td>
@@ -757,14 +802,14 @@ document.write(`
 </table>
 </div>
 </li>
-<li><p><strong>Aplicación en el Modelo de Python:</strong> A cada arista del grafo que represente una línea de RTP o autobús concesionado, se le asignará un arreglo (array) con estos 10 coeficientes. Durante la simulación, si el usuario virtual inicia su viaje a las 8:00 am, Python multiplicará el tiempo ideal del tramo por el <span class="math notranslate nohighlight">\(CF_{08:00}\)</span> (que podría ser de 1.85). Las rutas confinadas (Metro) mantendrán un <span class="math notranslate nohighlight">\(CF\)</span> constante de 1.0 en todo momento.</p></li>
+<li><p><strong>Aplicación en el Modelo de Python:</strong> A cada arista del grafo que represente una línea de RTP o autobús concesionado, se le asignará un arreglo (array) con estos 10 coeficientes. Durante la simulación, si el usuario virtual inicia su viaje a las 8:00 am, Python multiplicará el tiempo ideal del tramo por el $CF_{08:00}$ (que podría ser de 1.85). Las rutas confinadas (Metro) mantendrán un $CF$ constante de 1.0 en todo momento.</p></li>
 <li><p><strong>⚠️ NOTA:</strong> Tomar en cuenta que para el tamaño de la red, usar la API de Google sería algo caro. <strong>Usar TOMTOM:</strong> Velocidades promedio (hora pico / sin hora pico).</p></li>
 <li><p><strong>Desarrollo Práctico:</strong> Un tramo de 5 km debería recorrerse en 10 minutos si la calle estuviera vacía.</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul class="simple">
-<li><p><strong>Best Case (Metro):</strong> Flujo continuo bajo tierra. <span class="math notranslate nohighlight">\(CF = 1.0\)</span>. Tiempo = 10 mins.</p></li>
-<li><p><strong>Bad Case (RTP en lluvia):</strong> Tráfico paralizado. <span class="math notranslate nohighlight">\(CF = 3.0\)</span>. Tiempo = 30 mins.</p></li>
-<li><p><strong>Real Case (CDMX):</strong> En el código, se asigna a las rutas de RTP un multiplicador dinámico según la hora. Esto enseña al algoritmo que no puede confiar en el RTP para cruzar la ciudad rápido, justificando que el Anillo Periférico debe ser Metrobús o Tren (confinado, <span class="math notranslate nohighlight">\(CF=1.0\)</span>).</p></li>
+<li><p><strong>Best Case (Metro):</strong> Flujo continuo bajo tierra. $CF = 1.0$. Tiempo = 10 mins.</p></li>
+<li><p><strong>Bad Case (RTP en lluvia):</strong> Tráfico paralizado. $CF = 3.0$. Tiempo = 30 mins.</p></li>
+<li><p><strong>Real Case (CDMX):</strong> En el código, se asigna a las rutas de RTP un multiplicador dinámico según la hora. Esto enseña al algoritmo que no puede confiar en el RTP para cruzar la ciudad rápido, justificando que el Anillo Periférico debe ser Metrobús o Tren (confinado, $CF=1.0$).</p></li>
 </ul>
 </li>
 <li><p><strong>Táctica de Programación (Viabilidad: Media):</strong> Requiere que el GeoJSON tenga una columna llamada <code class="docutils literal notranslate"><span class="pre">tipo_sistema</span></code> (ej. <code class="docutils literal notranslate"><span class="pre">&quot;Metro&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;RTP&quot;</span></code>). En Python se itera sobre las aristas: <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">tipo</span> <span class="pre">==</span> <span class="pre">'RTP':</span> <span class="pre">weight</span> <span class="pre">=</span> <span class="pre">base_time</span> <span class="pre">*</span> <span class="pre">1.8</span></code>.</p></li>
@@ -774,9 +819,9 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Statistical analysis of the Metropolitan Seoul Subway System</em></p></li>
 </ul>
-<p><img alt="Fórmula y diagrama de Alimentación Capilar" src="notebooks/ASSETS/introIMG/formula_capilar.png" /></p>
+<!-- ![Fórmula y diagrama de Alimentación Capilar](ASSETS/introIMG/formula_capilar.png) -->
 <ul class="simple">
-<li><p><strong>Descripción:</strong> El artículo evalúa las propiedades estadísticas de la red basándose en el <strong>grado (<span class="math notranslate nohighlight">\(k\)</span>)</strong> de los nodos (el número de conexiones) y en la <strong>fuerza (<span class="math notranslate nohighlight">\(s\)</span>)</strong> de los nodos, la cual suma el “peso” (los flujos de pasajeros) de todos los enlaces conectados a una estación. La distribución de la fuerza de los nodos sigue un comportamiento estadístico específico (log-normal), lo que indica la existencia de grandes concentradores (<em>hubs</em>) en el sistema.</p>
+<li><p><strong>Descripción:</strong> El artículo evalúa las propiedades estadísticas de la red basándose en el <strong>grado ($k$)</strong> de los nodos (el número de conexiones) y en la <strong>fuerza ($s$)</strong> de los nodos, la cual suma el “peso” (los flujos de pasajeros) de todos los enlaces conectados a una estación. La distribución de la fuerza de los nodos sigue un comportamiento estadístico específico (log-normal), lo que indica la existencia de grandes concentradores (<em>hubs</em>) en el sistema.</p>
 <ul>
 <li><p><strong>CDMX (Caso Particular):</strong> Las líneas de alta capacidad (Metro/Periférico) deberían ser las arterias principales, mientras que las líneas de superficie (RTP, Trolebús, Microbuses) son los “capilares” que recogen a la gente de las colonias y la inyectan en los <em>hubs</em> (estaciones masivas o CETRAMs).</p></li>
 <li><p><strong>Input ⚠️ (Considerar adecuación importante para la formación de los pesos):</strong> A las aristas que representan vías de superficie se le pondrá un atributo (ej. <code class="docutils literal notranslate"><span class="pre">tipo</span> <span class="pre">=</span> <span class="pre">'superficie'</span></code>), y a las del anillo o metro se le pondrá <code class="docutils literal notranslate"><span class="pre">tipo</span> <span class="pre">=</span> <span class="pre">'masivo'</span></code>. Adicionalmente, tendrán un <code class="docutils literal notranslate"><span class="pre">weight</span></code> que represente su capacidad de pasajeros.</p></li>
@@ -786,17 +831,17 @@ document.write(`
 </li>
 <li><p><strong>Variables de la fórmula:</strong></p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(C_i\)</span> = Nivel de Alimentación Capilar (Fuerza Nodal) de la estación masiva <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(S\)</span> = Subconjunto de rutas que pertenecen exclusivamente a la red de superficie.</p></li>
-<li><p><span class="math notranslate nohighlight">\(A_{ij}\)</span> = Matriz de adyacencia (1 si la ruta <span class="math notranslate nohighlight">\(j\)</span> conecta con la estación <span class="math notranslate nohighlight">\(i\)</span>, 0 si no).</p></li>
-<li><p><span class="math notranslate nohighlight">\(w_{ij}\)</span> = Peso de la conexión (capacidad de pasajeros por hora o flujo real).</p></li>
+<li><p>$C_i$ = Nivel de Alimentación Capilar (Fuerza Nodal) de la estación masiva $i$.</p></li>
+<li><p>$S$ = Subconjunto de rutas que pertenecen exclusivamente a la red de superficie.</p></li>
+<li><p>$A_{ij}$ = Matriz de adyacencia (1 si la ruta $j$ conecta con la estación $i$, 0 si no).</p></li>
+<li><p>$w_{ij}$ = Peso de la conexión (capacidad de pasajeros por hora o flujo real).</p></li>
 </ul>
 </li>
 <li><p><strong>Desarrollo Práctico:</strong> ¿Cuántos microbuses alimentan a la estación Taxqueña?</p></li>
 <li><p><strong>Escenarios:</strong></p>
 <ul>
-<li><p><strong>Best Case:</strong> Las rutas alimentadoras se distribuyen equitativamente a lo largo de varias estaciones. <span class="math notranslate nohighlight">\(k_{in} = 5\)</span> rutas por estación.</p></li>
-<li><p><strong>Bad Case:</strong> Todos los camiones de una delegación completa desembocan en una sola puerta de Metro. <span class="math notranslate nohighlight">\(k_{in} = 150\)</span>.</p></li>
+<li><p><strong>Best Case:</strong> Las rutas alimentadoras se distribuyen equitativamente a lo largo de varias estaciones. $k_{in} = 5$ rutas por estación.</p></li>
+<li><p><strong>Bad Case:</strong> Todos los camiones de una delegación completa desembocan en una sola puerta de Metro. $k_{in} = 150$.</p></li>
 <li><p><strong>Real Case (CDMX):</strong> Cuatro Caminos e Indios Verdes son “Bad Cases” de libro de texto. Usando Python, se mapeará que el Anillo Periférico interceptará unas 40 rutas alimentadoras antes de que lleguen al centro, bajando la presión de Indios Verdes.</p></li>
 </ul>
 </li>
@@ -875,10 +920,10 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-resultados-en-una-tabla-historica">Guardar Resultados en una Tabla Histórica</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte (<span class="math notranslate nohighlight">\(C\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio (<span class="math notranslate nohighlight">\(T\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación (<span class="math notranslate nohighlight">\(B\)</span>) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial (<span class="math notranslate nohighlight">\(CF\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte ($C$)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio ($T$)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial ($CF$)</a></li>
 </ul>
 </li>
 </ul>

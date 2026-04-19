@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (\(FC\)) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+    <title>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
   
   
   
@@ -57,8 +57,6 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03_Fuerza_capilar';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -185,7 +183,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -228,6 +226,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2Fnotebooks/03_Fuerza_capilar.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -325,7 +370,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (FC)</h1>
+    <h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -352,20 +397,18 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc">
-<h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)<a class="headerlink" href="#reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc" title="Link to this heading">#</a></h1>
+  <section id="reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc">
+<h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)<a class="headerlink" href="#reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc" title="Link to this heading">#</a></h1>
 <section id="justificacion-teorica">
 <h2>1. Justificación Teórica<a class="headerlink" href="#justificacion-teorica" title="Link to this heading">#</a></h2>
-<p>El presente indicador evalúa la <strong>Fuerza Capilar</strong> de la red de transporte, definida topológicamente como el grado nodal (<span class="math notranslate nohighlight">\(k\)</span>) de cada estación. Este indicador cuantifica el nivel de convergencia de flujos y la capacidad de un nodo para actuar como punto de transferencia intermodal.</p>
+<p>El presente indicador evalúa la <strong>Fuerza Capilar</strong> de la red de transporte, definida topológicamente como el grado nodal ($k$) de cada estación. Este indicador cuantifica el nivel de convergencia de flujos y la capacidad de un nodo para actuar como punto de transferencia intermodal.</p>
 <p>Para obtener una radiografía urbana realista y mitigar la inflación geométrica, el modelo divide la Fuerza Capilar en dos dimensiones analíticas:</p>
 <p><strong>A. Fuerza Capilar Geográfica (Macro-Hubs):</strong>
-Agrupa topológicamente estaciones físicamente colindantes (radio de tolerancia de 100m) en un subgrafo <span class="math notranslate nohighlight">\(H\)</span>. Consolida los flujos de sus estaciones constituyentes eliminando las duplicidades. Representa el fenómeno urbano del transbordo físico (ej. CETRAMs):</p>
-<div class="math notranslate nohighlight">
-\[FC_{H} = \sum_{j \in H} \left( k_{in}(j) + k_{out}(j) \right) - \text{Aristas Internas}\]</div>
+Agrupa topológicamente estaciones físicamente colindantes (radio de tolerancia de 100m) en un subgrafo $H$. Consolida los flujos de sus estaciones constituyentes eliminando las duplicidades. Representa el fenómeno urbano del transbordo físico (ej. CETRAMs):</p>
+<p>$$FC_{H} = \sum_{j \in H} \left( k_{in}(j) + k_{out}(j) \right) - \text{Aristas Internas}$$</p>
 <p><strong>B. Fuerza Capilar Matemática / Estricta (Por Estación Individual):</strong>
-Calcula el grado de entrada y salida de un nodo topológico <span class="math notranslate nohighlight">\(i\)</span>, aplicando un filtro de frontera espacial (radio de 25m) para capturar únicamente los vectores de flujo. Representa la centralidad pura del nodo en el grafo:</p>
-<div class="math notranslate nohighlight">
-\[FC_i = k_{in}(i)_{frontera} + k_{out}(i)_{frontera}\]</div>
+Calcula el grado de entrada y salida de un nodo topológico $i$, aplicando un filtro de frontera espacial (radio de 25m) para capturar únicamente los vectores de flujo. Representa la centralidad pura del nodo en el grafo:</p>
+<p>$$FC_i = k_{in}(i)<em>{frontera} + k</em>{out}(i)_{frontera}$$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================</span>

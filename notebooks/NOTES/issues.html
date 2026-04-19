@@ -57,12 +57,10 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/NOTES/issues';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (\(FC\))" href="../03_Fuerza_capilar.html" />
+    <link rel="prev" title="Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)" href="../03_Fuerza_capilar.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -184,7 +182,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -227,6 +225,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2Fnotebooks/NOTES/issues.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -339,9 +384,9 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#issues-abiertos-pendientes">Issues Abiertos (pendientes)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p1-double-counting-de-friccion-en-rtp-y-cc-metodologico">P1 — Double-counting de fricción en RTP y CC ⚠️ Metodológico</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p2-cobertura-de-cbb-en-geojson-integridad-de-datos">P2 — Cobertura de CBB en GeoJSON ⚠️ Integridad de datos</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p3-indicador-t-promedio-dijkstra-pendiente-de-calculo">P3 — Indicador <span class="math notranslate nohighlight">\(T\)</span> promedio (Dijkstra) 🔲 Pendiente de cálculo</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo">P4 — Indicador <span class="math notranslate nohighlight">\(DI\)</span> para pares O-D de la tesis 🔲 Pendiente de cálculo</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p5-fuente-de-coeficientes-alpha-c-f-documentacion">P5 — Fuente de coeficientes alpha (<span class="math notranslate nohighlight">\(C_f\)</span>) 📖 Documentación</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p3-indicador-t-promedio-dijkstra-pendiente-de-calculo">P3 — Indicador $T$ promedio (Dijkstra) 🔲 Pendiente de cálculo</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo">P4 — Indicador $DI$ para pares O-D de la tesis 🔲 Pendiente de cálculo</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p5-fuente-de-coeficientes-alpha-c-f-documentacion">P5 — Fuente de coeficientes alpha ($C_f$) 📖 Documentación</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-de-corrida-2026-04-16">Contexto de corrida (2026-04-16)</a></li>
@@ -358,7 +403,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="issues-y-correcciones-vft-model">
+  <section id="issues-y-correcciones-vft-model">
 <h1>Issues y Correcciones — VFT Model<a class="headerlink" href="#issues-y-correcciones-vft-model" title="Link to this heading">#</a></h1>
 <section id="sesion-2026-04-16-2026-04-17">
 <h2>Sesión 2026-04-16 / 2026-04-17<a class="headerlink" href="#sesion-2026-04-16-2026-04-17" title="Link to this heading">#</a></h2>
@@ -377,9 +422,9 @@ document.write(`
 <section id="p1-double-counting-de-friccion-en-rtp-y-cc-metodologico">
 <h4>P1 — Double-counting de fricción en RTP y CC ⚠️ Metodológico<a class="headerlink" href="#p1-double-counting-de-friccion-en-rtp-y-cc-metodologico" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Descripción:</strong> Los valores de <code class="docutils literal notranslate"><span class="pre">FALLBACK_VELOCIDAD['RTP']</span></code> (14 km/h) y <code class="docutils literal notranslate"><span class="pre">FALLBACK_VELOCIDAD['CC']</span></code> (11 km/h) ya incorporan condiciones de tráfico moderado. Al aplicarles el <span class="math notranslate nohighlight">\(C_f\)</span> adicional (1.76 para mixto), la velocidad efectiva cae a ~8 km/h — posiblemente subestimada.</p></li>
+<li><p><strong>Descripción:</strong> Los valores de <code class="docutils literal notranslate"><span class="pre">FALLBACK_VELOCIDAD['RTP']</span></code> (14 km/h) y <code class="docutils literal notranslate"><span class="pre">FALLBACK_VELOCIDAD['CC']</span></code> (11 km/h) ya incorporan condiciones de tráfico moderado. Al aplicarles el $C_f$ adicional (1.76 para mixto), la velocidad efectiva cae a ~8 km/h — posiblemente subestimada.</p></li>
 <li><p><strong>Impacto:</strong> Sobrepenalización del tiempo de viaje en los dos sistemas con mayor cobertura (~74,265 segmentos, 78% del total).</p></li>
-<li><p><strong>Acción recomendada:</strong> Calibrar fallbacks con velocidades de flujo libre (~20 km/h RTP, ~16 km/h CC) y dejar que el <span class="math notranslate nohighlight">\(C_f\)</span> introduzca toda la penalización dinámica.</p></li>
+<li><p><strong>Acción recomendada:</strong> Calibrar fallbacks con velocidades de flujo libre (~20 km/h RTP, ~16 km/h CC) y dejar que el $C_f$ introduzca toda la penalización dinámica.</p></li>
 <li><p><strong>Archivo:</strong> <code class="docutils literal notranslate"><span class="pre">src/core/models/impedance.py</span></code> — <code class="docutils literal notranslate"><span class="pre">FALLBACK_VELOCIDAD</span></code></p></li>
 </ul>
 </section>
@@ -392,23 +437,23 @@ document.write(`
 </ul>
 </section>
 <section id="p3-indicador-t-promedio-dijkstra-pendiente-de-calculo">
-<h4>P3 — Indicador <span class="math notranslate nohighlight">\(T\)</span> promedio (Dijkstra) 🔲 Pendiente de cálculo<a class="headerlink" href="#p3-indicador-t-promedio-dijkstra-pendiente-de-calculo" title="Link to this heading">#</a></h4>
+<h4>P3 — Indicador $T$ promedio (Dijkstra) 🔲 Pendiente de cálculo<a class="headerlink" href="#p3-indicador-t-promedio-dijkstra-pendiente-de-calculo" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Descripción:</strong> La tesis estima <span class="math notranslate nohighlight">\(T \approx 85\)</span> min. La estimación orientativa del notebook 01 (85–100 min) es coherente, pero el valor real requiere Dijkstra sobre pares O-D muestreados.</p></li>
+<li><p><strong>Descripción:</strong> La tesis estima $T \approx 85$ min. La estimación orientativa del notebook 01 (85–100 min) es coherente, pero el valor real requiere Dijkstra sobre pares O-D muestreados.</p></li>
 <li><p><strong>Acción recomendada:</strong> Muestrear ~500–1000 pares O-D sobre nodos de estación (<code class="docutils literal notranslate"><span class="pre">tipo</span> <span class="pre">!=</span> <span class="pre">'trazo'</span></code>) y ejecutar <code class="docutils literal notranslate"><span class="pre">nx.single_source_dijkstra(grafo_vft,</span> <span class="pre">source,</span> <span class="pre">weight='weight')</span></code>. Agregar en notebook 01 o crear notebook 03 dedicado.</p></li>
 <li><p><strong>Referencia tesis:</strong> Tabla 3.4, Capítulo 3</p></li>
 </ul>
 </section>
 <section id="p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo">
-<h4>P4 — Indicador <span class="math notranslate nohighlight">\(DI\)</span> para pares O-D de la tesis 🔲 Pendiente de cálculo<a class="headerlink" href="#p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo" title="Link to this heading">#</a></h4>
+<h4>P4 — Indicador $DI$ para pares O-D de la tesis 🔲 Pendiente de cálculo<a class="headerlink" href="#p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Descripción:</strong> Los pares Xochimilco→Santa Fe (<span class="math notranslate nohighlight">\(DI=1.87\)</span>), Perisur→Naucalpan (<span class="math notranslate nohighlight">\(DI=2.33\)</span>) e Iztapalapa→Tlalnepantla (<span class="math notranslate nohighlight">\(DI=2.50\)</span>) son valores teóricos de la tesis, no calculados sobre el grafo real.</p></li>
+<li><p><strong>Descripción:</strong> Los pares Xochimilco→Santa Fe ($DI=1.87$), Perisur→Naucalpan ($DI=2.33$) e Iztapalapa→Tlalnepantla ($DI=2.50$) son valores teóricos de la tesis, no calculados sobre el grafo real.</p></li>
 <li><p><strong>Acción recomendada:</strong> Notebook 03 (<code class="docutils literal notranslate"><span class="pre">DetourFactorAnalyzer</span></code>).</p></li>
 <li><p><strong>Referencia tesis:</strong> Tabla 3.3, Capítulo 3</p></li>
 </ul>
 </section>
 <section id="p5-fuente-de-coeficientes-alpha-c-f-documentacion">
-<h4>P5 — Fuente de coeficientes alpha (<span class="math notranslate nohighlight">\(C_f\)</span>) 📖 Documentación<a class="headerlink" href="#p5-fuente-de-coeficientes-alpha-c-f-documentacion" title="Link to this heading">#</a></h4>
+<h4>P5 — Fuente de coeficientes alpha ($C_f$) 📖 Documentación<a class="headerlink" href="#p5-fuente-de-coeficientes-alpha-c-f-documentacion" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Descripción:</strong> Los valores <code class="docutils literal notranslate"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">{0.0,</span> <span class="pre">0.2,</span> <span class="pre">0.5,</span> <span class="pre">1.0}</span></code> para los cuatro tipos de derecho de vía requieren cita exacta del Manual de Calles SEDATU 2019 (tabla y párrafo).</p></li>
 <li><p><strong>Archivo:</strong> <code class="docutils literal notranslate"><span class="pre">src/core/models/impedance.py</span></code> — <code class="docutils literal notranslate"><span class="pre">FrictionCalculator.alpha_map</span></code>; <code class="docutils literal notranslate"><span class="pre">notebooks/NOTES/impedance.md</span></code> — Sección 1</p></li>
@@ -422,7 +467,7 @@ document.write(`
 <li><p><strong>Grafo:</strong> 102,055 nodos — 115,083 aristas (94,601 servicio + 20,482 transbordos peatonales)</p></li>
 <li><p><strong>Modo:</strong> <code class="docutils literal notranslate"><span class="pre">REALISTIC_INTEGRATION</span></code>, tolerancia Q1 = 85 m</p></li>
 <li><p><strong>Distribución:</strong> 12% masiva estructurada (Metro+MB+TL+CBB+SUB) / 88% superficie (RTP+CC+TROLE+MEXIBÚS+Mexicable)</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(C_f\)</span> validados:</strong> exclusivo=1.00, confinado=1.152, compartido=1.380, mixto=1.759</p></li>
+<li><p><strong>$C_f$ validados:</strong> exclusivo=1.00, confinado=1.152, compartido=1.380, mixto=1.759</p></li>
 <li><p><strong>Velocidades OK:</strong> METRO (36), MB (16.3), TL (22), CBB (20), SUB (65) km/h</p></li>
 <li><p><strong>Velocidades REVISAR:</strong> TROLE (13 post-Cf, −7% del límite inferior), RTP (8), CC (8) — ver P1</p></li>
 </ul>
@@ -466,7 +511,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</p>
+        <p class="prev-next-title">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</p>
       </div>
     </a>
 </div>
@@ -490,9 +535,9 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#issues-abiertos-pendientes">Issues Abiertos (pendientes)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p1-double-counting-de-friccion-en-rtp-y-cc-metodologico">P1 — Double-counting de fricción en RTP y CC ⚠️ Metodológico</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p2-cobertura-de-cbb-en-geojson-integridad-de-datos">P2 — Cobertura de CBB en GeoJSON ⚠️ Integridad de datos</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p3-indicador-t-promedio-dijkstra-pendiente-de-calculo">P3 — Indicador <span class="math notranslate nohighlight">\(T\)</span> promedio (Dijkstra) 🔲 Pendiente de cálculo</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo">P4 — Indicador <span class="math notranslate nohighlight">\(DI\)</span> para pares O-D de la tesis 🔲 Pendiente de cálculo</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p5-fuente-de-coeficientes-alpha-c-f-documentacion">P5 — Fuente de coeficientes alpha (<span class="math notranslate nohighlight">\(C_f\)</span>) 📖 Documentación</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p3-indicador-t-promedio-dijkstra-pendiente-de-calculo">P3 — Indicador $T$ promedio (Dijkstra) 🔲 Pendiente de cálculo</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p4-indicador-di-para-pares-o-d-de-la-tesis-pendiente-de-calculo">P4 — Indicador $DI$ para pares O-D de la tesis 🔲 Pendiente de cálculo</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#p5-fuente-de-coeficientes-alpha-c-f-documentacion">P5 — Fuente de coeficientes alpha ($C_f$) 📖 Documentación</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-de-corrida-2026-04-16">Contexto de corrida (2026-04-16)</a></li>

@@ -183,7 +183,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -226,6 +226,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2Fnotebooks/NOTES/impedance.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -347,7 +394,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="notas-del-modulo-impedance-py">
+  <section id="notas-del-modulo-impedance-py">
 <h1>Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code><a class="headerlink" href="#notas-del-modulo-impedance-py" title="Link to this heading">#</a></h1>
 <p><strong>¿Qué hace este archivo en resumen?</strong>
 Es el “tasador de tiempo” de la red. Una vez que <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code> construyó el grafo con sus nodos y aristas, este módulo recorre cada segmento y le inyecta un <strong>peso temporal en minutos</strong> basado en tres factores reales: la distancia física del tramo, la velocidad comercial del sistema, y el nivel de interferencia del tráfico urbano sobre esa vía. Es la implementación directa de la <strong>Ecuación VFT</strong>.</p>

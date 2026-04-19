@@ -57,8 +57,6 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_Analisis_Impedancia_VFT';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -185,7 +183,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -228,6 +226,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2Fnotebooks/01_Analisis_Impedancia_VFT.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -354,23 +399,21 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="reporte-01-discretizacion-espacial-y-asignacion-de-impedancia-temporal-vft">
+  <section id="reporte-01-discretizacion-espacial-y-asignacion-de-impedancia-temporal-vft">
 <h1>Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)<a class="headerlink" href="#reporte-01-discretizacion-espacial-y-asignacion-de-impedancia-temporal-vft" title="Link to this heading">#</a></h1>
 <section id="marco-teorico">
 <h2>01.- Marco Teórico<a class="headerlink" href="#marco-teorico" title="Link to this heading">#</a></h2>
-<p>En el análisis de redes de transporte urbano, la topología estática no refleja la realidad operativa de los sistemas. Para abordar esta limitación, el presente modelo inyecta atributos dinámicos a cada vector de la red (<span class="math notranslate nohighlight">\(\vec{uv}\)</span>) mediante la <strong>Ecuación VFT</strong>, que discretiza el tiempo de traslado continuo (<span class="math notranslate nohighlight">\(T_t\)</span>) de un segmento geodésico de la siguiente forma:</p>
-<div class="math notranslate nohighlight">
-\[T_t = \left( \frac{D}{V} \right) \times C_f\]</div>
+<p>En el análisis de redes de transporte urbano, la topología estática no refleja la realidad operativa de los sistemas. Para abordar esta limitación, el presente modelo inyecta atributos dinámicos a cada vector de la red ($\vec{uv}$) mediante la <strong>Ecuación VFT</strong>, que discretiza el tiempo de traslado continuo ($T_t$) de un segmento geodésico de la siguiente forma:</p>
+<p>$$T_t = \left( \frac{D}{V} \right) \times C_f$$</p>
 <p>Donde:</p>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(D\)</span></strong>: Distancia esférica del segmento en metros, calculada mediante la fórmula de Haversine.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(V\)</span></strong>: Velocidad comercial de flujo libre del sistema, expresada en m/min.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(C_f\)</span></strong>: Coeficiente de Fricción Vial, calculado en función del nivel de permeabilidad del derecho de vía (exclusivo, confinado, compartido o mixto) y ponderado por el índice de saturación característico de la Zona Metropolitana del Valle de México (ZMVM).</p></li>
+<li><p><strong>$D$</strong>: Distancia esférica del segmento en metros, calculada mediante la fórmula de Haversine.</p></li>
+<li><p><strong>$V$</strong>: Velocidad comercial de flujo libre del sistema, expresada en m/min.</p></li>
+<li><p><strong>$C_f$</strong>: Coeficiente de Fricción Vial, calculado en función del nivel de permeabilidad del derecho de vía (exclusivo, confinado, compartido o mixto) y ponderado por el índice de saturación característico de la Zona Metropolitana del Valle de México (ZMVM).</p></li>
 </ul>
-<p>Adicionalmente, el modelo aísla el denominado <em>costo de abordaje</em> (<span class="math notranslate nohighlight">\(T_b\)</span>), que representa el tiempo de espera en andén durante un transbordo intermodal. Este costo se evalúa exclusivamente en los nodos de transferencia y se estima como la mitad de la frecuencia de paso del sistema destino:</p>
-<div class="math notranslate nohighlight">
-\[T_b = \frac{F}{2}\]</div>
-<p><em>(Donde <span class="math notranslate nohighlight">\(F\)</span> es la frecuencia de paso de los vehículos, expresada en minutos.)</em></p>
+<p>Adicionalmente, el modelo aísla el denominado <em>costo de abordaje</em> ($T_b$), que representa el tiempo de espera en andén durante un transbordo intermodal. Este costo se evalúa exclusivamente en los nodos de transferencia y se estima como la mitad de la frecuencia de paso del sistema destino:</p>
+<p>$$T_b = \frac{F}{2}$$</p>
+<p><em>(Donde $F$ es la frecuencia de paso de los vehículos, expresada en minutos.)</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Habilitar recarga automática para reflejar cambios en &#39;src&#39; sin reiniciar el notebook</span>
@@ -1033,9 +1076,8 @@ MUESTRA de 10 segmentos por sistema (ordenados de mayor a menor distancia)
 <section id="verificacion-de-coherencia-velocidades-implicitas-vs-parametros-operativos">
 <h2>2.1 Verificación de Coherencia: Velocidades Implícitas vs. Parámetros Operativos<a class="headerlink" href="#verificacion-de-coherencia-velocidades-implicitas-vs-parametros-operativos" title="Link to this heading">#</a></h2>
 <p>La distancia geodésica entre nodos se calcula mediante la fórmula de Haversine, que ofrece una aproximación esférica con error inferior al 0.3% para las distancias típicas de la red (&lt; 5 km). Sobre esta base, el motor de impedancia calcula la velocidad efectiva post-fricción de cada segmento como:</p>
-<div class="math notranslate nohighlight">
-\[V_{efectiva} = \frac{V_{fallback}}{C_f}\]</div>
-<p>Los <em>fallbacks</em> de velocidad representan condiciones de <strong>flujo libre</strong> para cada sistema, de modo que el Coeficiente de Fricción Vial (<span class="math notranslate nohighlight">\(C_f\)</span>) introduce de forma aislada la penalización por congestión. Esta separación evita la doble contabilización que ocurriría si los valores de fallback incorporaran ya efectos de tráfico.</p>
+<p>$$V_{efectiva} = \frac{V_{fallback}}{C_f}$$</p>
+<p>Los <em>fallbacks</em> de velocidad representan condiciones de <strong>flujo libre</strong> para cada sistema, de modo que el Coeficiente de Fricción Vial ($C_f$) introduce de forma aislada la penalización por congestión. Esta separación evita la doble contabilización que ocurriría si los valores de fallback incorporaran ya efectos de tráfico.</p>
 <p>La siguiente tabla contrasta la velocidad efectiva resultante con los rangos operativos nominales reportados por los organismos operadores de la ZMVM.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1106,8 +1148,8 @@ MUESTRA de 10 segmentos por sistema (ordenados de mayor a menor distancia)
 </div>
 <section id="interpretacion-de-velocidades-efectivas-por-sistema">
 <h3>Interpretación de velocidades efectivas por sistema<a class="headerlink" href="#interpretacion-de-velocidades-efectivas-por-sistema" title="Link to this heading">#</a></h3>
-<p>Los resultados de la tabla de validación son coherentes con la metodología adoptada. Los <em>fallbacks</em> de velocidad representan condiciones de <strong>flujo libre</strong> (sin congestión), mientras que el Coeficiente de Fricción Vial (<span class="math notranslate nohighlight">\(C_f\)</span>) introduce la penalización dinámica de forma aislada. La velocidad efectiva resultante corresponde, por tanto, a condiciones de operación bajo demanda moderada-alta, representativas del promedio diario de la red.</p>
-<p>El sistema que presenta la mayor sensibilidad al modelo es el <strong>Trolebús</strong>, cuya velocidad efectiva (~13.0 km/h con <span class="math notranslate nohighlight">\(C_f = 1.38\)</span>) se sitúa ligeramente por debajo del límite inferior del rango operativo documentado (14–22 km/h). Esta diferencia de aproximadamente 1 km/h (7%) es atribuible a que el tipo de derecho de vía <em>compartido</em> no captura la preferencia operativa parcial que el trolebús mantiene en ciertas vialidades de la CDMX. Para fines de análisis estructural de red, esta desviación se encuentra dentro de los márgenes de calibración aceptables.</p>
+<p>Los resultados de la tabla de validación son coherentes con la metodología adoptada. Los <em>fallbacks</em> de velocidad representan condiciones de <strong>flujo libre</strong> (sin congestión), mientras que el Coeficiente de Fricción Vial ($C_f$) introduce la penalización dinámica de forma aislada. La velocidad efectiva resultante corresponde, por tanto, a condiciones de operación bajo demanda moderada-alta, representativas del promedio diario de la red.</p>
+<p>El sistema que presenta la mayor sensibilidad al modelo es el <strong>Trolebús</strong>, cuya velocidad efectiva (~13.0 km/h con $C_f = 1.38$) se sitúa ligeramente por debajo del límite inferior del rango operativo documentado (14–22 km/h). Esta diferencia de aproximadamente 1 km/h (7%) es atribuible a que el tipo de derecho de vía <em>compartido</em> no captura la preferencia operativa parcial que el trolebús mantiene en ciertas vialidades de la CDMX. Para fines de análisis estructural de red, esta desviación se encuentra dentro de los márgenes de calibración aceptables.</p>
 <p>El resto de los sistemas —incluyendo RTP y los Corredores Concesionados— presentan velocidades efectivas dentro de los rangos operativos de referencia, validando la consistencia del motor de impedancia con las condiciones reales de operación de la red multimodal de la ZMVM.</p>
 </section>
 </section>
@@ -1117,8 +1159,8 @@ MUESTRA de 10 segmentos por sistema (ordenados de mayor a menor distancia)
 <ul class="simple">
 <li><p><strong>N Segmentos:</strong> Número total de aristas interestación que componen la topología del sistema analizado. Cada segmento representa la conexión directa entre dos estaciones consecutivas, derivada del trazo geométrico de la ruta en el grafo.</p></li>
 <li><p><strong>Distancia Promedio (m):</strong> Longitud media en metros de los segmentos del sistema, calculada mediante la fórmula de Haversine entre las coordenadas GPS de los nodos extremos de cada arista.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(C_f\)</span> Promedio:</strong> Valor medio del Coeficiente de Fricción Vial aplicado a los segmentos del sistema. Refleja el nivel de interacción con el tráfico vehicular: <span class="math notranslate nohighlight">\(C_f = 1.0\)</span> corresponde a infraestructura segregada sin fricción; <span class="math notranslate nohighlight">\(C_f = 1.76\)</span> indica operación en tráfico mixto bajo las condiciones de saturación características de la ZMVM.</p></li>
-<li><p><strong>V Efectiva (km/h):</strong> Velocidad de operación resultante tras aplicar el <span class="math notranslate nohighlight">\(C_f\)</span> sobre la velocidad de flujo libre del sistema. Es el indicador de desempeño que se contrasta con los rangos operativos nominales de cada organismo operador.</p></li>
+<li><p><strong>$C_f$ Promedio:</strong> Valor medio del Coeficiente de Fricción Vial aplicado a los segmentos del sistema. Refleja el nivel de interacción con el tráfico vehicular: $C_f = 1.0$ corresponde a infraestructura segregada sin fricción; $C_f = 1.76$ indica operación en tráfico mixto bajo las condiciones de saturación características de la ZMVM.</p></li>
+<li><p><strong>V Efectiva (km/h):</strong> Velocidad de operación resultante tras aplicar el $C_f$ sobre la velocidad de flujo libre del sistema. Es el indicador de desempeño que se contrasta con los rangos operativos nominales de cada organismo operador.</p></li>
 <li><p><strong>T Promedio/Segmento (min):</strong> Tiempo medio estimado de recorrido por segmento interestación, expresado en minutos. Constituye la unidad elemental de la impedancia temporal que alimenta los algoritmos de caminos mínimos (Fase 3 del modelo).</p></li>
 </ul>
 </section>

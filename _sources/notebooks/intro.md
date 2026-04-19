@@ -181,7 +181,7 @@ Guardar de forma descriptiva e histórica para:
 
 - **Artículo:** *Transit network analysis using a graph-oriented method and GTFS data*
 
-![Fórmula y diagrama del Detour Factor](ASSETS/introIMG/formula_detour_factor.png)
+<!-- ![Fórmula y diagrama del Detour Factor](ASSETS/introIMG/formula_detour_factor.png) -->
 
 - **Descripción:** El artículo aborda cómo la geometría de la red de transporte cambia constantemente y cómo es necesario caracterizarla sistemáticamente. Para lograrlo, los autores proponen un método orientado a grafos donde los datos GTFS se importan a una base de datos de grafos.
   - **Input:** Las coordenadas (Latitud/Longitud) de un nodo de origen y un nodo de destino, junto con la topología de la red ya modelada en la base de datos de grafos (las Capas 1 y 2 de la arquitectura propuesta).
@@ -203,9 +203,9 @@ Guardar de forma descriptiva e histórica para:
 
 - **Artículos:** *Aplicación de la Teoría de Grafos en la Optimización de Redes de Transporte*, *The optimal Geometry of Transportation Networks*
 
-![Fórmulas de Penalización por Transferencia](ASSETS/introIMG/formula_penalizacion.png)
+<!-- ![Fórmulas de Penalización por Transferencia](ASSETS/introIMG/formula_penalizacion.png) -->
 
-![Diagrama del Transfer Hub](ASSETS/introIMG/diagrama_transfer_hub.png)
+<!-- ![Diagrama del Transfer Hub](ASSETS/introIMG/diagrama_transfer_hub.png) -->
 
 - **Descripción:** Se usan dos artículos para sustentar este indicador. El primero, *"The Optimal Geometry of Transportation Networks"*, habla de un criterio de optimidad principal en el diseño de redes: minimizar el tiempo promedio de viaje entre los pares de puntos del sistema. El segundo, *"Aplicación de la teoría de grafos en la optimización de redes de transporte"*, hace esto en un entorno real, modelando grafos y sus características. El problema se resuelve modelando la red como un grafo dirigido valorado, donde las aristas son ponderadas por **tiempo y costo**. La teoría de grafos provee algoritmos exactos de caminos mínimos (Dijkstra y Floyd-Warshall) para determinar la ruta óptima entre cada par de nodos. **En la práctica, el uso de estos algoritmos logra reducir estadísticamente los tiempos promedio (ej. reducciones del 8%) y los costos totales de la red.**
 
@@ -297,7 +297,7 @@ Guardar de forma descriptiva e histórica para:
 
 - **Artículo:** *Transit network analysis using a graph-oriented method and GTFS data*
 
-![Fórmulas del Factor de Fricción Vial](ASSETS/introIMG/formula_friccion.png)
+<!-- ![Fórmulas del Factor de Fricción Vial](ASSETS/introIMG/formula_friccion.png) -->
 
 - **Descripción:** En su análisis sobre cómo los datos estáticos no siempre reflejan la realidad, los autores dedican un apartado a las limitaciones de los horarios programados y cómo el algoritmo debe adaptarse a la calle. Los autores reconocen que los datos estandarizados (como el GTFS normal) representan únicamente horarios planificados. Para solucionar esto al momento de correr el modelo matemático, explican que en horas pico algunos viajes entre paradas son inevitablemente más largos. Por lo tanto, afirman que utilizar estos tiempos ajustados devuelve estimaciones mucho más precisas al correr el algoritmo de Dijkstra.
 
@@ -340,7 +340,7 @@ Guardar de forma descriptiva e histórica para:
 
 - **Artículo:** *Statistical analysis of the Metropolitan Seoul Subway System*
 
-![Fórmula y diagrama de Alimentación Capilar](ASSETS/introIMG/formula_capilar.png)
+<!-- ![Fórmula y diagrama de Alimentación Capilar](ASSETS/introIMG/formula_capilar.png) -->
 
 - **Descripción:** El artículo evalúa las propiedades estadísticas de la red basándose en el **grado ($k$)** de los nodos (el número de conexiones) y en la **fuerza ($s$)** de los nodos, la cual suma el "peso" (los flujos de pasajeros) de todos los enlaces conectados a una estación. La distribución de la fuerza de los nodos sigue un comportamiento estadístico específico (log-normal), lo que indica la existencia de grandes concentradores (*hubs*) en el sistema.
 
