@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reporte 00: Construcción del Grafo Topológico (Modelo VFT) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/00_Construccion_grafo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notas del Módulo: graph_builder.py" href="NOTES/graph_builder.html" />
+    <link rel="prev" title="Bienvenido al Modelo VFT (Vanishing Fig-Tree)" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Bienvenido al Modelo VFT (Vanishing Fig-Tree)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Reporte 00: Construcción del Grafo Topológico (Modelo VFT)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="01_Analisis_Impedancia_VFT.html">Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/00_Construccion_grafo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reporte 00: Construcción del Grafo Topológico (Modelo VFT)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-teorica-snapping-logico-y-conectividad-real">1. Justificación Teórica: Snapping Lógico y Conectividad Real</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-2-extraccion-de-trazos-y-consolidacion-espacial">Etapa 2: Extracción de Trazos y Consolidación Espacial</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="reporte-00-construccion-del-grafo-topologico-modelo-vft">
+<h1>Reporte 00: Construcción del Grafo Topológico (Modelo VFT)<a class="headerlink" href="#reporte-00-construccion-del-grafo-topologico-modelo-vft" title="Link to this heading">#</a></h1>
+<section id="justificacion-teorica-snapping-logico-y-conectividad-real">
+<h2>1. Justificación Teórica: Snapping Lógico y Conectividad Real<a class="headerlink" href="#justificacion-teorica-snapping-logico-y-conectividad-real" title="Link to this heading">#</a></h2>
+<p>En versiones previas, la conversión directa de GeoJSON a Grafo generaba una “inflación topológica” (más de 49,000 nodos), debido a que las coordenadas de los trazos no coincidían exactamente con las estaciones.</p>
+<p>Para resolver esto, el <strong>Modelo VFT</strong> ahora implementa un algoritmo de <strong>Snapping Lógico Geográfico</strong> mediante un <strong>KDTree (scipy.spatial.KDTree)</strong>. Este proceso asegura que:</p>
+<ol class="arabic simple">
+<li><p><strong>Identidad de Nodo:</strong> Cada trazo de ruta se “ancla” automáticamente a la estación más cercana en un radio de 50 metros.</p></li>
+<li><p><strong>Eliminación de Nodos Fantasma:</strong> Se eliminan los nodos tipo “trazo” redundantes, dejando una red pura de estaciones operativas.</p></li>
+<li><p><strong>Continuidad Operativa:</strong> El grafo resultante permite cálculos de rutas (Dijkstra) sin interrupciones espaciales.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+
+<span class="c1"># Silenciamos advertencias de visualización</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">proyecto_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">proyecto_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proyecto_path</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.infrastructure.go_client.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_full_network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.api.schemas.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeoJSONTransportSchema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.services.graph_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">VFTGraphBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.utils.visualizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_vft_graph</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Conectando con APIMETRO (Go) para ingestar la red espacial...&quot;</span><span class="p">)</span>
+<span class="n">raw_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_full_network</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Validando contrato de datos espaciales (Pydantic)...&quot;</span><span class="p">)</span>
+<span class="n">validated_payload</span> <span class="o">=</span> <span class="n">GeoJSONTransportSchema</span><span class="p">(</span><span class="o">**</span><span class="n">raw_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Ingesta exitosa: Se validaron </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">validated_payload</span><span class="o">.</span><span class="n">features</span><span class="p">)</span><span class="si">}</span><span class="s2"> features espaciales.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+1. Conectando con APIMETRO (Go) para ingestar la red espacial...
+2026-04-18 20:46:39 | INFO     | VFT_Model | Construyendo el puente hacia el módulo espacial de Go...
+2026-04-18 20:46:39 | INFO     | VFT_Model | Solicitando capa espacial a: http://localhost:8080/movilidad/mapas/geojsonEstacion
+2026-04-18 20:46:39 | INFO     | VFT_Model | Solicitando capa espacial a: http://localhost:8080/movilidad/mapas/geojsonLinea
+2026-04-18 20:46:40 | INFO     | VFT_Model | Red extraída: 22766 entidades espaciales listas para VFT.
+2. Validando contrato de datos espaciales (Pydantic)...
+✅ Ingesta exitosa: Se validaron 22766 features espaciales.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Instanciar el constructor (Carga datos internamente)</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">VFTGraphBuilder</span><span class="p">(</span><span class="n">validated_payload</span><span class="p">)</span>
+
+<span class="c1"># 2. Construir el grafo usando el modo REALISTIC_INTEGRATION</span>
+<span class="c1"># Este modo activa el KDTree y los transbordos peatonales estadísticos</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">build_graph</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;REALISTIC_INTEGRATION&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Validación de integridad (Importante para tu reporte)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Grafo construido exitosamente.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   - Nodos Totales: </span><span class="si">{</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span><span class="si">}</span><span class="s2"> (Reducción de ~90% lograda)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   - Aristas de Transporte: </span><span class="si">{</span><span class="nb">len</span><span class="p">([(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tipo&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;transit&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 20:46:41 | INFO     | VFT_Model | Iniciando VFTGraphBuilder en modo: REALISTIC_INTEGRATION
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 20:46:41 | INFO     | VFT_Model | Fase 1 y 2: Extrayendo nodos y trazos base...
+2026-04-18 20:46:43 | INFO     | VFT_Model | Fase 2 completada: 65220 aristas interestación creadas.
+2026-04-18 20:46:43 | INFO     | VFT_Model | Grafo Base construido: 11115 Nodos y 32344 Segmentos.
+2026-04-18 20:46:43 | WARNING  | VFT_Model | Eliminadas 1562 aristas phantom (distancia &gt; 5 km). Causa probable: geometría MultiLineString fragmentada en el backend.
+2026-04-18 20:46:43 | INFO     | VFT_Model | Fase 3: Integrando sistemas (Tolerancia peatonal: 85.0m)...
+2026-04-18 20:47:09 | INFO     | VFT_Model | Se crearon 20482 aristas de Transbordo Peatonal.
+2026-04-18 20:47:09 | INFO     | VFT_Model | Aplicando Motor de Impedancia...
+2026-04-18 20:47:09 | INFO     | VFT_Model | Iniciando inyección de motor de impendancia sobre VFT:
+2026-04-18 20:47:09 | INFO     | VFT_Model | Impedancia aplicada exitosamente a 25197 segmentos.
+2026-04-18 20:47:09 | INFO     | VFT_Model | Grafo final: 11115 nodos, 45679 aristas.
+✅ Grafo construido exitosamente.
+   - Nodos Totales: 11115 (Reducción de ~90% lograda)
+   - Aristas de Transporte: 25197
+</pre></div>
+</div>
+</div>
+</div>
+<section id="etapa-2-extraccion-de-trazos-y-consolidacion-espacial">
+<h3>Etapa 2: Extracción de Trazos y Consolidación Espacial<a class="headerlink" href="#etapa-2-extraccion-de-trazos-y-consolidacion-espacial" title="Link to this heading">#</a></h3>
+<p>En esta fase, el modelo procesa las líneas geométricas. Gracias al <strong>Fix de Snapping</strong>, ya no representamos cada curva de la calle como un nodo independiente. En su lugar, el sistema calcula la distancia real recorrida por el vehículo, pero conecta únicamente las estaciones origen y destino.</p>
+<p>Esto permite que el <strong>Panel 2 (Aristas)</strong> se vea como una red de transporte coherente y no como una nube de puntos densa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aquí explicas en Markdown la jerarquía de las estaciones</span>
+<span class="n">plot_vft_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">All</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">save_name</span><span class="o">=</span><span class="s2">&quot;Panel1_Infraestructura&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 20:47:30 | INFO     | VFT_Model | Panel guardado: ASSETS/Panel1_Infraestructura.png
+</pre></div>
+</div>
+<img alt="../_images/e8469bed5e3909ea4f39c241984c5c1a987663becdd57358cd14b79c3bea6b3b.png" src="../_images/e8469bed5e3909ea4f39c241984c5c1a987663becdd57358cd14b79c3bea6b3b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aquí explicas cómo el KDTree unió los trazos a las estaciones</span>
+<span class="n">plot_vft_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">All</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">save_name</span><span class="o">=</span><span class="s2">&quot;00_Panel2_Conectividad&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 20:47:33 | INFO     | VFT_Model | Panel guardado: ASSETS/00_Panel2_Conectividad.png
+</pre></div>
+</div>
+<img alt="../_images/285364ee806897fbd8ec017569fe2bcd2019517559d1f5d825ee510955286a99.png" src="../_images/285364ee806897fbd8ec017569fe2bcd2019517559d1f5d825ee510955286a99.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- ETAPA 3: DIRECCIONALIDAD (SENTIDO IDA) ---</span>
+<span class="n">plot_vft_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">All</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">save_name</span><span class="o">=</span><span class="s2">&quot;00_Panel3_Ida&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 20:47:34 | INFO     | VFT_Model | Panel guardado: ASSETS/00_Panel3_Ida.png
+</pre></div>
+</div>
+<img alt="../_images/c0e5b491b2ce6a263d88cead1f411aed9246730a86713870c751930780f18fdf.png" src="../_images/c0e5b491b2ce6a263d88cead1f411aed9246730a86713870c751930780f18fdf.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- ETAPA 4: DIRECCIONALIDAD (SENTIDO REGRESO) ---</span>
+<span class="n">plot_vft_graph</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">All</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">save_name</span><span class="o">=</span><span class="s2">&quot;Panel4_Regreso&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 20:47:35 | INFO     | VFT_Model | Panel guardado: ASSETS/Panel4_Regreso.png
+</pre></div>
+</div>
+<img alt="../_images/67575b025444923b10bd97e76aa8d45d11f625ed6bc94a21b9fb11c7fab66681.png" src="../_images/67575b025444923b10bd97e76aa8d45d11f625ed6bc94a21b9fb11c7fab66681.png" />
+</div>
+</div>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bienvenido al Modelo VFT (Vanishing Fig-Tree)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="NOTES/graph_builder.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-teorica-snapping-logico-y-conectividad-real">1. Justificación Teórica: Snapping Lógico y Conectividad Real</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-2-extraccion-de-trazos-y-consolidacion-espacial">Etapa 2: Extracción de Trazos y Consolidación Espacial</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hernán Galileo Cabrera Garibaldi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1578 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reporte 02: Nivel de Cobertura Espacial Capilar (C) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02_Nivel_Cobertura';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (\(FC\))" href="03_Fuerza_capilar.html" />
+    <link rel="prev" title="Notas del Módulo: impedance.py" href="NOTES/impedance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Bienvenido al Modelo VFT (Vanishing Fig-Tree)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="00_Construccion_grafo.html">Reporte 00: Construcción del Grafo Topológico (Modelo VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="01_Analisis_Impedancia_VFT.html">Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/02_Nivel_Cobertura.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reporte 02: Nivel de Cobertura Espacial Capilar (C)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-teorica">1. Justificación Teórica</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="reporte-02-nivel-de-cobertura-espacial-capilar-c">
+<h1>Reporte 02: Nivel de Cobertura Espacial Capilar (C)<a class="headerlink" href="#reporte-02-nivel-de-cobertura-espacial-capilar-c" title="Link to this heading">#</a></h1>
+<section id="justificacion-teorica">
+<h2>1. Justificación Teórica<a class="headerlink" href="#justificacion-teorica" title="Link to this heading">#</a></h2>
+<p>El presente indicador evalúa la equidad espacial de la red de transporte masivo. Se define un isócrono de accesibilidad peatonal (radio de caminata o <em>Buffer</em>) alrededor de cada estación, típicamente de <strong>800 metros</strong> (equivalente a 10-15 minutos caminando).<br />
+<strong>Definir área metropolitana en un polígono de CDXM y algunos municipios de EDOMEX</strong></p>
+<p>El Nivel de Cobertura (<span class="math notranslate nohighlight">\(C\)</span>) se calcula intersectando el área de influencia de las estaciones (<span class="math notranslate nohighlight">\(A_{cubierta}\)</span>) contra la superficie geodésica total de la demarcación política (<span class="math notranslate nohighlight">\(A_{total}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[C = \left( \frac{A_{cubierta}}{A_{total}} \right) \times 100\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+
+<span class="c1"># Silenciar advertencias futuras para un reporte limpio</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+<span class="n">proyecto_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">proyecto_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proyecto_path</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.infrastructure.go_client.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_full_network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.infrastructure.go_client.client_spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_territorial_polygons</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.algorithms.topologicalIndicators.spatial_coverate</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpatialCoverageAnalyzer</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extrayendo datos espaciales y de red desde Go...&quot;</span><span class="p">)</span>
+<span class="n">transporte_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_full_network</span><span class="p">()</span>
+<span class="n">poligonos_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_territorial_polygons</span><span class="p">(</span><span class="n">entidades</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Ciudad de México&quot;</span><span class="p">,</span> <span class="s2">&quot;México&quot;</span><span class="p">])</span>
+
+<span class="n">analizador_cobertura</span> <span class="o">=</span> <span class="n">SpatialCoverageAnalyzer</span><span class="p">(</span><span class="n">transporte_data</span><span class="p">,</span> <span class="n">poligonos_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Datos cargados y proyectados a métrica local (EPSG:32614).&quot;</span><span class="p">)</span>
+
+<span class="c1"># Lista estricta para segmentación espacial</span>
+<span class="n">ALCALDIAS_CDMX</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Álvaro Obregón&#39;</span><span class="p">,</span> <span class="s1">&#39;Azcapotzalco&#39;</span><span class="p">,</span> <span class="s1">&#39;Benito Juárez&#39;</span><span class="p">,</span> <span class="s1">&#39;Coyoacán&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;Cuajimalpa de Morelos&#39;</span><span class="p">,</span> <span class="s1">&#39;Cuauhtémoc&#39;</span><span class="p">,</span> <span class="s1">&#39;Gustavo A. Madero&#39;</span><span class="p">,</span> <span class="s1">&#39;Iztacalco&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;Iztapalapa&#39;</span><span class="p">,</span> <span class="s1">&#39;La Magdalena Contreras&#39;</span><span class="p">,</span> <span class="s1">&#39;Miguel Hidalgo&#39;</span><span class="p">,</span> <span class="s1">&#39;Milpa Alta&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;Tláhuac&#39;</span><span class="p">,</span> <span class="s1">&#39;Tlalpan&#39;</span><span class="p">,</span> <span class="s1">&#39;Venustiano Carranza&#39;</span><span class="p">,</span> <span class="s1">&#39;Xochimilco&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extrayendo datos espaciales y de red desde Go...
+2026-04-18 22:24:32 | INFO     | VFT_Model | Construyendo el puente hacia el módulo espacial de Go...
+2026-04-18 22:24:32 | INFO     | VFT_Model | Solicitando capa espacial a: http://localhost:8080/movilidad/mapas/geojsonEstacion
+2026-04-18 22:24:32 | INFO     | VFT_Model | Solicitando capa espacial a: http://localhost:8080/movilidad/mapas/geojsonLinea
+2026-04-18 22:24:32 | INFO     | VFT_Model | Red extraída: 22766 entidades espaciales listas para VFT.
+2026-04-18 22:24:32 | INFO     | VFT_Model | Solicitando polígonos territoriales a APIMETRO para: [&#39;Ciudad de México&#39;, &#39;México&#39;]
+2026-04-18 22:24:32 | INFO     | VFT_Model | Polígonos combinados exitosamente. Total features: 157
+✅ Datos cargados y proyectados a métrica local (EPSG:32614).
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RADIO_METROS</span> <span class="o">=</span> <span class="mf">800.0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculando cobertura general agregada (Isócrono: </span><span class="si">{</span><span class="n">RADIO_METROS</span><span class="si">}</span><span class="s2">m)...&quot;</span><span class="p">)</span>
+<span class="n">df_general</span> <span class="o">=</span> <span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">calculate_general_coverage</span><span class="p">(</span><span class="n">radio_caminable_m</span><span class="o">=</span><span class="n">RADIO_METROS</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculando coberturas independientes por sistema...&quot;</span><span class="p">)</span>
+<span class="n">dict_sistemas</span> <span class="o">=</span> <span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">calculate_coverage_by_system</span><span class="p">(</span><span class="n">radio_caminable_m</span><span class="o">=</span><span class="n">RADIO_METROS</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Cálculos finalizados.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Calculando cobertura general agregada (Isócrono: 800.0m)...
+Calculando coberturas independientes por sistema...
+✅ Cálculos finalizados.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;## 1. Escenario Base: Cobertura Total del Sistema de Transporte&quot;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;Análisis de las demarcaciones con **mayor rezago** (menor porcentaje de cobertura espacial), evidenciando las zonas de exclusión al transporte masivo.&quot;</span><span class="p">))</span>
+
+<span class="c1"># Separar CDMX y EDOMEX</span>
+<span class="n">df_general_cdmx</span> <span class="o">=</span> <span class="n">df_general</span><span class="p">[</span><span class="n">df_general</span><span class="p">[</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">ALCALDIAS_CDMX</span><span class="p">)]</span>
+<span class="n">df_general_edomex</span> <span class="o">=</span> <span class="n">df_general</span><span class="p">[</span><span class="o">~</span><span class="n">df_general</span><span class="p">[</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">ALCALDIAS_CDMX</span><span class="p">)]</span>
+
+<span class="c1"># Extraer los peores 5 (Bottom 5)</span>
+<span class="n">peores_cdmx</span> <span class="o">=</span> <span class="n">df_general_cdmx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">peores_edomex</span> <span class="o">=</span> <span class="n">df_general_edomex</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Mostrar Tablas</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;### 🔻 Peores 5 Coberturas - Alcaldías (CDMX)&quot;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">peores_cdmx</span><span class="p">[[</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_Total_km2&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_Cubierta_km2&#39;</span><span class="p">,</span> <span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">]])</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;### 🔻 Peores 5 Coberturas - Municipios (EDOMEX)&quot;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">peores_edomex</span><span class="p">[[</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_Total_km2&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_Cubierta_km2&#39;</span><span class="p">,</span> <span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">]])</span>
+
+<span class="c1"># Preparar y mostrar el Mapa General</span>
+<span class="n">gdf_mapa_general</span> <span class="o">=</span> <span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">gdf_poligonos</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gdf_mapa_general</span> <span class="o">=</span> <span class="n">gdf_mapa_general</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_general</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mapa de Calor: Cobertura Total Territorial (Radio: </span><span class="si">{</span><span class="n">RADIO_METROS</span><span class="si">}</span><span class="s2">m)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">gdf_mapa_general</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">column</span><span class="o">=</span><span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlGnBu&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;0.5&#39;</span><span class="p">,</span>
+    <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s2">&quot;Cobertura (%)&quot;</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="s1">&#39;shrink&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+    <span class="n">missing_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Sin Datos&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Plotear la mancha unida</span>
+<span class="n">buffers_gen</span> <span class="o">=</span> <span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">gdf_estaciones</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">RADIO_METROS</span><span class="p">)</span>
+<span class="n">mancha_gen</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">buffers_gen</span><span class="o">.</span><span class="n">unary_union</span><span class="p">])</span>
+<span class="n">mancha_gen</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<h2 class="rubric" id="escenario-base-cobertura-total-del-sistema-de-transporte">1. Escenario Base: Cobertura Total del Sistema de Transporte</h2>
+<p>Análisis de las demarcaciones con <strong>mayor rezago</strong> (menor porcentaje de cobertura espacial), evidenciando las zonas de exclusión al transporte masivo.</p>
+<h3 class="rubric" id="peores-5-coberturas-alcaldias-cdmx">🔻 Peores 5 Coberturas - Alcaldías (CDMX)</h3>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>68</th>
+      <td>Milpa Alta</td>
+      <td>298.01</td>
+      <td>35.00</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>La Magdalena Contreras</td>
+      <td>63.37</td>
+      <td>16.33</td>
+      <td>25.76</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Tlalpan</td>
+      <td>314.25</td>
+      <td>94.31</td>
+      <td>30.01</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Tláhuac</td>
+      <td>85.78</td>
+      <td>43.85</td>
+      <td>51.12</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Cuajimalpa de Morelos</td>
+      <td>71.10</td>
+      <td>37.12</td>
+      <td>52.20</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><h3 class="rubric" id="peores-5-coberturas-municipios-edomex">🔻 Peores 5 Coberturas - Municipios (EDOMEX)</h3>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>121</th>
+      <td>Tonanitla</td>
+      <td>8.52</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Capulhuac</td>
+      <td>21.50</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Calimaya</td>
+      <td>104.26</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>Donato Guerra</td>
+      <td>181.36</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Ayapango</td>
+      <td>50.83</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/efd9f4b79d73edc39525a442afe9707ad0dbb41b6d699bc31cee4a28b384d332.png" src="../_images/efd9f4b79d73edc39525a442afe9707ad0dbb41b6d699bc31cee4a28b384d332.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;## 2. Desglose Operativo por Sistema&quot;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;A continuación se evalúa el nivel de penetración territorial de cada sistema de manera aislada, destacando las demarcaciones centrales de la Ciudad de México con mayor nivel de servicio.&quot;</span><span class="p">))</span>
+
+<span class="c1"># Filtrar sistemas válidos</span>
+<span class="n">sistemas_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">sis</span> <span class="k">for</span> <span class="n">sis</span> <span class="ow">in</span> <span class="n">dict_sistemas</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">dict_sistemas</span><span class="p">[</span><span class="n">sis</span><span class="p">]</span><span class="o">.</span><span class="n">empty</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">sistema</span> <span class="ow">in</span> <span class="n">sistemas_plot</span><span class="p">:</span>
+    <span class="n">df_sis</span> <span class="o">=</span> <span class="n">dict_sistemas</span><span class="p">[</span><span class="n">sistema</span><span class="p">]</span>
+    
+    <span class="c1"># Filtrar SOLO CDMX para el Top 5</span>
+    <span class="n">df_sis_cdmx</span> <span class="o">=</span> <span class="n">df_sis</span><span class="p">[</span><span class="n">df_sis</span><span class="p">[</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">ALCALDIAS_CDMX</span><span class="p">)]</span>
+    <span class="n">top5_cdmx</span> <span class="o">=</span> <span class="n">df_sis_cdmx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    
+    <span class="c1"># 1. Imprimir Títulos y Tabla</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;---&quot;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;### 🚇 Sistema: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">sistema</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;**Top 5 Alcaldías (CDMX) con mayor cobertura**&quot;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">top5_cdmx</span><span class="p">[[</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_Total_km2&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_Cubierta_km2&#39;</span><span class="p">,</span> <span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">]])</span>
+    
+    <span class="c1"># 2. Dibujar su mapa</span>
+    <span class="n">gdf_sis</span> <span class="o">=</span> <span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">gdf_poligonos</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">gdf_sis</span> <span class="o">=</span> <span class="n">gdf_sis</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_sis</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;Demarcacion&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="c1"># Mapa coroplético (escala fija 0-100 para comparar peras con peras)</span>
+    <span class="n">gdf_sis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">column</span><span class="o">=</span><span class="s1">&#39;Cobertura_Porcentaje&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlGnBu&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;0.8&#39;</span><span class="p">,</span>
+        <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+        <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Cobertura </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">sistema</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> (%)&#39;</span><span class="p">},</span> 
+        <span class="n">missing_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Agregar las estaciones de ese sistema en específico</span>
+    <span class="n">estaciones_sis</span> <span class="o">=</span> <span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">gdf_estaciones</span><span class="p">[</span><span class="n">analizador_cobertura</span><span class="o">.</span><span class="n">gdf_estaciones</span><span class="p">[</span><span class="s1">&#39;sistema&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">sistema</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">estaciones_sis</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">buffers_sis</span> <span class="o">=</span> <span class="n">estaciones_sis</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">RADIO_METROS</span><span class="p">)</span>
+        <span class="n">mancha_sis</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">buffers_sis</span><span class="o">.</span><span class="n">unary_union</span><span class="p">])</span>
+        <span class="n">mancha_sis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># Forzar a que imprima el mapa antes de pasar al siguiente sistema en el bucle</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<h2 class="rubric" id="desglose-operativo-por-sistema">2. Desglose Operativo por Sistema</h2>
+<p>A continuación se evalúa el nivel de penetración territorial de cada sistema de manera aislada, destacando las demarcaciones centrales de la Ciudad de México con mayor nivel de servicio.</p>
+<hr/>
+<h3 class="rubric" id="sistema-cc">🚇 Sistema: CC</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>34</th>
+      <td>Cuauhtémoc</td>
+      <td>32.50</td>
+      <td>32.47</td>
+      <td>99.90</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Benito Juárez</td>
+      <td>26.68</td>
+      <td>26.32</td>
+      <td>98.65</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>Iztacalco</td>
+      <td>23.08</td>
+      <td>22.25</td>
+      <td>96.42</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>Miguel Hidalgo</td>
+      <td>46.39</td>
+      <td>44.33</td>
+      <td>95.57</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>27.77</td>
+      <td>82.06</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/335dd056e5ec30b25889221f6b591c01ab211d471d48c43eafd49e04586b1316.png" src="../_images/335dd056e5ec30b25889221f6b591c01ab211d471d48c43eafd49e04586b1316.png" />
+<hr/>
+<h3 class="rubric" id="sistema-rtp">🚇 Sistema: RTP</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>67</th>
+      <td>Miguel Hidalgo</td>
+      <td>46.39</td>
+      <td>41.90</td>
+      <td>90.32</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>Cuauhtémoc</td>
+      <td>32.50</td>
+      <td>29.32</td>
+      <td>90.22</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Azcapotzalco</td>
+      <td>33.50</td>
+      <td>30.08</td>
+      <td>89.81</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Gustavo A. Madero</td>
+      <td>87.84</td>
+      <td>75.86</td>
+      <td>86.37</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>Iztapalapa</td>
+      <td>113.07</td>
+      <td>93.66</td>
+      <td>82.83</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/3a1579f6045677bfcbe6783cbc332a7e593ca4f625b59f94f21426e75bdd762d.png" src="../_images/3a1579f6045677bfcbe6783cbc332a7e593ca4f625b59f94f21426e75bdd762d.png" />
+<hr/>
+<h3 class="rubric" id="sistema-trole">🚇 Sistema: TROLE</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>34</th>
+      <td>Cuauhtémoc</td>
+      <td>32.50</td>
+      <td>22.72</td>
+      <td>69.90</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Benito Juárez</td>
+      <td>26.68</td>
+      <td>16.50</td>
+      <td>61.85</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Azcapotzalco</td>
+      <td>33.50</td>
+      <td>17.48</td>
+      <td>52.18</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>Iztacalco</td>
+      <td>23.08</td>
+      <td>11.93</td>
+      <td>51.69</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Coyoacán</td>
+      <td>53.88</td>
+      <td>25.17</td>
+      <td>46.71</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/a3e1bdd13995f677285eb663c60a4c0d24a9ceb35eea80bd3a3982f9ff747ed9.png" src="../_images/a3e1bdd13995f677285eb663c60a4c0d24a9ceb35eea80bd3a3982f9ff747ed9.png" />
+<hr/>
+<h3 class="rubric" id="sistema-mexibus">🚇 Sistema: MEXIBÚS</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>50</th>
+      <td>Iztacalco</td>
+      <td>23.08</td>
+      <td>1.52</td>
+      <td>6.58</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>1.90</td>
+      <td>5.62</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Gustavo A. Madero</td>
+      <td>87.84</td>
+      <td>3.23</td>
+      <td>3.67</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>Xochimilco</td>
+      <td>114.03</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Tláhuac</td>
+      <td>85.78</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/7c7ed44d594ab4a39094efa638d7e32b43b7c293de8ca551c4da6d87f4a62bfe.png" src="../_images/7c7ed44d594ab4a39094efa638d7e32b43b7c293de8ca551c4da6d87f4a62bfe.png" />
+<hr/>
+<h3 class="rubric" id="sistema-mb">🚇 Sistema: MB</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>34</th>
+      <td>Cuauhtémoc</td>
+      <td>32.50</td>
+      <td>26.74</td>
+      <td>82.27</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Benito Juárez</td>
+      <td>26.68</td>
+      <td>16.21</td>
+      <td>60.74</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>Iztacalco</td>
+      <td>23.08</td>
+      <td>13.95</td>
+      <td>60.44</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>16.10</td>
+      <td>47.58</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Gustavo A. Madero</td>
+      <td>87.84</td>
+      <td>38.75</td>
+      <td>44.12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/1de9e67befd4e8a252de7a629a9890b6f4d1aaaa869c75fde25a02d76937301b.png" src="../_images/1de9e67befd4e8a252de7a629a9890b6f4d1aaaa869c75fde25a02d76937301b.png" />
+<hr/>
+<h3 class="rubric" id="sistema-pumabus">🚇 Sistema: PUMABUS</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>31</th>
+      <td>Coyoacán</td>
+      <td>53.88</td>
+      <td>10.85</td>
+      <td>20.13</td>
+    </tr>
+    <tr>
+      <th>140</th>
+      <td>Álvaro Obregón</td>
+      <td>95.82</td>
+      <td>2.25</td>
+      <td>2.34</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Tlalpan</td>
+      <td>314.25</td>
+      <td>0.25</td>
+      <td>0.08</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>Xochimilco</td>
+      <td>114.03</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/ab0d4828449038656b1d0487d7e83da07e6c2bc7d4cec2a8a45de68b81d371df.png" src="../_images/ab0d4828449038656b1d0487d7e83da07e6c2bc7d4cec2a8a45de68b81d371df.png" />
+<hr/>
+<h3 class="rubric" id="sistema-metro">🚇 Sistema: METRO</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>34</th>
+      <td>Cuauhtémoc</td>
+      <td>32.50</td>
+      <td>28.35</td>
+      <td>87.23</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Benito Juárez</td>
+      <td>26.68</td>
+      <td>21.34</td>
+      <td>79.99</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>24.39</td>
+      <td>72.07</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>Iztacalco</td>
+      <td>23.08</td>
+      <td>11.66</td>
+      <td>50.52</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Azcapotzalco</td>
+      <td>33.50</td>
+      <td>13.80</td>
+      <td>41.18</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/716190efc7704514954c2a5250b3fc905bdd6ab6443937fe6d42eb31a2013ed9.png" src="../_images/716190efc7704514954c2a5250b3fc905bdd6ab6443937fe6d42eb31a2013ed9.png" />
+<hr/>
+<h3 class="rubric" id="sistema-sub">🚇 Sistema: SUB</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>34</th>
+      <td>Cuauhtémoc</td>
+      <td>32.50</td>
+      <td>2.01</td>
+      <td>6.18</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Azcapotzalco</td>
+      <td>33.50</td>
+      <td>2.01</td>
+      <td>5.99</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>Xochimilco</td>
+      <td>114.03</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Tláhuac</td>
+      <td>85.78</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/9b8704d4e694262e3cc9077adcb6bbf8d088b722632891e563446bac244abf36.png" src="../_images/9b8704d4e694262e3cc9077adcb6bbf8d088b722632891e563446bac244abf36.png" />
+<hr/>
+<h3 class="rubric" id="sistema-cbb">🚇 Sistema: CBB</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>41</th>
+      <td>Gustavo A. Madero</td>
+      <td>87.84</td>
+      <td>11.31</td>
+      <td>12.88</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>Miguel Hidalgo</td>
+      <td>46.39</td>
+      <td>5.50</td>
+      <td>11.85</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>Iztapalapa</td>
+      <td>113.07</td>
+      <td>12.74</td>
+      <td>11.27</td>
+    </tr>
+    <tr>
+      <th>140</th>
+      <td>Álvaro Obregón</td>
+      <td>95.82</td>
+      <td>4.38</td>
+      <td>4.57</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/1ba88ed9442ced0a07349718d7afeda891ca1559e28ca636708d5aa9ea303aef.png" src="../_images/1ba88ed9442ced0a07349718d7afeda891ca1559e28ca636708d5aa9ea303aef.png" />
+<hr/>
+<h3 class="rubric" id="sistema-mexicable">🚇 Sistema: MEXICABLE</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>41</th>
+      <td>Gustavo A. Madero</td>
+      <td>87.84</td>
+      <td>2.8</td>
+      <td>3.19</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>0.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>Xochimilco</td>
+      <td>114.03</td>
+      <td>0.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Tláhuac</td>
+      <td>85.78</td>
+      <td>0.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Tlalpan</td>
+      <td>314.25</td>
+      <td>0.0</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/136cf1b77605651d88b7c1c4c80f361fd5cabb9a8d6eda0fd31bd16a2187f4df.png" src="../_images/136cf1b77605651d88b7c1c4c80f361fd5cabb9a8d6eda0fd31bd16a2187f4df.png" />
+<hr/>
+<h3 class="rubric" id="sistema-tl">🚇 Sistema: TL</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>31</th>
+      <td>Coyoacán</td>
+      <td>53.88</td>
+      <td>9.31</td>
+      <td>17.28</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>Xochimilco</td>
+      <td>114.03</td>
+      <td>6.82</td>
+      <td>5.98</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Tlalpan</td>
+      <td>314.25</td>
+      <td>4.07</td>
+      <td>1.30</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Tláhuac</td>
+      <td>85.78</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/e125cc4c5ac6c92cf6c178c0bb9e3791d1384037dead1e45d2ec22e1b180833c.png" src="../_images/e125cc4c5ac6c92cf6c178c0bb9e3791d1384037dead1e45d2ec22e1b180833c.png" />
+<hr/>
+<h3 class="rubric" id="sistema-interurbano">🚇 Sistema: INTERURBANO</h3>
+<p><strong>Top 5 Alcaldías (CDMX) con mayor cobertura</strong></p>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Demarcacion</th>
+      <th>Area_Total_km2</th>
+      <th>Area_Cubierta_km2</th>
+      <th>Cobertura_Porcentaje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>33</th>
+      <td>Cuajimalpa de Morelos</td>
+      <td>71.10</td>
+      <td>1.59</td>
+      <td>2.23</td>
+    </tr>
+    <tr>
+      <th>140</th>
+      <td>Álvaro Obregón</td>
+      <td>95.82</td>
+      <td>0.42</td>
+      <td>0.44</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Venustiano Carranza</td>
+      <td>33.84</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>Xochimilco</td>
+      <td>114.03</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>Tláhuac</td>
+      <td>85.78</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/dbd9dbd6f844fff5ead2d3b5d45117c2f38775b91f3ac08faf113e63c35ac23e.png" src="../_images/dbd9dbd6f844fff5ead2d3b5d45117c2f38775b91f3ac08faf113e63c35ac23e.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="NOTES/impedance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_Fuerza_capilar.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-teorica">1. Justificación Teórica</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hernán Galileo Cabrera Garibaldi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

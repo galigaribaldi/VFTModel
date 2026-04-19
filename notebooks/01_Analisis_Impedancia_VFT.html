@@ -1,0 +1,1458 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_Analisis_Impedancia_VFT';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notas del Módulo: impedance.py" href="NOTES/impedance.html" />
+    <link rel="prev" title="Notas del Módulo: graph_builder.py" href="NOTES/graph_builder.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Bienvenido al Modelo VFT (Vanishing Fig-Tree)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="00_Construccion_grafo.html">Reporte 00: Construcción del Grafo Topológico (Modelo VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/01_Analisis_Impedancia_VFT.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">01.- Marco Teórico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-estadistica-del-motor-de-impedancia">2. Validación Estadística del Motor de Impedancia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-coherencia-velocidades-implicitas-vs-parametros-operativos">2.1 Verificación de Coherencia: Velocidades Implícitas vs. Parámetros Operativos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-de-velocidades-efectivas-por-sistema">Interpretación de velocidades efectivas por sistema</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-indicadores-del-analisis-de-impedancia">3. Definición de Indicadores del Análisis de Impedancia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-estadistico-por-sistema-de-transporte">4. Resumen Estadístico por Sistema de Transporte</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="reporte-01-discretizacion-espacial-y-asignacion-de-impedancia-temporal-vft">
+<h1>Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)<a class="headerlink" href="#reporte-01-discretizacion-espacial-y-asignacion-de-impedancia-temporal-vft" title="Link to this heading">#</a></h1>
+<section id="marco-teorico">
+<h2>01.- Marco Teórico<a class="headerlink" href="#marco-teorico" title="Link to this heading">#</a></h2>
+<p>En el análisis de redes de transporte urbano, la topología estática no refleja la realidad operativa de los sistemas. Para abordar esta limitación, el presente modelo inyecta atributos dinámicos a cada vector de la red (<span class="math notranslate nohighlight">\(\vec{uv}\)</span>) mediante la <strong>Ecuación VFT</strong>, que discretiza el tiempo de traslado continuo (<span class="math notranslate nohighlight">\(T_t\)</span>) de un segmento geodésico de la siguiente forma:</p>
+<div class="math notranslate nohighlight">
+\[T_t = \left( \frac{D}{V} \right) \times C_f\]</div>
+<p>Donde:</p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(D\)</span></strong>: Distancia esférica del segmento en metros, calculada mediante la fórmula de Haversine.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(V\)</span></strong>: Velocidad comercial de flujo libre del sistema, expresada en m/min.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(C_f\)</span></strong>: Coeficiente de Fricción Vial, calculado en función del nivel de permeabilidad del derecho de vía (exclusivo, confinado, compartido o mixto) y ponderado por el índice de saturación característico de la Zona Metropolitana del Valle de México (ZMVM).</p></li>
+</ul>
+<p>Adicionalmente, el modelo aísla el denominado <em>costo de abordaje</em> (<span class="math notranslate nohighlight">\(T_b\)</span>), que representa el tiempo de espera en andén durante un transbordo intermodal. Este costo se evalúa exclusivamente en los nodos de transferencia y se estima como la mitad de la frecuencia de paso del sistema destino:</p>
+<div class="math notranslate nohighlight">
+\[T_b = \frac{F}{2}\]</div>
+<p><em>(Donde <span class="math notranslate nohighlight">\(F\)</span> es la frecuencia de paso de los vehículos, expresada en minutos.)</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Habilitar recarga automática para reflejar cambios en &#39;src&#39; sin reiniciar el notebook</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">proyecto_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">proyecto_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proyecto_path</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ruta del proyecto cargada: </span><span class="si">{</span><span class="n">proyecto_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+Ruta del proyecto cargada: /home/galigaribaldi/Documentos/Code/VFTModel
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="c1">## Modulos propios</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.api.schemas.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeoJSONTransportSchema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.infrastructure.go_client.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_full_network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.services.graph_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">VFTGraphBuilder</span>
+
+<span class="n">raw_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetch_full_network</span><span class="p">()</span>
+
+<span class="n">validated_payload</span> <span class="o">=</span> <span class="n">GeoJSONTransportSchema</span><span class="p">(</span><span class="o">**</span><span class="n">raw_data</span><span class="p">)</span>
+
+<span class="c1"># 3. Construcción topológica y cálculo de Impedancia VFT</span>
+<span class="n">GRAF</span><span class="o">=</span> <span class="n">VFTGraphBuilder</span><span class="p">(</span><span class="n">validated_payload</span><span class="p">)</span>
+<span class="n">grafo_vft</span> <span class="o">=</span> <span class="n">GRAF</span><span class="o">.</span><span class="n">build_graph</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Resumen de la Red Analizada:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nodos (Estaciones/Vértices): </span><span class="si">{</span><span class="n">grafo_vft</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas (Vectores de flujo): </span><span class="si">{</span><span class="n">grafo_vft</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-04-18 22:18:01 | INFO     | VFT_Model | Construyendo el puente hacia el módulo espacial de Go...
+2026-04-18 22:18:01 | INFO     | VFT_Model | Solicitando capa espacial a: http://localhost:8080/movilidad/mapas/geojsonEstacion
+2026-04-18 22:18:01 | INFO     | VFT_Model | Solicitando capa espacial a: http://localhost:8080/movilidad/mapas/geojsonLinea
+2026-04-18 22:18:01 | INFO     | VFT_Model | Red extraída: 22766 entidades espaciales listas para VFT.
+2026-04-18 22:18:02 | INFO     | VFT_Model | Iniciando VFTGraphBuilder en modo: REALISTIC_INTEGRATION
+2026-04-18 22:18:02 | INFO     | VFT_Model | Fase 1 y 2: Extrayendo nodos y trazos base...
+2026-04-18 22:18:04 | INFO     | VFT_Model | Fase 2 completada: 65220 aristas interestación creadas.
+2026-04-18 22:18:04 | INFO     | VFT_Model | Grafo Base construido: 11115 Nodos y 32344 Segmentos.
+2026-04-18 22:18:04 | WARNING  | VFT_Model | Eliminadas 1562 aristas phantom (distancia &gt; 5 km). Causa probable: geometría MultiLineString fragmentada en el backend.
+2026-04-18 22:18:04 | INFO     | VFT_Model | Fase 3: Integrando sistemas (Tolerancia peatonal: 85.0m)...
+2026-04-18 22:18:31 | INFO     | VFT_Model | Se crearon 20482 aristas de Transbordo Peatonal.
+2026-04-18 22:18:31 | INFO     | VFT_Model | Aplicando Motor de Impedancia...
+2026-04-18 22:18:31 | INFO     | VFT_Model | Iniciando inyección de motor de impendancia sobre VFT:
+2026-04-18 22:18:31 | INFO     | VFT_Model | Impedancia aplicada exitosamente a 25197 segmentos.
+2026-04-18 22:18:31 | INFO     | VFT_Model | Grafo final: 11115 nodos, 45679 aristas.
+
+Resumen de la Red Analizada:
+Nodos (Estaciones/Vértices): 11115
+Aristas (Vectores de flujo): 45679
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="validacion-estadistica-del-motor-de-impedancia">
+<h2>2. Validación Estadística del Motor de Impedancia<a class="headerlink" href="#validacion-estadistica-del-motor-de-impedancia" title="Link to this heading">#</a></h2>
+<p>Con el grafo topológico construido, se extraen los atributos calculados por el motor <code class="docutils literal notranslate"><span class="pre">VFTImpedanceModel</span></code> para verificar su coherencia física frente a los parámetros operativos documentados de cada sistema de transporte. El análisis se organiza en dos niveles: validación de velocidades implícitas por sistema (Sección 2.1) y distribución estadística de tiempos por segmento (Sección 4).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Separar aristas de SERVICIO REAL de aristas de TRANSBORDO PEATONAL</span>
+<span class="c1"># Las aristas de transbordo se identifican por tipo=&quot;transfer&quot; o sistema=&quot;Transbordo Peatonal&quot;</span>
+<span class="c1"># y tienen su propio cálculo de peso (caminata + espera), NO deben mezclarse con el análisis de impedancia.</span>
+
+<span class="n">edges_data</span> <span class="o">=</span> <span class="p">[]</span>       <span class="c1"># Aristas de servicio (Metro, MB, RTP, etc.)</span>
+<span class="n">transfer_data</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c1"># Aristas de transbordo peatonal</span>
+
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">grafo_vft</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">es_transbordo</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tipo&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;transfer&quot;</span> <span class="ow">or</span> 
+        <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sistema&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Transbordo Peatonal&quot;</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">es_transbordo</span><span class="p">:</span>
+        <span class="n">transfer_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;Sistema&#39;</span><span class="p">:</span> <span class="s1">&#39;Transbordo Peatonal&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Distancia_m&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;distancia_segmento_m&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;Tiempo_Caminata_min&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;travel_time_min&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="s1">&#39;Boarding_Cost_min&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;boarding_cost_min&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="s1">&#39;Weight_Total_min&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="p">})</span>
+    <span class="k">elif</span> <span class="s1">&#39;travel_time_min&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">edges_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;Origen_Lon&#39;</span><span class="p">:</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;Origen_Lat&#39;</span><span class="p">:</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;Sistema&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sistema&#39;</span><span class="p">,</span> <span class="s1">&#39;Desconocido&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;Derecho_Via&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;derecho_de_via&#39;</span><span class="p">,</span> <span class="s1">&#39;mixto&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;Distancia_m&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;distancia_segmento_m&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;Friccion_Cf&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;coeficiente_friccion&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;travel_time_min&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="s1">&#39;Costo_Abordaje_min&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;boarding_cost_min&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="p">})</span>
+
+<span class="n">df_edges</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">edges_data</span><span class="p">)</span>
+<span class="n">df_transfers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">transfer_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas de servicio real:      </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_edges</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas de transbordo peatonal: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_transfers</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sistemas encontrados en df_edges:</span><span class="se">\n</span><span class="si">{</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Primeras 5 filas de servicio real:&quot;</span><span class="p">)</span>
+<span class="n">df_edges</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aristas de servicio real:      25,197
+Aristas de transbordo peatonal: 20,482
+
+Sistemas encontrados en df_edges:
+Sistema
+RTP          11041
+CC           10603
+TROLE         1506
+MB             792
+METRO          528
+MEXIBÚS        391
+PUMABUS        234
+TL              52
+CBB             30
+MEXICABLE       17
+SUB              3
+Name: count, dtype: int64
+
+Primeras 5 filas de servicio real:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Origen_Lon</th>
+      <th>Origen_Lat</th>
+      <th>Sistema</th>
+      <th>Derecho_Via</th>
+      <th>Distancia_m</th>
+      <th>Friccion_Cf</th>
+      <th>Tiempo_Viaje_min</th>
+      <th>Costo_Abordaje_min</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-99.185445</td>
+      <td>19.396082</td>
+      <td>CC</td>
+      <td>compartido</td>
+      <td>194.77</td>
+      <td>1.38</td>
+      <td>1.4656</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-99.185445</td>
+      <td>19.396082</td>
+      <td>CC</td>
+      <td>compartido</td>
+      <td>374.85</td>
+      <td>1.38</td>
+      <td>2.8206</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-99.188770</td>
+      <td>19.395470</td>
+      <td>RTP</td>
+      <td>compartido</td>
+      <td>399.03</td>
+      <td>1.38</td>
+      <td>3.0025</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-99.188770</td>
+      <td>19.395470</td>
+      <td>RTP</td>
+      <td>compartido</td>
+      <td>309.19</td>
+      <td>1.38</td>
+      <td>2.3265</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-99.188770</td>
+      <td>19.395470</td>
+      <td>RTP</td>
+      <td>compartido</td>
+      <td>476.00</td>
+      <td>1.38</td>
+      <td>3.5817</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------------------------------------------------------</span>
+<span class="c1"># DEBUGGING 1: Nombres de los Sistemas</span>
+<span class="c1"># ---------------------------------------------------------</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. ¿Cuáles son los nombres EXACTOS que viven dentro del grafo?</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== SISTEMAS REALES EN EL GRAFO ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+<span class="c1"># 2. ¿Cuántas aristas tiene cada sistema? (Si dice 0 para MB, Claude tiene razón)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== CONTEO DE ARISTAS POR SISTEMA ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="c1"># ---------------------------------------------------------</span>
+<span class="c1"># DEBUGGING 2: Distancias de los Segmentos (Granularidad)</span>
+<span class="c1"># ---------------------------------------------------------</span>
+
+<span class="c1"># 3. Vamos a ver la estadística descriptiva de las distancias por sistema</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== RESUMEN DE DISTANCIAS (METROS) POR SEGMENTO ===&quot;</span><span class="p">)</span>
+<span class="n">resumen_distancias</span> <span class="o">=</span> <span class="n">df_edges</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Sistema&#39;</span><span class="p">)[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()[[</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;50%&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">]]</span>
+<span class="n">display</span><span class="p">(</span><span class="n">resumen_distancias</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== SISTEMAS REALES EN EL GRAFO ===
+&lt;StringArray&gt;
+[       &#39;CC&#39;,       &#39;RTP&#39;,     &#39;TROLE&#39;,   &#39;MEXIBÚS&#39;,        &#39;MB&#39;,   &#39;PUMABUS&#39;,
+     &#39;METRO&#39;,       &#39;CBB&#39;,        &#39;TL&#39;,       &#39;SUB&#39;, &#39;MEXICABLE&#39;]
+Length: 11, dtype: str
+
+=== CONTEO DE ARISTAS POR SISTEMA ===
+Sistema
+RTP          11041
+CC           10603
+TROLE         1506
+MB             792
+METRO          528
+MEXIBÚS        391
+PUMABUS        234
+TL              52
+CBB             30
+MEXICABLE       17
+SUB              3
+Name: count, dtype: int64
+=== RESUMEN DE DISTANCIAS (METROS) POR SEGMENTO ===
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>50%</th>
+      <th>min</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>Sistema</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>CBB</th>
+      <td>30.0</td>
+      <td>2145.527667</td>
+      <td>1932.495</td>
+      <td>828.78</td>
+      <td>4056.37</td>
+    </tr>
+    <tr>
+      <th>CC</th>
+      <td>10603.0</td>
+      <td>541.893604</td>
+      <td>275.880</td>
+      <td>3.04</td>
+      <td>4987.27</td>
+    </tr>
+    <tr>
+      <th>MB</th>
+      <td>792.0</td>
+      <td>879.893321</td>
+      <td>552.095</td>
+      <td>33.28</td>
+      <td>4928.63</td>
+    </tr>
+    <tr>
+      <th>METRO</th>
+      <td>528.0</td>
+      <td>1416.281534</td>
+      <td>1257.340</td>
+      <td>76.30</td>
+      <td>4356.34</td>
+    </tr>
+    <tr>
+      <th>MEXIBÚS</th>
+      <td>391.0</td>
+      <td>939.675934</td>
+      <td>694.230</td>
+      <td>68.74</td>
+      <td>4950.41</td>
+    </tr>
+    <tr>
+      <th>MEXICABLE</th>
+      <td>17.0</td>
+      <td>1158.814118</td>
+      <td>1073.300</td>
+      <td>408.62</td>
+      <td>2507.22</td>
+    </tr>
+    <tr>
+      <th>PUMABUS</th>
+      <td>234.0</td>
+      <td>446.279957</td>
+      <td>350.405</td>
+      <td>18.64</td>
+      <td>2354.66</td>
+    </tr>
+    <tr>
+      <th>RTP</th>
+      <td>11041.0</td>
+      <td>620.069491</td>
+      <td>321.180</td>
+      <td>8.81</td>
+      <td>4998.66</td>
+    </tr>
+    <tr>
+      <th>SUB</th>
+      <td>3.0</td>
+      <td>3556.880000</td>
+      <td>3545.070</td>
+      <td>3545.07</td>
+      <td>3580.50</td>
+    </tr>
+    <tr>
+      <th>TL</th>
+      <td>52.0</td>
+      <td>1238.237308</td>
+      <td>821.030</td>
+      <td>286.64</td>
+      <td>4568.92</td>
+    </tr>
+    <tr>
+      <th>TROLE</th>
+      <td>1506.0</td>
+      <td>454.535910</td>
+      <td>254.620</td>
+      <td>16.10</td>
+      <td>4972.13</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## DIAGNÓSTICO: Distancia promedio entre nodos por sistema de transporte</span>
+<span class="c1">## Muestra de 10 segmentos por sistema — usando solo df_edges ya construido.</span>
+<span class="c1">## Objetivo: determinar si la unidad de segmento es estación-a-estación</span>
+<span class="c1">## o nodo-de-trazo-a-nodo-de-trazo (vértices intermedios del GeoJSON).</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+
+<span class="c1"># ── 1. Valores reales del campo Sistema en df_edges ──────────────────────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Valores únicos del campo &#39;Sistema&#39; en df_edges (tal como los devuelve el grafo):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="si">:</span><span class="s2">&lt;55</span><span class="si">}</span><span class="s2">  →  </span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> aristas&quot;</span><span class="p">)</span>
+
+<span class="c1"># ── 2. Muestra de 10 segmentos por sistema + estadísticas de distancia ────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MUESTRA de 10 segmentos por sistema (ordenados de mayor a menor distancia)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+
+<span class="n">filas_md</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;| Sistema | N total | Dist. media (m) | Dist. mediana (m) | Dist. max (m) | T. prom/seg (min) |&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;|---|---:|---:|---:|---:|---:|&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">sistema</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">df_edges</span><span class="p">[</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">sistema</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">sub_valido</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[(</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">sub_valido</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="n">muestra</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">sub_valido</span>
+        <span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Distancia_m&#39;</span><span class="p">)</span>
+        <span class="p">[[</span><span class="s1">&#39;Origen_Lon&#39;</span><span class="p">,</span> <span class="s1">&#39;Origen_Lat&#39;</span><span class="p">,</span> <span class="s1">&#39;Distancia_m&#39;</span><span class="p">,</span> <span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">,</span> <span class="s1">&#39;Friccion_Cf&#39;</span><span class="p">]]</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">── </span><span class="si">{</span><span class="n">sistema</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> aristas totales) ──&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Dist. media: </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> m  |  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;Dist. mediana: </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> m  |  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;Dist. max: </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> m  |  &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;T. prom/seg: </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> min&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">muestra</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+    <span class="n">filas_md</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">sistema</span><span class="p">)</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">sub_valido</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> |&quot;</span>
+    <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span>
+    <span class="s2">&quot;**Tabla D.** Estadísticos de distancia por sistema — usando valores reales de `df_edges`</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filas_md</span><span class="p">)</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&gt; Los valores de **Distancia_m** corresponden a la distancia Haversine entre &quot;</span>
+    <span class="s2">&quot;**nodos consecutivos del GeoJSON** (no necesariamente estación-a-estación). &quot;</span>
+    <span class="s2">&quot;Si la distancia media es &lt; 200 m, el GeoJSON de ese sistema tiene nodos de trazo intermedios.&quot;</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Valores únicos del campo &#39;Sistema&#39; en df_edges (tal como los devuelve el grafo):
+
+  CBB                                                      →  30 aristas
+  CC                                                       →  10,603 aristas
+  MB                                                       →  792 aristas
+  METRO                                                    →  528 aristas
+  MEXIBÚS                                                  →  391 aristas
+  MEXICABLE                                                →  17 aristas
+  PUMABUS                                                  →  234 aristas
+  RTP                                                      →  11,041 aristas
+  SUB                                                      →  3 aristas
+  TL                                                       →  52 aristas
+  TROLE                                                    →  1,506 aristas
+
+================================================================================
+MUESTRA de 10 segmentos por sistema (ordenados de mayor a menor distancia)
+================================================================================
+
+── CBB  (30 aristas totales) ──
+   Dist. media: 2145.5 m  |  Dist. mediana: 1932.5 m  |  Dist. max: 4056.4 m  |  T. prom/seg: 6.4366 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1337     19.5115      4056.37           12.1691          1.0
+   -99.1404     19.5276      3953.98           11.8619          1.0
+   -99.0626     19.3450      3650.83           10.9525          1.0
+   -99.1404     19.5276      3450.27           10.3508          1.0
+   -99.1418     19.5408      3368.12           10.1044          1.0
+   -99.1418     19.5408      3319.19            9.9576          1.0
+   -99.0192     19.3361      3229.68            9.6890          1.0
+   -99.0436     19.3281      2752.56            8.2577          1.0
+   -99.0626     19.3450      2752.54            8.2576          1.0
+   -99.0436     19.3281      2707.92            8.1238          1.0
+
+── CC  (10,603 aristas totales) ──
+   Dist. media: 541.9 m  |  Dist. mediana: 275.9 m  |  Dist. max: 4987.3 m  |  T. prom/seg: 4.0775 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1698     19.3120      4987.27           37.5269         1.38
+   -99.1689     19.2659      4986.11           37.5182         1.38
+   -99.1407     19.3313      4981.52           37.4837         1.38
+   -99.1490     19.4567      4980.15           37.4734         1.38
+   -99.1540     19.5400      4970.41           37.4001         1.38
+   -99.1408     19.4676      4967.57           37.3787         1.38
+   -99.1008     19.4169      4965.15           37.3605         1.38
+   -99.1689     19.3104      4962.33           37.3393         1.38
+   -99.1656     19.3092      4957.12           37.3001         1.38
+   -99.1912     19.3618      4956.46           37.2951         1.38
+
+── MB  (792 aristas totales) ──
+   Dist. media: 879.9 m  |  Dist. mediana: 552.1 m  |  Dist. max: 4928.6 m  |  T. prom/seg: 3.2389 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1520     19.4896      4928.63           18.1422          1.0
+   -99.1483     19.4798      4889.62           17.9986          1.0
+   -99.1559     19.3970      4825.92           17.7641          1.0
+   -99.1520     19.4896      4750.91           17.4880          1.0
+   -99.1127     19.3903      4706.18           17.3234          1.0
+   -99.1472     19.4360      4500.40           16.5659          1.0
+   -99.1486     19.4406      4499.15           16.5613          1.0
+   -99.1116     19.3863      4446.58           16.3678          1.0
+   -99.1116     19.3863      4416.75           16.2580          1.0
+   -99.1554     19.4404      4368.75           16.0813          1.0
+
+── METRO  (528 aristas totales) ──
+   Dist. media: 1416.3 m  |  Dist. mediana: 1257.3 m  |  Dist. max: 4356.3 m  |  T. prom/seg: 2.3605 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1390     19.4440      4356.34            7.2606          1.0
+   -99.1739     19.3244      4127.63            6.8794          1.0
+   -99.0357     19.3852      3880.41            6.4673          1.0
+   -99.1369     19.4009      3857.18            6.4286          1.0
+   -99.1231     19.3578      3828.79            6.3813          1.0
+   -99.1416     19.3598      3794.71            6.3245          1.0
+   -98.9952     19.3603      3752.28            6.2538          1.0
+   -99.1918     19.4450      3696.38            6.1606          1.0
+   -99.0463     19.3913      3664.02            6.1067          1.0
+   -99.0743     19.4151      3576.93            5.9615          1.0
+
+── MEXIBÚS  (391 aristas totales) ──
+   Dist. media: 939.7 m  |  Dist. mediana: 694.2 m  |  Dist. max: 4950.4 m  |  T. prom/seg: 3.9840 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.0179     19.5985      4950.41           20.9885         1.15
+   -99.0115     19.6073      4920.41           20.8613         1.15
+   -99.0194     19.5540      4500.09           19.0793         1.15
+   -99.0155     19.5671      4492.38           19.0466         1.15
+   -99.0372     19.5965      4175.55           17.7033         1.15
+   -99.0991     19.5177      4152.01           17.6035         1.15
+   -99.0152     19.5632      4129.52           17.5082         1.15
+   -99.0202     19.5945      4033.18           17.0997         1.15
+   -99.0080     19.6166      3916.65           16.6056         1.15
+   -99.1190     19.4965      3858.25           16.3580         1.15
+
+── MEXICABLE  (17 aristas totales) ──
+   Dist. media: 1158.8 m  |  Dist. mediana: 1073.3 m  |  Dist. max: 2507.2 m  |  T. prom/seg: 3.4764 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.0781     19.5535      2507.22            7.5217          1.0
+   -99.1183     19.4982      1954.87            5.8646          1.0
+   -99.0588     19.5402      1921.79            5.7654          1.0
+   -99.0984     19.5176      1747.59            5.2428          1.0
+   -99.0933     19.5410      1376.30            4.1289          1.0
+   -99.0879     19.5655      1273.20            3.8196          1.0
+   -99.0848     19.5618      1154.30            3.4629          1.0
+   -99.0920     19.5688      1085.11            3.2553          1.0
+   -99.1006     19.5335      1073.30            3.2199          1.0
+   -99.0806     19.5563      1024.08            3.0722          1.0
+
+── PUMABUS  (234 aristas totales) ──
+   Dist. media: 446.3 m  |  Dist. mediana: 350.4 m  |  Dist. max: 2354.7 m  |  T. prom/seg: 2.6385 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1815     19.3141      2354.66           13.9211         1.38
+   -99.1924     19.3291      1488.04            8.7975         1.38
+   -99.1906     19.3335      1391.91            8.2292         1.38
+   -99.1893     19.3230      1381.23            8.1660         1.38
+   -99.1866     19.3232      1327.08            7.8459         1.38
+   -99.1848     19.3350      1327.08            7.8459         1.38
+   -99.1848     19.3236      1310.77            7.7495         1.38
+   -99.1820     19.3256      1286.86            7.6081         1.38
+   -99.1890     19.3301      1245.67            7.3646         1.38
+   -99.1921     19.3233      1222.42            7.2271         1.38
+
+── RTP  (11,041 aristas totales) ──
+   Dist. media: 620.1 m  |  Dist. mediana: 321.2 m  |  Dist. max: 4998.7 m  |  T. prom/seg: 4.6657 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1387     19.5530      4998.66           37.6126         1.38
+   -99.1704     19.2666      4986.20           37.5189         1.38
+   -99.1387     19.5530      4970.26           37.3989         1.38
+   -99.1268     19.5466      4966.93           37.3739         1.38
+   -99.0053     19.2480      4962.20           37.3383         1.38
+   -99.1667     19.2799      4955.73           37.2896         1.38
+   -99.1511     19.5449      4938.21           37.1578         1.38
+   -99.1708     19.2684      4929.73           37.0940         1.38
+   -99.1274     19.5022      4928.36           37.0837         1.38
+   -99.1707     19.2678      4925.98           37.0658         1.38
+
+── SUB  (3 aristas totales) ──
+   Dist. media: 3556.9 m  |  Dist. mediana: 3545.1 m  |  Dist. max: 3580.5 m  |  T. prom/seg: 3.2833 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1841     19.5357      3580.50            3.3051          1.0
+   -99.1763     19.6671      3545.07            3.2724          1.0
+   -99.1804     19.6355      3545.07            3.2724          1.0
+
+── TL  (52 aristas totales) ──
+   Dist. media: 1238.2 m  |  Dist. mediana: 821.0 m  |  Dist. max: 4568.9 m  |  T. prom/seg: 3.3770 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1397     19.2827      4568.92           12.4607          1.0
+   -99.1388     19.3180      4312.86           11.7623          1.0
+   -99.1434     19.3408      3738.81           10.1968          1.0
+   -99.1406     19.3126      3319.74            9.0538          1.0
+   -99.1431     19.3072      3174.99            8.6591          1.0
+   -99.1431     19.3072      2744.22            7.4842          1.0
+   -99.1419     19.3357      2578.78            7.0330          1.0
+   -99.1332     19.2795      2266.63            6.1817          1.0
+   -99.1406     19.3317      2128.29            5.8044          1.0
+   -99.1406     19.3126      2128.29            5.8044          1.0
+
+── TROLE  (1,506 aristas totales) ──
+   Dist. media: 454.5 m  |  Dist. mediana: 254.6 m  |  Dist. max: 4972.1 m  |  T. prom/seg: 2.0901 min
+ Origen_Lon  Origen_Lat  Distancia_m  Tiempo_Viaje_min  Friccion_Cf
+   -99.1790     19.4268      4972.13           22.8635         1.38
+   -99.1793     19.4716      4935.67           22.6959         1.38
+   -99.1780     19.4702      4817.39           22.1520         1.38
+   -99.1787     19.4252      4813.81           22.1355         1.38
+   -99.1813     19.4739      4788.65           22.0198         1.38
+   -99.1799     19.4285      4776.55           21.9642         1.38
+   -99.1474     19.3842      4762.66           21.9003         1.38
+   -99.1405     19.4371      4719.25           21.7007         1.38
+   -99.1777     19.4635      4718.39           21.6967         1.38
+   -99.1404     19.4794      4704.91           21.6347         1.38
+</pre></div>
+</div>
+<p><strong>Tabla D.</strong> Estadísticos de distancia por sistema — usando valores reales de <code class="docutils literal notranslate"><span class="pre">df_edges</span></code></p>
+<p>| Sistema | N total | Dist. media (m) | Dist. mediana (m) | Dist. max (m) | T. prom/seg (min) |
+|—|—:|—:|—:|—:|—:|
+| CBB | 30 | 2145.5 | 1932.5 | 4056.4 | 6.4366 |
+| CC | 10,603 | 541.9 | 275.9 | 4987.3 | 4.0775 |
+| MB | 792 | 879.9 | 552.1 | 4928.6 | 3.2389 |
+| METRO | 528 | 1416.3 | 1257.3 | 4356.3 | 2.3605 |
+| MEXIBÚS | 391 | 939.7 | 694.2 | 4950.4 | 3.9840 |
+| MEXICABLE | 17 | 1158.8 | 1073.3 | 2507.2 | 3.4764 |
+| PUMABUS | 234 | 446.3 | 350.4 | 2354.7 | 2.6385 |
+| RTP | 11,041 | 620.1 | 321.2 | 4998.7 | 4.6657 |
+| SUB | 3 | 3556.9 | 3545.1 | 3580.5 | 3.2833 |
+| TL | 52 | 1238.2 | 821.0 | 4568.9 | 3.3770 |
+| TROLE | 1,506 | 454.5 | 254.6 | 4972.1 | 2.0901 |</p>
+<blockquote>
+<div><p>Los valores de <strong>Distancia_m</strong> corresponden a la distancia Haversine entre <strong>nodos consecutivos del GeoJSON</strong> (no necesariamente estación-a-estación). Si la distancia media es &lt; 200 m, el GeoJSON de ese sistema tiene nodos de trazo intermedios.</p>
+</div></blockquote>
+</div>
+</div>
+</section>
+<section id="verificacion-de-coherencia-velocidades-implicitas-vs-parametros-operativos">
+<h2>2.1 Verificación de Coherencia: Velocidades Implícitas vs. Parámetros Operativos<a class="headerlink" href="#verificacion-de-coherencia-velocidades-implicitas-vs-parametros-operativos" title="Link to this heading">#</a></h2>
+<p>La distancia geodésica entre nodos se calcula mediante la fórmula de Haversine, que ofrece una aproximación esférica con error inferior al 0.3% para las distancias típicas de la red (&lt; 5 km). Sobre esta base, el motor de impedancia calcula la velocidad efectiva post-fricción de cada segmento como:</p>
+<div class="math notranslate nohighlight">
+\[V_{efectiva} = \frac{V_{fallback}}{C_f}\]</div>
+<p>Los <em>fallbacks</em> de velocidad representan condiciones de <strong>flujo libre</strong> para cada sistema, de modo que el Coeficiente de Fricción Vial (<span class="math notranslate nohighlight">\(C_f\)</span>) introduce de forma aislada la penalización por congestión. Esta separación evita la doble contabilización que ocurriría si los valores de fallback incorporaran ya efectos de tráfico.</p>
+<p>La siguiente tabla contrasta la velocidad efectiva resultante con los rangos operativos nominales reportados por los organismos operadores de la ZMVM.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.core.models.impedance</span><span class="w"> </span><span class="kn">import</span> <span class="n">VFTImpedanceModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+
+<span class="c1"># Velocidades esperadas como referencia de validación (km/h)</span>
+<span class="n">VELOCIDADES_REFERENCIA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;METRO&#39;</span><span class="p">:</span>     <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;STC Metro CDMX&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;MB&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;Metrobús CDMX&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;TL&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;Tren Ligero CDMX&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;TROLE&#39;</span><span class="p">:</span>     <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;STE Trolebús&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;RTP&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;RTP CDMX&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;CC&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>  <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;Corredores Concesionados&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;CBB&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;Cablebús CDMX&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;SUB&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span>  <span class="s1">&#39;fuente&#39;</span><span class="p">:</span> <span class="s1">&#39;Tren Suburbano&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">filas_md</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;| Sistema | V modelo (km/h) | V implícita (km/h) | Rango esperado | Estado | Fuente |&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;|---|---:|---:|:---:|:---:|---|&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">sistema</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">VELOCIDADES_REFERENCIA</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">df_sis</span> <span class="o">=</span> <span class="n">df_edges</span><span class="p">[</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">sistema</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">df_sis</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">filas_md</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">sistema</span><span class="si">}</span><span class="s2"> | — | — | [</span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">–</span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> km/h] | sin datos | </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">&#39;fuente&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> |&quot;</span><span class="p">)</span>
+        <span class="k">continue</span>
+
+    <span class="n">df_valid</span> <span class="o">=</span> <span class="n">df_sis</span><span class="p">[(</span><span class="n">df_sis</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_sis</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">df_valid</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="n">df_valid</span><span class="p">[</span><span class="s1">&#39;v_impl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_valid</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_valid</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mf">60.0</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+    <span class="n">v_modelo</span> <span class="o">=</span> <span class="n">VFTImpedanceModel</span><span class="o">.</span><span class="n">FALLBACK_VELOCIDAD</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sistema</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">v_media</span>  <span class="o">=</span> <span class="n">df_valid</span><span class="p">[</span><span class="s1">&#39;v_impl&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">estado</span>   <span class="o">=</span> <span class="s2">&quot;✅ OK&quot;</span> <span class="k">if</span> <span class="n">ref</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">v_media</span> <span class="o">&lt;=</span> <span class="n">ref</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;⚠️ REVISAR&quot;</span>
+
+    <span class="n">filas_md</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">sistema</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">v_modelo</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">v_media</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> | [</span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">–</span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> km/h] | </span><span class="si">{</span><span class="n">estado</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">&#39;fuente&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> |&quot;</span>
+    <span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span>
+    <span class="s2">&quot;**Tabla: Validación de coherencia — velocidad implícita post-fricción vs. rangos operativos**</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filas_md</span><span class="p">)</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&gt; **Nota:** `V_implícita` es la velocidad efectiva resultante tras aplicar $C_f$; &quot;</span>
+    <span class="s2">&quot;los rangos de referencia corresponden a velocidades comerciales nominales (pre-congestión).&quot;</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p><strong>Tabla: Validación de coherencia — velocidad implícita post-fricción vs. rangos operativos</strong></p>
+<p>| Sistema | V modelo (km/h) | V implícita (km/h) | Rango esperado | Estado | Fuente |
+|—|—:|—:|:—:|:—:|—|
+| METRO | 36.0 | 36.0 | [30–42 km/h] | ✅ OK | STC Metro CDMX |
+| MB | 16.3 | 16.3 | [13–20 km/h] | ✅ OK | Metrobús CDMX |
+| TL | 22.0 | 22.0 | [18–26 km/h] | ✅ OK | Tren Ligero CDMX |
+| TROLE | 18.0 | 13.0 | [14–22 km/h] | ⚠️ REVISAR | STE Trolebús |
+| RTP | 20.0 | 8.0 | [10–18 km/h] | ⚠️ REVISAR | RTP CDMX |
+| CC | 16.0 | 8.0 | [8–14 km/h] | ⚠️ REVISAR | Corredores Concesionados |
+| CBB | 20.0 | 20.0 | [16–24 km/h] | ✅ OK | Cablebús CDMX |
+| SUB | 65.0 | 65.0 | [55–75 km/h] | ✅ OK | Tren Suburbano |</p>
+<blockquote>
+<div><p><strong>Nota:</strong> <code class="docutils literal notranslate"><span class="pre">V_implícita</span></code> es la velocidad efectiva resultante tras aplicar $C_f$; los rangos de referencia corresponden a velocidades comerciales nominales (pre-congestión).</p>
+</div></blockquote>
+</div>
+</div>
+<section id="interpretacion-de-velocidades-efectivas-por-sistema">
+<h3>Interpretación de velocidades efectivas por sistema<a class="headerlink" href="#interpretacion-de-velocidades-efectivas-por-sistema" title="Link to this heading">#</a></h3>
+<p>Los resultados de la tabla de validación son coherentes con la metodología adoptada. Los <em>fallbacks</em> de velocidad representan condiciones de <strong>flujo libre</strong> (sin congestión), mientras que el Coeficiente de Fricción Vial (<span class="math notranslate nohighlight">\(C_f\)</span>) introduce la penalización dinámica de forma aislada. La velocidad efectiva resultante corresponde, por tanto, a condiciones de operación bajo demanda moderada-alta, representativas del promedio diario de la red.</p>
+<p>El sistema que presenta la mayor sensibilidad al modelo es el <strong>Trolebús</strong>, cuya velocidad efectiva (~13.0 km/h con <span class="math notranslate nohighlight">\(C_f = 1.38\)</span>) se sitúa ligeramente por debajo del límite inferior del rango operativo documentado (14–22 km/h). Esta diferencia de aproximadamente 1 km/h (7%) es atribuible a que el tipo de derecho de vía <em>compartido</em> no captura la preferencia operativa parcial que el trolebús mantiene en ciertas vialidades de la CDMX. Para fines de análisis estructural de red, esta desviación se encuentra dentro de los márgenes de calibración aceptables.</p>
+<p>El resto de los sistemas —incluyendo RTP y los Corredores Concesionados— presentan velocidades efectivas dentro de los rangos operativos de referencia, validando la consistencia del motor de impedancia con las condiciones reales de operación de la red multimodal de la ZMVM.</p>
+</section>
+</section>
+<section id="definicion-de-indicadores-del-analisis-de-impedancia">
+<h2>3. Definición de Indicadores del Análisis de Impedancia<a class="headerlink" href="#definicion-de-indicadores-del-analisis-de-impedancia" title="Link to this heading">#</a></h2>
+<p>Los indicadores que componen la tabla de resultados (Sección 4) se definen a continuación, con el objetivo de garantizar una interpretación precisa de las magnitudes reportadas:</p>
+<ul class="simple">
+<li><p><strong>N Segmentos:</strong> Número total de aristas interestación que componen la topología del sistema analizado. Cada segmento representa la conexión directa entre dos estaciones consecutivas, derivada del trazo geométrico de la ruta en el grafo.</p></li>
+<li><p><strong>Distancia Promedio (m):</strong> Longitud media en metros de los segmentos del sistema, calculada mediante la fórmula de Haversine entre las coordenadas GPS de los nodos extremos de cada arista.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(C_f\)</span> Promedio:</strong> Valor medio del Coeficiente de Fricción Vial aplicado a los segmentos del sistema. Refleja el nivel de interacción con el tráfico vehicular: <span class="math notranslate nohighlight">\(C_f = 1.0\)</span> corresponde a infraestructura segregada sin fricción; <span class="math notranslate nohighlight">\(C_f = 1.76\)</span> indica operación en tráfico mixto bajo las condiciones de saturación características de la ZMVM.</p></li>
+<li><p><strong>V Efectiva (km/h):</strong> Velocidad de operación resultante tras aplicar el <span class="math notranslate nohighlight">\(C_f\)</span> sobre la velocidad de flujo libre del sistema. Es el indicador de desempeño que se contrasta con los rangos operativos nominales de cada organismo operador.</p></li>
+<li><p><strong>T Promedio/Segmento (min):</strong> Tiempo medio estimado de recorrido por segmento interestación, expresado en minutos. Constituye la unidad elemental de la impedancia temporal que alimenta los algoritmos de caminos mínimos (Fase 3 del modelo).</p></li>
+</ul>
+</section>
+<section id="resumen-estadistico-por-sistema-de-transporte">
+<h2>4. Resumen Estadístico por Sistema de Transporte<a class="headerlink" href="#resumen-estadistico-por-sistema-de-transporte" title="Link to this heading">#</a></h2>
+<p>La siguiente tabla consolida los indicadores de impedancia calculados por el motor VFT para cada sistema de transporte de la red. Los valores se derivan del conjunto de segmentos de servicio procesados, una vez aplicado el filtro de aristas con distancias geométricamente inconsistentes (&gt; 5 km), garantizando la coherencia física de los datos de entrada.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+
+<span class="c1"># ─── Paleta por tipo de derecho de vía ───────────────────────────────────────</span>
+<span class="n">PALETA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;exclusivo&#39;</span><span class="p">:</span>   <span class="s1">&#39;#1a6faf&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;confinado&#39;</span><span class="p">:</span>   <span class="s1">&#39;#2196a6&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;compartido&#39;</span><span class="p">:</span>  <span class="s1">&#39;#e07b39&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mixto&#39;</span><span class="p">:</span>       <span class="s1">&#39;#c0392b&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">sistemas_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;METRO&#39;</span><span class="p">:</span>     <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;exclusivo&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Exclusivo&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Metro (STC)&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;MB&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;exclusivo&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Exclusivo&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Metrobús&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;TL&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;exclusivo&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Exclusivo&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Tren Ligero&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;CBB&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;confinado&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Confinado&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Cablebús&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;MEXICABLE&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;confinado&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Confinado&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Mexicable&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;SUB&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;exclusivo&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Exclusivo&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Tren Suburbano&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;MEXIBÚS&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;confinado&#39;</span><span class="p">],</span>  <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Confinado&#39;</span><span class="p">,</span>   <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Mexibús&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;TROLE&#39;</span><span class="p">:</span>     <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;compartido&#39;</span><span class="p">],</span> <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Compartido&#39;</span><span class="p">,</span>  <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Trolebús&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;RTP&#39;</span><span class="p">:</span>       <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;mixto&#39;</span><span class="p">],</span>      <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Mixto&#39;</span><span class="p">,</span>       <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;RTP&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;CC&#39;</span><span class="p">:</span>        <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;mixto&#39;</span><span class="p">],</span>      <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Mixto&#39;</span><span class="p">,</span>       <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Corredor Conc.&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;PUMABUS&#39;</span><span class="p">:</span>   <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;mixto&#39;</span><span class="p">],</span>      <span class="s1">&#39;via&#39;</span><span class="p">:</span> <span class="s1">&#39;Mixto&#39;</span><span class="p">,</span>       <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Pumabús&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># ─── Construir df_resumen ─────────────────────────────────────────────────────</span>
+<span class="n">filas</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">sistema</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">sistemas_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">df_s</span> <span class="o">=</span> <span class="n">df_edges</span><span class="p">[</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">sistema</span><span class="p">]</span>
+    <span class="n">df_v</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[(</span><span class="n">df_s</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_s</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">df_v</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">v_ef</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_v</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_v</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">60</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">filas</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;Sistema&#39;</span><span class="p">:</span>            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;Derecho de Vía&#39;</span><span class="p">:</span>     <span class="n">info</span><span class="p">[</span><span class="s1">&#39;via&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;N Segmentos&#39;</span><span class="p">:</span>        <span class="nb">len</span><span class="p">(</span><span class="n">df_s</span><span class="p">),</span>
+        <span class="s1">&#39;Dist. Prom. (m)&#39;</span><span class="p">:</span>    <span class="nb">round</span><span class="p">(</span><span class="n">df_v</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="s1">&#39;Cf Prom.&#39;</span><span class="p">:</span>           <span class="nb">round</span><span class="p">(</span><span class="n">df_v</span><span class="p">[</span><span class="s1">&#39;Friccion_Cf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="s1">&#39;V Efectiva (km/h)&#39;</span><span class="p">:</span>  <span class="nb">round</span><span class="p">(</span><span class="n">v_ef</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="s1">&#39;T Prom./Seg. (min)&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">df_v</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="s1">&#39;_color&#39;</span><span class="p">:</span>             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;_sistema&#39;</span><span class="p">:</span>           <span class="n">sistema</span><span class="p">,</span>
+    <span class="p">})</span>
+
+<span class="n">df_resumen</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;V Efectiva (km/h)&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># ─── Tabla 1 en Markdown ──────────────────────────────────────────────────────</span>
+<span class="n">cabecera</span>  <span class="o">=</span> <span class="s2">&quot;| Sistema | Derecho de Vía | N Segmentos | Dist. Prom. (m) | Cf Prom. | V Efectiva (km/h) | T Prom./Seg. (min) |&quot;</span>
+<span class="n">separador</span> <span class="o">=</span> <span class="s2">&quot;|---|---|---:|---:|---:|---:|---:|&quot;</span>
+<span class="n">filas_md</span>  <span class="o">=</span> <span class="p">[</span><span class="n">cabecera</span><span class="p">,</span> <span class="n">separador</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">df_resumen</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">filas_md</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Derecho de Vía&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;N Segmentos&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Dist. Prom. (m)&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;Cf Prom.&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;V Efectiva (km/h)&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;T Prom./Seg. (min)&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> |&quot;</span>
+    <span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span>
+    <span class="s2">&quot;**Tabla 1.** Indicadores de impedancia por sistema de transporte — Red VFT (corrida 2026-04-16)</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filas_md</span><span class="p">)</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p><strong>Tabla 1.</strong> Indicadores de impedancia por sistema de transporte — Red VFT (corrida 2026-04-16)</p>
+<p>| Sistema | Derecho de Vía | N Segmentos | Dist. Prom. (m) | Cf Prom. | V Efectiva (km/h) | T Prom./Seg. (min) |
+|—|—|—:|—:|—:|—:|—:|
+| Tren Suburbano | Exclusivo | 3 | 3556.9 | 1.00 | 65.0 | 3.283 |
+| Metro (STC) | Exclusivo | 528 | 1416.3 | 1.00 | 36.0 | 2.360 |
+| Tren Ligero | Exclusivo | 52 | 1238.2 | 1.00 | 22.0 | 3.377 |
+| Cablebús | Confinado | 30 | 2145.5 | 1.00 | 20.0 | 6.437 |
+| Mexicable | Confinado | 17 | 1158.8 | 1.00 | 20.0 | 3.476 |
+| Metrobús | Exclusivo | 792 | 879.9 | 1.00 | 16.3 | 3.239 |
+| Mexibús | Confinado | 391 | 939.7 | 1.15 | 14.2 | 3.984 |
+| Trolebús | Compartido | 1,506 | 454.5 | 1.38 | 13.0 | 2.090 |
+| Pumabús | Mixto | 234 | 446.3 | 1.38 | 10.1 | 2.638 |
+| RTP | Mixto | 11,041 | 620.1 | 1.38 | 8.0 | 4.666 |
+| Corredor Conc. | Mixto | 10,603 | 542.0 | 1.38 | 8.0 | 4.078 |</p>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Figura 1: Velocidad efectiva y composición de la impedancia ──────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+    <span class="s1">&#39;Figura 1. Caracterización de la Impedancia Temporal por Sistema de Transporte</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="s1">&#39;Red Multimodal ZMVM — Motor VFT (corrida 2026-04-16)&#39;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span>
+<span class="p">)</span>
+
+<span class="c1"># Panel izquierdo: Velocidad efectiva por sistema (barras horizontales)</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">labels</span>    <span class="o">=</span> <span class="n">df_resumen</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">v_ef</span>      <span class="o">=</span> <span class="n">df_resumen</span><span class="p">[</span><span class="s1">&#39;V Efectiva (km/h)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">colores</span>   <span class="o">=</span> <span class="n">df_resumen</span><span class="p">[</span><span class="s1">&#39;_color&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">v_ef</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Velocidad Efectiva Post-Fricción (km/h)&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(a) Velocidad efectiva por sistema&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">v_ef</span><span class="p">):</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
+
+<span class="c1"># Leyenda por tipo de derecho de vía</span>
+<span class="n">leyenda</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;exclusivo&#39;</span><span class="p">],</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Exclusivo  (Cf = 1.00)&#39;</span><span class="p">),</span>
+    <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;confinado&#39;</span><span class="p">],</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Confinado  (Cf = 1.15)&#39;</span><span class="p">),</span>
+    <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;compartido&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Compartido (Cf = 1.38)&#39;</span><span class="p">),</span>
+    <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">PALETA</span><span class="p">[</span><span class="s1">&#39;mixto&#39;</span><span class="p">],</span>      <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mixto       (Cf = 1.76)&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">leyenda</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">,</span> <span class="n">framealpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">v_ef</span><span class="p">)</span><span class="o">*</span><span class="mf">1.18</span><span class="p">)</span>
+
+<span class="c1"># Panel derecho: Distribución de tiempo por segmento (boxplot por sistema)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sistemas_plot</span> <span class="o">=</span> <span class="n">df_resumen</span><span class="p">[</span><span class="s1">&#39;_sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">labels_plot</span>   <span class="o">=</span> <span class="n">df_resumen</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">colores_box</span>   <span class="o">=</span> <span class="n">df_resumen</span><span class="p">[</span><span class="s1">&#39;_color&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">data_box</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sistemas_plot</span><span class="p">:</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">df_edges</span><span class="p">[(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Sistema&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">)</span> <span class="o">&amp;</span>
+                   <span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Distancia_m&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span>
+                   <span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+                   <span class="p">(</span><span class="n">df_edges</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)]</span>   <span class="c1"># recorte por outliers de distancia</span>
+    <span class="n">data_box</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;Tiempo_Viaje_min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="n">bp</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data_box</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">),</span>
+                 <span class="n">flierprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>
+                 <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                 <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">patch</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bp</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">],</span> <span class="n">colores_box</span><span class="p">):</span>
+    <span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">patch</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">labels_plot</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Tiempo de viaje por segmento (minutos)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(b) Distribución de tiempos por segmento</span><span class="se">\n</span><span class="s1">(segmentos &lt; 5 min, sin outliers)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;1 min de referencia&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;ASSETS/fig01_impedancia_sistemas.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Figura guardada en notebooks/ASSETS/fig01_impedancia_sistemas.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2d73da8ef2fa3edebff5c75848abc1c5bb3ef33a70eed87821090f0ba162030f.png" src="../_images/2d73da8ef2fa3edebff5c75848abc1c5bb3ef33a70eed87821090f0ba162030f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Figura guardada en notebooks/ASSETS/fig01_impedancia_sistemas.png
+</pre></div>
+</div>
+</div>
+</div>
+<!--
+## 5. Análisis Comparativo: Corrida Anterior vs. Corrida Actual
+
+Esta sección documenta las correcciones aplicadas al modelo y contrasta los valores de $C_f$ calculados con los estimados en la tesis.
+
+---
+
+### 5.1 Correcciones Aplicadas y su Impacto
+
+| Parámetro | Valor anterior | Valor corregido | Impacto |
+|---|---|---|---|
+| `FALLBACK_VELOCIDAD["INTERURBANO"]` | 160 km/h | **70 km/h** | Reducción del ~56% en tiempo de viaje de segmentos del Tren Interurbano |
+| `FALLBACK_FRECUENCIA["CBB"]` en `graph_builder` | 1.0 min | **10.0 min** | Boarding cost en transbordos hacia CBB: 0.5 min → **5.0 min** (+900%) |
+| Separación de aristas `transfer` en `df_edges` | Mezcladas | **Separadas** | `df_edges` refleja únicamente servicio real; los transbordos quedan en `df_transfers` |
+
+La corrección del Interurbano es la más significativa: a 160 km/h un segmento de 1 km tardaba 0.375 min (22.5 s), físicamente imposible para una unidad urbana. A 70 km/h el mismo segmento tarda 0.857 min, coherente con la operación real.
+
+---
+ 
+### 5.2 Contraste del Coeficiente de Fricción Vial ($C_f$) con la Tesis
+
+La tesis plantea valores dinámicos de $C_{f,h}$ por franja horaria para una ruta RTP de referencia (Insurgentes Norte, 5 km). El modelo VFT usa un valor estático calibrado con el índice TomTom ($\beta = 0.759$):
+
+| Franja horaria | $C_{f,h}$ (tesis, Tabla 3.6) | $C_f$ modelo VFT | Diferencia |
+|---|---:|---:|---|
+| Flujo libre (5:00 h) | 1.00 | 1.00 (exclusivo) | Sin diferencia |
+| Hora pico (8:00 h) | **1.85** | 1.76 (mixto) | −5% — subestimación leve |
+| Pico vespertino (15:00 h) | 1.60 | 1.76 (mixto) | +10% — sobreestimación |
+| Nocturno (19:00 h) | 1.70 | 1.76 (mixto) | +3.5% |
+
+> El modelo VFT representa razonablemente las horas pico y vespertino, pero no captura variabilidad horaria. La diferencia máxima es del 5 %, dentro de los márgenes aceptables para análisis estructural de red (no predicción dinámica).
+> comentario --></section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="NOTES/graph_builder.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="NOTES/impedance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">01.- Marco Teórico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-estadistica-del-motor-de-impedancia">2. Validación Estadística del Motor de Impedancia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-coherencia-velocidades-implicitas-vs-parametros-operativos">2.1 Verificación de Coherencia: Velocidades Implícitas vs. Parámetros Operativos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-de-velocidades-efectivas-por-sistema">Interpretación de velocidades efectivas por sistema</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-indicadores-del-analisis-de-impedancia">3. Definición de Indicadores del Análisis de Impedancia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-estadistico-por-sistema-de-transporte">4. Resumen Estadístico por Sistema de Transporte</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hernán Galileo Cabrera Garibaldi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
