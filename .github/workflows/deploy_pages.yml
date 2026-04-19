@@ -27,11 +27,16 @@ jobs:
 
       - name: 🏗️ Build the book
         run: |
-          # Compila todo el repositorio como un libro
-          jupyter-book build .
+          # Construye el libro mostrando todos los errores
+          jupyter-book build . --warningiserror
+          
+          # Depuración: Lista los archivos para ver dónde quedó el _build
+          echo "--- REVISANDO CARPETAS GENERADAS ---"
+          ls -la
+          ls -la _build/ || echo "⚠️ No existe la carpeta _build en la raíz"
 
       - name: 🚀 Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: _build/html # Carpeta donde Jupyter Book genera la web
-          branch: gh-pages    # Rama destino
+          folder: _build/html # Si tus archivos están en la raíz, aquí se genera
+          branch: gh-pages
