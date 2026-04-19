@@ -381,21 +381,49 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-1-adquisicion-y-procesamiento-geometrico">Capa 1: Adquisición y Procesamiento Geométrico</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-2-modelado-topologico-y-dinamico">Capa 2: Modelado Topológico y Dinámico</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-3-evaluacion-y-salida-indicadores">Capa 3: Evaluación y Salida (Indicadores)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desglose-de-indicadores-de-transito">Desglose de Indicadores de Tránsito</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orden-para-desarrollar-los-indicadores">Orden para Desarrollar los Indicadores</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#de-geojson-a-networkx">De GeoJSON a NetworkX</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-para-rtp-trolebus-cc">Caso para RTP / Trolebús / CC</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pesos">Pesos</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-resultados-en-una-tabla-historica">Guardar Resultados en una Tabla Histórica</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-el-modelo-vft">📖 ¿Qué es el Modelo VFT?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-en-3-capas">🏗️ Arquitectura en 3 Capas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-1-adquisicion-y-procesamiento-geometrico">Capa 1: Adquisición y Procesamiento Geométrico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-2-modelado-topologico-y-dinamico">Capa 2: Modelado Topológico y Dinámico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-3-evaluacion-y-salida-indicadores">Capa 3: Evaluación y Salida (Indicadores)</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte ($C$)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio ($T$)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial ($CF$)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologia-de-indicadores-de-transito">📊 Metodología de Indicadores de Tránsito</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#desglose-de-indicadores-de-transito">Desglose de Indicadores de Tránsito</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#orden-para-desarrollar-los-indicadores">Orden para Desarrollar los Indicadores</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-1-arquitectura-base-y-analisis-espacial">Fase 1: Arquitectura Base y Análisis Espacial</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-2-ponderacion-dinamica-usando-datos-reales">Fase 2: Ponderación Dinámica (Usando datos reales)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-3-evolucion-global-algoritmos-de-caminos-minimos">Fase 3: Evolución Global (Algoritmos de Caminos Mínimos)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-4-pruebas-de-estres">Fase 4: Pruebas de Estrés</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#construir-la-fase-de-red">Construir la Fase de Red</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#de-geojson-a-networkx">De GeoJSON a NetworkX</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-para-rtp-trolebus-cc">Caso para RTP / Trolebús / CC</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pesos">Pesos</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-resultados-en-una-tabla-historica">Guardar Resultados en una Tabla Histórica</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-1-indicadores-espaciales-y-de-cobertura">Grupo 1: Indicadores Espaciales y de Cobertura</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte ($C$)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-2-eficiencia-tiempo-y-forma">Grupo 2: Eficiencia (Tiempo y Forma)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio ($T$)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#indice-de-ruta-directa-detour-factor-o-direct-index">3. Índice de Ruta Directa (Detour Factor o Direct Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penalizacion-por-transferencia-tomar-en-cuenta-para-rutas-mas-cortas">4. Penalización por Transferencia <em>(TOMAR EN CUENTA PARA RUTAS MÁS CORTAS)</em></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-3-topologia-y-rigor-matematico">Grupo 3: Topología y Rigor Matemático</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez-geometrica-vulnerabilidad">6. Robustez Geométrica (Vulnerabilidad)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-4-trafico-mixto-rtp-concesionados">Grupo 4: Tráfico Mixto (RTP / Concesionados)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial ($CF$)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-alimentacion-capilar">8. Nivel de Alimentación Capilar</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -415,48 +443,57 @@ document.write(`
 <div><p><strong>Motor analítico geoespacial y topológico para la evaluación de redes de transporte anillares y alimentadoras en la CDMX.</strong> Documentación generada a partir de los cuadernos de investigación y validación de la tesis TAICMAM.</p>
 </div></blockquote>
 <hr/>
-## 📖 ¿Qué es el Modelo VFT?
+<section id="que-es-el-modelo-vft">
+<h2>📖 ¿Qué es el Modelo VFT?<a class="headerlink" href="#que-es-el-modelo-vft" title="Link to this heading">#</a></h2>
 <p>El <strong>Modelo VFT (Modelo del Punto de Higuera)</strong> es una arquitectura de software diseñada para procesar, validar y analizar matemáticamente grafos de transporte urbano masivo. Su nombre obedece a una dualidad conceptual que guía la investigación:</p>
 <ul class="simple">
 <li><p><strong>La Higuera (The Fig Tree):</strong> Inspirado en la metáfora literaria de Sylvia Plath, el grafo de transporte representa un árbol de decisiones críticas. Si la red capilar (RTP, microbuses) no se optimiza temporal y espacialmente, las opciones convergen en la saturación sistémica.</p></li>
 <li><p><strong>El Punto de Fuga (The Vanishing Point):</strong> Arquitectónicamente, el sistema actúa como el punto donde múltiples variables independientes (coordenadas 2D, fricción vial, capacidades) convergen en una perspectiva analítica unificada.</p></li>
 </ul>
 <hr/>
-## 🏗️ Arquitectura en 3 Capas
+</section>
+<section id="arquitectura-en-3-capas">
+<h2>🏗️ Arquitectura en 3 Capas<a class="headerlink" href="#arquitectura-en-3-capas" title="Link to this heading">#</a></h2>
 <p>Para transformar la geografía estática en un modelo operativo y ruteable, el sistema se divide en tres capas fundamentales.</p>
 <p><em>(A continuación se presentan los esquemas arquitectónicos del diseño del modelo)</em></p>
 <section id="capa-1-adquisicion-y-procesamiento-geometrico">
-<h2>Capa 1: Adquisición y Procesamiento Geométrico<a class="headerlink" href="#capa-1-adquisicion-y-procesamiento-geometrico" title="Link to this heading">#</a></h2>
+<h3>Capa 1: Adquisición y Procesamiento Geométrico<a class="headerlink" href="#capa-1-adquisicion-y-procesamiento-geometrico" title="Link to this heading">#</a></h3>
 <p>En esta fase (Hexágono de Entrada), se consumen las geometrías crudas (GeoJSON/MultiLineString) mediante la API en FastAPI. Aquí se estandarizan las coordenadas espaciales estáticas de las estaciones y trazos.</p>
-<p><img alt="Esquema Capa 1" src="notebooks/ASSETS/introIMG/IMG_3301.PNG" /></p>
+<p><img alt="Esquema Capa 1" src="../_images/IMG_3301.PNG" /></p>
 </section>
 <section id="capa-2-modelado-topologico-y-dinamico">
-<h2>Capa 2: Modelado Topológico y Dinámico<a class="headerlink" href="#capa-2-modelado-topologico-y-dinamico" title="Link to this heading">#</a></h2>
+<h3>Capa 2: Modelado Topológico y Dinámico<a class="headerlink" href="#capa-2-modelado-topologico-y-dinamico" title="Link to this heading">#</a></h3>
 <p>El núcleo matemático del sistema. Usando <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> y <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, se construye el <strong>Grafo Dirigido ($G = V, E$)</strong>. Aquí ocurre el <em>Snapping Lógico</em> (para evitar nodos fantasma) y se inyecta la <strong>Impedancia Temporal</strong>, calculando el tiempo de traslado continuo castigado por la congestión.</p>
-<p><img alt="Esquema Capa 2" src="notebooks/ASSETS/introIMG/IMG_3302.PNG" /></p>
+<p><img alt="Esquema Capa 2" src="../_images/IMG_3302.PNG" /></p>
 </section>
 <section id="capa-3-evaluacion-y-salida-indicadores">
-<h2>Capa 3: Evaluación y Salida (Indicadores)<a class="headerlink" href="#capa-3-evaluacion-y-salida-indicadores" title="Link to this heading">#</a></h2>
+<h3>Capa 3: Evaluación y Salida (Indicadores)<a class="headerlink" href="#capa-3-evaluacion-y-salida-indicadores" title="Link to this heading">#</a></h3>
 <p>La capa de resultados donde el grafo se somete a estrés analítico para calcular las métricas que validan el comportamiento operativo de la red.</p>
-<p><img alt="Esquema Capa 3" src="notebooks/ASSETS/introIMG/IMG_3297.PNG" /></p>
+<p><img alt="Esquema Capa 3" src="../_images/IMG_3297.PNG" /></p>
 <hr/>
-## 📊 Metodología de Indicadores de Tránsito
-<p>El modelo evalúa la viabilidad y eficiencia de la red a través de tres fases de análisis progresivo:</p>
 </section>
+</section>
+<section id="metodologia-de-indicadores-de-transito">
+<h2>📊 Metodología de Indicadores de Tránsito<a class="headerlink" href="#metodologia-de-indicadores-de-transito" title="Link to this heading">#</a></h2>
+<p>El modelo evalúa la viabilidad y eficiencia de la red a través de tres fases de análisis progresivo:</p>
 <section id="desglose-de-indicadores-de-transito">
-<h2>Desglose de Indicadores de Tránsito<a class="headerlink" href="#desglose-de-indicadores-de-transito" title="Link to this heading">#</a></h2>
+<h3>Desglose de Indicadores de Tránsito<a class="headerlink" href="#desglose-de-indicadores-de-transito" title="Link to this heading">#</a></h3>
 <section id="orden-para-desarrollar-los-indicadores">
-<h3>Orden para Desarrollar los Indicadores<a class="headerlink" href="#orden-para-desarrollar-los-indicadores" title="Link to this heading">#</a></h3>
+<h4>Orden para Desarrollar los Indicadores<a class="headerlink" href="#orden-para-desarrollar-los-indicadores" title="Link to this heading">#</a></h4>
 <p>Algunos indicadores son dependientes de otros, por lo que se ordenan por jerarquías.</p>
 <hr/>
-#### Fase 1: Arquitectura Base y Análisis Espacial
+</section>
+<section id="fase-1-arquitectura-base-y-analisis-espacial">
+<h4>Fase 1: Arquitectura Base y Análisis Espacial<a class="headerlink" href="#fase-1-arquitectura-base-y-analisis-espacial" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Nivel de Cobertura de la Red de Transporte (C):</strong> Indicador más independiente, se calcula puramente con análisis espacial (GeoPandas/QGIS). Se necesita el polígono de la ciudad y las coordenadas de las estaciones, no necesariamente el grafo interconectado.</p></li>
 <li><p><strong>Nivel de Alimentación Capilar - Fuerza Nodal:</strong> Teniendo las estaciones mapeadas, lo siguiente sería conectar las aristas e identificar qué líneas son de transporte “Masivo” y cuáles son de tipo “Superficie”. Contar las conexiones (grupo Nodal) ayudará a validar los nodos más pesados (el supuesto es que estos serán CETRAMs o interconexiones).</p></li>
 <li><p><strong>Índice de Ruta Directa / Detour Factor:</strong> Depende de la topología base. Se compara la distancia en línea recta (geometría plana) contra la distancia a través de la red.</p></li>
 </ul>
 <hr/>
-#### Fase 2: Ponderación Dinámica (Usando datos reales)
+</section>
+<section id="fase-2-ponderacion-dinamica-usando-datos-reales">
+<h4>Fase 2: Ponderación Dinámica (Usando datos reales)<a class="headerlink" href="#fase-2-ponderacion-dinamica-usando-datos-reales" title="Link to this heading">#</a></h4>
 <p>Es importante mencionar que aquí ya no solo se usarán indicadores matemáticos, sino que estos indicadores deben representar un caso real o cercano al mismo: Ciudad de México Real. Inyectando los tiempos, el tráfico y los castigos por trasbordar.</p>
 <ul class="simple">
 <li><p><strong>Coeficiente de Fricción Vial:</strong> Se tiene que calcular y asignar este multiplicador a todas las aristas de superficie. Sin este factor, el modelo asume que los camiones viajan a la misma velocidad siempre sin importar la hora.</p></li>
@@ -466,22 +503,28 @@ document.write(`
 <div><p>⚠️ Sin tener la Fase 1 y 2 completadas no se puede avanzar a la Fase 3 y 4.</p>
 </div></blockquote>
 <hr/>
-#### Fase 3: Evolución Global (Algoritmos de Caminos Mínimos)
+</section>
+<section id="fase-3-evolucion-global-algoritmos-de-caminos-minimos">
+<h4>Fase 3: Evolución Global (Algoritmos de Caminos Mínimos)<a class="headerlink" href="#fase-3-evolucion-global-algoritmos-de-caminos-minimos" title="Link to this heading">#</a></h4>
 <p>Una vez completado el grafo y con las ponderaciones de la Fase 2, se puede implementar los algoritmos que encuentren rutas mínimas y óptimas.</p>
 <ul class="simple">
 <li><p><strong>Tiempo de Viaje Promedio:</strong> El algoritmo a usarse es Dijkstra, sin embargo, este necesita que la red esté completa.</p></li>
 <li><p><strong>Centralidad de Intermediación:</strong> Se calcula casi en paralelo con el Tiempo Promedio. Al conocer cuáles son los caminos mínimos de la Fase 3, el algoritmo cuenta cuántos de esos viajes pasan por el centro (Pantitlán, Pino Suárez).</p></li>
 </ul>
 <hr/>
-#### Fase 4: Pruebas de Estrés
+</section>
+<section id="fase-4-pruebas-de-estres">
+<h4>Fase 4: Pruebas de Estrés<a class="headerlink" href="#fase-4-pruebas-de-estres" title="Link to this heading">#</a></h4>
 <p>Esta es la fase final, donde se corre el modelo antes y después de la propuesta del Anillo Periférico para comprobar la hipótesis: <em>“Es viable una ruta anillar de transporte público sobre el Anillo Periférico en la Ciudad de México”</em>.</p>
 <ul class="simple">
 <li><p><strong>Robustez Geométrica / Vulnerabilidad:</strong> Es el indicador de mayor dependencia. Para poder hacerlo, se necesita saber qué nodo destruir (indicador #7: Centralidad de Intermediación). Tras borrar ese nodo del código, es necesario medir el impacto, calculando el indicador #6 (Tiempo de Viaje Promedio).</p></li>
 </ul>
 <hr/>
-#### Construir la Fase de Red
+</section>
+<section id="construir-la-fase-de-red">
+<h4>Construir la Fase de Red<a class="headerlink" href="#construir-la-fase-de-red" title="Link to this heading">#</a></h4>
 <section id="de-geojson-a-networkx">
-<h4>De GeoJSON a NetworkX<a class="headerlink" href="#de-geojson-a-networkx" title="Link to this heading">#</a></h4>
+<h5>De GeoJSON a NetworkX<a class="headerlink" href="#de-geojson-a-networkx" title="Link to this heading">#</a></h5>
 <ul class="simple">
 <li><p><strong>Nodo:</strong> Conexión entre 1 o más aristas.</p></li>
 <li><p>Todos los nodos de transferencia: Pantitlán sería un nodo para todos los nodos que salen de allí (CETRAM).</p></li>
@@ -491,7 +534,7 @@ document.write(`
 </ul>
 </section>
 <section id="caso-para-rtp-trolebus-cc">
-<h4>Caso para RTP / Trolebús / CC<a class="headerlink" href="#caso-para-rtp-trolebus-cc" title="Link to this heading">#</a></h4>
+<h5>Caso para RTP / Trolebús / CC<a class="headerlink" href="#caso-para-rtp-trolebus-cc" title="Link to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Caso si es Adyacente o no adyacente (Considerar si es un arco de transferencia radio de 500 m).</p></li>
 <li><p>Caso si queda muy lejos: debe ser otro caso (arco peatonal; línea recta que lo intersecta); incluir aquí el indicador de penalización, simplificarlo con líneas rectas.</p></li>
@@ -499,7 +542,7 @@ document.write(`
 </ul>
 </section>
 <section id="pesos">
-<h4>Pesos<a class="headerlink" href="#pesos" title="Link to this heading">#</a></h4>
+<h5>Pesos<a class="headerlink" href="#pesos" title="Link to this heading">#</a></h5>
 <ul class="simple">
 <li><p><strong>Entrada:</strong> Arco 1 de la Ruta “X” al modo “Metro/Cablebus” y otra división para concesionado (RTP/CC).</p></li>
 <li><p><strong>Velocidad:</strong> Cada modo o sistema tiene una velocidad promedio.</p>
@@ -519,7 +562,7 @@ document.write(`
 </ul>
 </section>
 <section id="guardar-resultados-en-una-tabla-historica">
-<h4>Guardar Resultados en una Tabla Histórica<a class="headerlink" href="#guardar-resultados-en-una-tabla-historica" title="Link to this heading">#</a></h4>
+<h5>Guardar Resultados en una Tabla Histórica<a class="headerlink" href="#guardar-resultados-en-una-tabla-historica" title="Link to this heading">#</a></h5>
 <p>Guardar de forma descriptiva e histórica para:</p>
 <ul class="simple">
 <li><p>Rutas más cortas</p></li>
@@ -532,15 +575,17 @@ document.write(`
 <div><p><strong>Observación:</strong> Considerar que la ruta más corta no siempre responde a la realidad (es solo para indicadores estadísticos/académicos).</p>
 </div></blockquote>
 <hr/>
-### Grupo 1: Indicadores Espaciales y de Cobertura
 </section>
 </section>
+</section>
+<section id="grupo-1-indicadores-espaciales-y-de-cobertura">
+<h3>Grupo 1: Indicadores Espaciales y de Cobertura<a class="headerlink" href="#grupo-1-indicadores-espaciales-y-de-cobertura" title="Link to this heading">#</a></h3>
 <section id="nivel-de-cobertura-de-la-red-de-transporte-c">
-<h3>1. Nivel de Cobertura de la Red de Transporte ($C$)<a class="headerlink" href="#nivel-de-cobertura-de-la-red-de-transporte-c" title="Link to this heading">#</a></h3>
+<h4>1. Nivel de Cobertura de la Red de Transporte ($C$)<a class="headerlink" href="#nivel-de-cobertura-de-la-red-de-transporte-c" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Transit network analysis using a graph-oriented method and GTFS data</em></p></li>
 </ul>
-<p><img alt="Fórmula y diagrama de Cobertura de Red" src="notebooks/ASSETS/introIMG/formula_cobertura.png" /></p>
+<p><img alt="Fórmula y diagrama de Cobertura de Red" src="../_images/formula_cobertura.png" /></p>
 <ul class="simple">
 <li><p><strong>Descripción:</strong> En la sección sobre la evaluación de accesibilidad (<em>Accessibility Assessment</em>) y en la tabla de indicadores de su caso de estudio (<em>Table 2</em>), los autores explican cómo evaluar la cobertura espacial usando los datos de la red.</p>
 <ul>
@@ -566,14 +611,16 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> En Python se usa la librería GeoPandas. Se carga el GeoJSON de nodos, se aplica la función <code class="docutils literal notranslate"><span class="pre">gdf.buffer(800)</span></code> y luego <code class="docutils literal notranslate"><span class="pre">unary_union</span></code> para fusionar los círculos superpuestos. Finalmente, se divide el área resultante entre el polígono de la CDMX.</p></li>
 </ul>
 <hr/>
-### Grupo 2: Eficiencia (Tiempo y Forma)
 </section>
+</section>
+<section id="grupo-2-eficiencia-tiempo-y-forma">
+<h3>Grupo 2: Eficiencia (Tiempo y Forma)<a class="headerlink" href="#grupo-2-eficiencia-tiempo-y-forma" title="Link to this heading">#</a></h3>
 <section id="tiempo-de-viaje-promedio-t">
-<h3>2. Tiempo de Viaje Promedio ($T$)<a class="headerlink" href="#tiempo-de-viaje-promedio-t" title="Link to this heading">#</a></h3>
+<h4>2. Tiempo de Viaje Promedio ($T$)<a class="headerlink" href="#tiempo-de-viaje-promedio-t" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>The optimal geometry of transportation networks</em></p></li>
 </ul>
-<p><img alt="Fórmula y diagrama de Tiempo de Viaje Promedio" src="notebooks/ASSETS/introIMG/formula_tiempo_viaje.png" /></p>
+<p><img alt="Fórmula y diagrama de Tiempo de Viaje Promedio" src="../_images/formula_tiempo_viaje.png" /></p>
 <ul class="simple">
 <li><p><strong>Descripción:</strong> En los papers sobre cómo la forma (geometría) de una red afecta su eficiencia, los autores plantean el tiempo de viaje como la métrica absoluta a optimizar:</p>
 <ul>
@@ -602,7 +649,9 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> En Python, usando la librería NetworkX, se ejecuta la función <code class="docutils literal notranslate"><span class="pre">nx.average_shortest_path_length(G,</span> <span class="pre">weight='tiempo_minutos')</span></code>. Es una sola línea de código, altamente eficiente.</p></li>
 </ul>
 <hr/>
-#### 3. Índice de Ruta Directa (Detour Factor o Direct Index)
+</section>
+<section id="indice-de-ruta-directa-detour-factor-o-direct-index">
+<h4>3. Índice de Ruta Directa (Detour Factor o Direct Index)<a class="headerlink" href="#indice-de-ruta-directa-detour-factor-o-direct-index" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Transit network analysis using a graph-oriented method and GTFS data</em></p></li>
 </ul>
@@ -627,7 +676,9 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Media/Alta):</strong> Se usa la librería <strong>Shapely</strong> o <strong>Geopy</strong> para calcular la distancia euclidiana (haversine) entre dos coordenadas Lat/Lon, y se divide entre el resultado de distancia arrojado por el camino más corto de <strong>NetworkX</strong>.</p></li>
 </ul>
 <hr/>
-#### 4. Penalización por Transferencia *(TOMAR EN CUENTA PARA RUTAS MÁS CORTAS)*
+</section>
+<section id="penalizacion-por-transferencia-tomar-en-cuenta-para-rutas-mas-cortas">
+<h4>4. Penalización por Transferencia <em>(TOMAR EN CUENTA PARA RUTAS MÁS CORTAS)</em><a class="headerlink" href="#penalizacion-por-transferencia-tomar-en-cuenta-para-rutas-mas-cortas" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículos:</strong> <em>Aplicación de la Teoría de Grafos en la Optimización de Redes de Transporte</em>, <em>The optimal Geometry of Transportation Networks</em></p></li>
 </ul>
@@ -665,14 +716,16 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> En el archivo GeoJSON, no se declara a “Pantitlán” como un solo punto, sino como <code class="docutils literal notranslate"><span class="pre">&quot;Pantitlan_L1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Pantitlan_L9&quot;</span></code>, etc. Python crea aristas peatonales que los unen y les asigna estáticamente un atributo <code class="docutils literal notranslate"><span class="pre">weight=12</span></code>. El algoritmo de Dijkstra hará el resto automáticamente sumándole los pesos ponderados correspondientes.</p></li>
 </ul>
 <hr/>
-### Grupo 3: Topología y Rigor Matemático
 </section>
+</section>
+<section id="grupo-3-topologia-y-rigor-matematico">
+<h3>Grupo 3: Topología y Rigor Matemático<a class="headerlink" href="#grupo-3-topologia-y-rigor-matematico" title="Link to this heading">#</a></h3>
 <section id="centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">
-<h3>5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em><a class="headerlink" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas" title="Link to this heading">#</a></h3>
+<h4>5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em><a class="headerlink" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículos:</strong> <em>Statistical analysis of the Metropolitan Seoul Subway System</em>, <em>Aplicación de la Teoría de Grafos en la Optimización de Redes de Transporte</em></p></li>
 </ul>
-<p><img alt="Fórmula y diagrama de Centralidad de Intermediación" src="notebooks/ASSETS/introIMG/formula_centralidad.png" /></p>
+<p><img alt="Fórmula y diagrama de Centralidad de Intermediación" src="../_images/formula_centralidad.png" /></p>
 <ul class="simple">
 <li><p><strong>Descripción:</strong> Se divide en los dos argumentos de los papers:</p>
 <ul>
@@ -707,11 +760,13 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> NetworkX tiene la función nativa <code class="docutils literal notranslate"><span class="pre">nx.betweenness_centrality(G,</span> <span class="pre">weight='tiempo')</span></code>. Retorna un diccionario con el score de cada estación.</p></li>
 </ul>
 <hr/>
-#### 6. Robustez Geométrica (Vulnerabilidad)
+</section>
+<section id="robustez-geometrica-vulnerabilidad">
+<h4>6. Robustez Geométrica (Vulnerabilidad)<a class="headerlink" href="#robustez-geometrica-vulnerabilidad" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Vulnerabilidad de Redes Complejas y Aplicaciones al Transporte Urbano: Una Revisión de la Literatura</em></p></li>
 </ul>
-<p><img alt="Fórmula y diagramas de Vulnerabilidad" src="notebooks/ASSETS/introIMG/formula_vulnerabilidad.png" /></p>
+<p><img alt="Fórmula y diagramas de Vulnerabilidad" src="../_images/formula_vulnerabilidad.png" /></p>
 <ul class="simple">
 <li><p><strong>Descripción:</strong> En este artículo se define la vulnerabilidad desde la perspectiva física estadística aplicada a infraestructuras críticas. Se señala que una de las propiedades de mayor relevancia práctica de las redes complejas es su capacidad para mantener sus funciones cuando ocurren fallas, errores o ataques a sus nodos o vínculos. A esta capacidad se le denomina robustez, resiliencia o vulnerabilidad. Los autores explican que en las redes de transporte urbano, este análisis evalúa qué pasa con la red ante accidentes de tráfico, desastres naturales o cierres programados. <strong>La metodología para medir esto consiste en cuantificar y evaluar el impacto (la caída del desempeño) después de la remoción de componentes, ya sea de forma aleatoria (simulando una falla común) o dirigida hacia los elementos más importantes (simulando un ataque a un nodo crítico).</strong></p>
 <ul>
@@ -743,10 +798,12 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Alta):</strong> Un bucle <code class="docutils literal notranslate"><span class="pre">for</span></code> en Python. Se clona el grafo, se usa <code class="docutils literal notranslate"><span class="pre">G.remove_node('Indios_Verdes')</span></code> y se vuelve a calcular la eficiencia global.</p></li>
 </ul>
 <hr/>
-### Grupo 4: Tráfico Mixto (RTP / Concesionados)
 </section>
+</section>
+<section id="grupo-4-trafico-mixto-rtp-concesionados">
+<h3>Grupo 4: Tráfico Mixto (RTP / Concesionados)<a class="headerlink" href="#grupo-4-trafico-mixto-rtp-concesionados" title="Link to this heading">#</a></h3>
 <section id="factor-de-friccion-vial-cf">
-<h3>7. Factor de Fricción Vial ($CF$)<a class="headerlink" href="#factor-de-friccion-vial-cf" title="Link to this heading">#</a></h3>
+<h4>7. Factor de Fricción Vial ($CF$)<a class="headerlink" href="#factor-de-friccion-vial-cf" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Transit network analysis using a graph-oriented method and GTFS data</em></p></li>
 </ul>
@@ -815,7 +872,9 @@ document.write(`
 <li><p><strong>Táctica de Programación (Viabilidad: Media):</strong> Requiere que el GeoJSON tenga una columna llamada <code class="docutils literal notranslate"><span class="pre">tipo_sistema</span></code> (ej. <code class="docutils literal notranslate"><span class="pre">&quot;Metro&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;RTP&quot;</span></code>). En Python se itera sobre las aristas: <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">tipo</span> <span class="pre">==</span> <span class="pre">'RTP':</span> <span class="pre">weight</span> <span class="pre">=</span> <span class="pre">base_time</span> <span class="pre">*</span> <span class="pre">1.8</span></code>.</p></li>
 </ul>
 <hr/>
-#### 8. Nivel de Alimentación Capilar
+</section>
+<section id="nivel-de-alimentacion-capilar">
+<h4>8. Nivel de Alimentación Capilar<a class="headerlink" href="#nivel-de-alimentacion-capilar" title="Link to this heading">#</a></h4>
 <ul class="simple">
 <li><p><strong>Artículo:</strong> <em>Statistical analysis of the Metropolitan Seoul Subway System</em></p></li>
 </ul>
@@ -849,6 +908,7 @@ document.write(`
 </ul>
 <hr/>
 *Usa el menú lateral para navegar por los reportes detallados de la construcción de grafos, análisis de impedancia y visualizaciones espaciales.*</section>
+</section>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -909,21 +969,49 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-1-adquisicion-y-procesamiento-geometrico">Capa 1: Adquisición y Procesamiento Geométrico</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-2-modelado-topologico-y-dinamico">Capa 2: Modelado Topológico y Dinámico</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-3-evaluacion-y-salida-indicadores">Capa 3: Evaluación y Salida (Indicadores)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desglose-de-indicadores-de-transito">Desglose de Indicadores de Tránsito</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orden-para-desarrollar-los-indicadores">Orden para Desarrollar los Indicadores</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#de-geojson-a-networkx">De GeoJSON a NetworkX</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-para-rtp-trolebus-cc">Caso para RTP / Trolebús / CC</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pesos">Pesos</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-resultados-en-una-tabla-historica">Guardar Resultados en una Tabla Histórica</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-el-modelo-vft">📖 ¿Qué es el Modelo VFT?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-en-3-capas">🏗️ Arquitectura en 3 Capas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-1-adquisicion-y-procesamiento-geometrico">Capa 1: Adquisición y Procesamiento Geométrico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-2-modelado-topologico-y-dinamico">Capa 2: Modelado Topológico y Dinámico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-3-evaluacion-y-salida-indicadores">Capa 3: Evaluación y Salida (Indicadores)</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte ($C$)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio ($T$)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial ($CF$)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologia-de-indicadores-de-transito">📊 Metodología de Indicadores de Tránsito</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#desglose-de-indicadores-de-transito">Desglose de Indicadores de Tránsito</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#orden-para-desarrollar-los-indicadores">Orden para Desarrollar los Indicadores</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-1-arquitectura-base-y-analisis-espacial">Fase 1: Arquitectura Base y Análisis Espacial</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-2-ponderacion-dinamica-usando-datos-reales">Fase 2: Ponderación Dinámica (Usando datos reales)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-3-evolucion-global-algoritmos-de-caminos-minimos">Fase 3: Evolución Global (Algoritmos de Caminos Mínimos)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-4-pruebas-de-estres">Fase 4: Pruebas de Estrés</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#construir-la-fase-de-red">Construir la Fase de Red</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#de-geojson-a-networkx">De GeoJSON a NetworkX</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-para-rtp-trolebus-cc">Caso para RTP / Trolebús / CC</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pesos">Pesos</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-resultados-en-una-tabla-historica">Guardar Resultados en una Tabla Histórica</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-1-indicadores-espaciales-y-de-cobertura">Grupo 1: Indicadores Espaciales y de Cobertura</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-cobertura-de-la-red-de-transporte-c">1. Nivel de Cobertura de la Red de Transporte ($C$)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-2-eficiencia-tiempo-y-forma">Grupo 2: Eficiencia (Tiempo y Forma)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-t">2. Tiempo de Viaje Promedio ($T$)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#indice-de-ruta-directa-detour-factor-o-direct-index">3. Índice de Ruta Directa (Detour Factor o Direct Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penalizacion-por-transferencia-tomar-en-cuenta-para-rutas-mas-cortas">4. Penalización por Transferencia <em>(TOMAR EN CUENTA PARA RUTAS MÁS CORTAS)</em></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-3-topologia-y-rigor-matematico">Grupo 3: Topología y Rigor Matemático</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-b-tomar-tambien-rutas-mas-cortas">5. Centralidad de Intermediación ($B$) <em>(TOMAR TAMBIÉN RUTAS MÁS CORTAS)</em></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez-geometrica-vulnerabilidad">6. Robustez Geométrica (Vulnerabilidad)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grupo-4-trafico-mixto-rtp-concesionados">Grupo 4: Tráfico Mixto (RTP / Concesionados)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#factor-de-friccion-vial-cf">7. Factor de Fricción Vial ($CF$)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nivel-de-alimentacion-capilar">8. Nivel de Alimentación Capilar</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

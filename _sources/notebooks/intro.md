@@ -3,6 +3,7 @@
 > **Motor analítico geoespacial y topológico para la evaluación de redes de transporte anillares y alimentadoras en la CDMX.** Documentación generada a partir de los cuadernos de investigación y validación de la tesis TAICMAM.
 
 <hr/>
+
 ## 📖 ¿Qué es el Modelo VFT?
 
 El **Modelo VFT (Modelo del Punto de Higuera)** es una arquitectura de software diseñada para procesar, validar y analizar matemáticamente grafos de transporte urbano masivo. Su nombre obedece a una dualidad conceptual que guía la investigación:
@@ -11,6 +12,7 @@ El **Modelo VFT (Modelo del Punto de Higuera)** es una arquitectura de software 
 * **El Punto de Fuga (The Vanishing Point):** Arquitectónicamente, el sistema actúa como el punto donde múltiples variables independientes (coordenadas 2D, fricción vial, capacidades) convergen en una perspectiva analítica unificada.
 
 <hr/>
+
 ## 🏗️ Arquitectura en 3 Capas
 
 Para transformar la geografía estática en un modelo operativo y ruteable, el sistema se divide en tres capas fundamentales. 
@@ -33,6 +35,7 @@ La capa de resultados donde el grafo se somete a estrés analítico para calcula
 ![Esquema Capa 3](ASSETS/introIMG/IMG_3297.PNG)
 
 <hr/>
+
 ## 📊 Metodología de Indicadores de Tránsito
 
 El modelo evalúa la viabilidad y eficiencia de la red a través de tres fases de análisis progresivo:
@@ -44,6 +47,7 @@ El modelo evalúa la viabilidad y eficiencia de la red a través de tres fases d
 Algunos indicadores son dependientes de otros, por lo que se ordenan por jerarquías.
 
 <hr/>
+
 #### Fase 1: Arquitectura Base y Análisis Espacial
 
 - **Nivel de Cobertura de la Red de Transporte (C):** Indicador más independiente, se calcula puramente con análisis espacial (GeoPandas/QGIS). Se necesita el polígono de la ciudad y las coordenadas de las estaciones, no necesariamente el grafo interconectado.
@@ -53,6 +57,7 @@ Algunos indicadores son dependientes de otros, por lo que se ordenan por jerarqu
 - **Índice de Ruta Directa / Detour Factor:** Depende de la topología base. Se compara la distancia en línea recta (geometría plana) contra la distancia a través de la red.
 
 <hr/>
+
 #### Fase 2: Ponderación Dinámica (Usando datos reales)
 
 Es importante mencionar que aquí ya no solo se usarán indicadores matemáticos, sino que estos indicadores deben representar un caso real o cercano al mismo: Ciudad de México Real. Inyectando los tiempos, el tráfico y los castigos por trasbordar.
@@ -64,6 +69,7 @@ Es importante mencionar que aquí ya no solo se usarán indicadores matemáticos
 > ⚠️ Sin tener la Fase 1 y 2 completadas no se puede avanzar a la Fase 3 y 4.
 
 <hr/>
+
 #### Fase 3: Evolución Global (Algoritmos de Caminos Mínimos)
 
 Una vez completado el grafo y con las ponderaciones de la Fase 2, se puede implementar los algoritmos que encuentren rutas mínimas y óptimas.
@@ -73,6 +79,7 @@ Una vez completado el grafo y con las ponderaciones de la Fase 2, se puede imple
 - **Centralidad de Intermediación:** Se calcula casi en paralelo con el Tiempo Promedio. Al conocer cuáles son los caminos mínimos de la Fase 3, el algoritmo cuenta cuántos de esos viajes pasan por el centro (Pantitlán, Pino Suárez).
 
 <hr/>
+
 #### Fase 4: Pruebas de Estrés
 
 Esta es la fase final, donde se corre el modelo antes y después de la propuesta del Anillo Periférico para comprobar la hipótesis: *"Es viable una ruta anillar de transporte público sobre el Anillo Periférico en la Ciudad de México"*.
@@ -80,6 +87,7 @@ Esta es la fase final, donde se corre el modelo antes y después de la propuesta
 - **Robustez Geométrica / Vulnerabilidad:** Es el indicador de mayor dependencia. Para poder hacerlo, se necesita saber qué nodo destruir (indicador #7: Centralidad de Intermediación). Tras borrar ese nodo del código, es necesario medir el impacto, calculando el indicador #6 (Tiempo de Viaje Promedio).
 
 <hr/>
+
 #### Construir la Fase de Red
 
 ##### De GeoJSON a NetworkX
@@ -121,6 +129,7 @@ Guardar de forma descriptiva e histórica para:
 > **Observación:** Considerar que la ruta más corta no siempre responde a la realidad (es solo para indicadores estadísticos/académicos).
 
 <hr/>
+
 ### Grupo 1: Indicadores Espaciales y de Cobertura
 
 #### 1. Nivel de Cobertura de la Red de Transporte ($C$)
@@ -148,6 +157,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Alta):** En Python se usa la librería GeoPandas. Se carga el GeoJSON de nodos, se aplica la función `gdf.buffer(800)` y luego `unary_union` para fusionar los círculos superpuestos. Finalmente, se divide el área resultante entre el polígono de la CDMX.
 
 <hr/>
+
 ### Grupo 2: Eficiencia (Tiempo y Forma)
 
 #### 2. Tiempo de Viaje Promedio ($T$)
@@ -177,6 +187,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Alta):** En Python, usando la librería NetworkX, se ejecuta la función `nx.average_shortest_path_length(G, weight='tiempo_minutos')`. Es una sola línea de código, altamente eficiente.
 
 <hr/>
+
 #### 3. Índice de Ruta Directa (Detour Factor o Direct Index)
 
 - **Artículo:** *Transit network analysis using a graph-oriented method and GTFS data*
@@ -199,6 +210,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Media/Alta):** Se usa la librería **Shapely** o **Geopy** para calcular la distancia euclidiana (haversine) entre dos coordenadas Lat/Lon, y se divide entre el resultado de distancia arrojado por el camino más corto de **NetworkX**.
 
 <hr/>
+
 #### 4. Penalización por Transferencia *(TOMAR EN CUENTA PARA RUTAS MÁS CORTAS)*
 
 - **Artículos:** *Aplicación de la Teoría de Grafos en la Optimización de Redes de Transporte*, *The optimal Geometry of Transportation Networks*
@@ -230,6 +242,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Alta):** En el archivo GeoJSON, no se declara a "Pantitlán" como un solo punto, sino como `"Pantitlan_L1"`, `"Pantitlan_L9"`, etc. Python crea aristas peatonales que los unen y les asigna estáticamente un atributo `weight=12`. El algoritmo de Dijkstra hará el resto automáticamente sumándole los pesos ponderados correspondientes.
 
 <hr/>
+
 ### Grupo 3: Topología y Rigor Matemático
 
 #### 5. Centralidad de Intermediación ($B$) *(TOMAR TAMBIÉN RUTAS MÁS CORTAS)*
@@ -263,6 +276,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Alta):** NetworkX tiene la función nativa `nx.betweenness_centrality(G, weight='tiempo')`. Retorna un diccionario con el score de cada estación.
 
 <hr/>
+
 #### 6. Robustez Geométrica (Vulnerabilidad)
 
 - **Artículo:** *Vulnerabilidad de Redes Complejas y Aplicaciones al Transporte Urbano: Una Revisión de la Literatura*
@@ -291,6 +305,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Alta):** Un bucle `for` en Python. Se clona el grafo, se usa `G.remove_node('Indios_Verdes')` y se vuelve a calcular la eficiencia global.
 
 <hr/>
+
 ### Grupo 4: Tráfico Mixto (RTP / Concesionados)
 
 #### 7. Factor de Fricción Vial ($CF$)
@@ -336,6 +351,7 @@ Guardar de forma descriptiva e histórica para:
 - **Táctica de Programación (Viabilidad: Media):** Requiere que el GeoJSON tenga una columna llamada `tipo_sistema` (ej. `"Metro"`, `"RTP"`). En Python se itera sobre las aristas: `if tipo == 'RTP': weight = base_time * 1.8`.
 
 <hr/>
+
 #### 8. Nivel de Alimentación Capilar
 
 - **Artículo:** *Statistical analysis of the Metropolitan Seoul Subway System*
