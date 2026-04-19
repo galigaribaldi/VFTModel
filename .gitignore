@@ -223,6 +223,9 @@ VFT_Render.jpg
 *.geojson
 *.PNG
 *.png
+# Excepción: imágenes del libro (necesarias para GitHub Pages)
+!notebooks/ASSETS/**/*.png
+!notebooks/ASSETS/**/*.PNG
 dataEstacion.json
 dataLinea.json
 dataLine.json
