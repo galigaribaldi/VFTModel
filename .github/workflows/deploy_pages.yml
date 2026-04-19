@@ -27,7 +27,10 @@ jobs:
         run: |
           # Construye el libro mostrando todos los errores
           jupyter-book build .
-          
+
+          # Necesario para que GitHub Pages sirva carpetas con _ (_static, _images, etc.)
+          touch _build/html/.nojekyll
+
           # Depuración: Lista los archivos para ver dónde quedó el _build
           echo "--- REVISANDO CARPETAS GENERADAS ---"
           ls -la
