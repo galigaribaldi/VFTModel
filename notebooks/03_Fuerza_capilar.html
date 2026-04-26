@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+    <title>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (\(FC\)) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
   
   
   
@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03_Fuerza_capilar';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -183,7 +185,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -370,7 +372,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</h1>
+    <h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (FC)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -381,7 +383,13 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-teorica">1. Justificación Teórica</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecucion-del-motor-topologico">4. Ejecución del Motor Topológico</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecucion-del-motor-topologico">4. Ejecución del Motor Topológico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-geografico-macro-hubs-intermodales">5. Análisis Geográfico: Macro-Hubs Intermodales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-matematico-centralidad-estricta">6. Análisis Matemático: Centralidad Estricta</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-la-capilaridad-matematica-ley-de-potencias">6.1. Distribución de la Capilaridad Matemática (Ley de Potencias)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anexo-diagnostico-especulativo-para-ruta-anillar-periferico">7. Anexo: Diagnóstico Especulativo para Ruta Anillar (Periférico)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eje-periferico-perspectiva-geografica-macro-hubs">7.1. Eje Periférico: Perspectiva Geográfica (Macro-Hubs)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eje-periferico-perspectiva-matematica-nodos-individuales">7.2. Eje Periférico: Perspectiva Matemática (Nodos Individuales)</a></li>
 </ul>
@@ -397,18 +405,20 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc">
-<h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)<a class="headerlink" href="#reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc">
+<h1>Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)<a class="headerlink" href="#reporte-03-fuerza-capilar-grado-nodal-y-nodos-de-transferencia-intermodal-fc" title="Link to this heading">#</a></h1>
 <section id="justificacion-teorica">
 <h2>1. Justificación Teórica<a class="headerlink" href="#justificacion-teorica" title="Link to this heading">#</a></h2>
-<p>El presente indicador evalúa la <strong>Fuerza Capilar</strong> de la red de transporte, definida topológicamente como el grado nodal ($k$) de cada estación. Este indicador cuantifica el nivel de convergencia de flujos y la capacidad de un nodo para actuar como punto de transferencia intermodal.</p>
+<p>El presente indicador evalúa la <strong>Fuerza Capilar</strong> de la red de transporte, definida topológicamente como el grado nodal (<span class="math notranslate nohighlight">\(k\)</span>) de cada estación. Este indicador cuantifica el nivel de convergencia de flujos y la capacidad de un nodo para actuar como punto de transferencia intermodal.</p>
 <p>Para obtener una radiografía urbana realista y mitigar la inflación geométrica, el modelo divide la Fuerza Capilar en dos dimensiones analíticas:</p>
 <p><strong>A. Fuerza Capilar Geográfica (Macro-Hubs):</strong>
-Agrupa topológicamente estaciones físicamente colindantes (radio de tolerancia de 100m) en un subgrafo $H$. Consolida los flujos de sus estaciones constituyentes eliminando las duplicidades. Representa el fenómeno urbano del transbordo físico (ej. CETRAMs):</p>
-<p>$$FC_{H} = \sum_{j \in H} \left( k_{in}(j) + k_{out}(j) \right) - \text{Aristas Internas}$$</p>
+Agrupa topológicamente estaciones físicamente colindantes (radio de tolerancia de 100m) en un subgrafo <span class="math notranslate nohighlight">\(H\)</span>. Consolida los flujos de sus estaciones constituyentes eliminando las duplicidades. Representa el fenómeno urbano del transbordo físico (ej. CETRAMs):</p>
+<div class="math notranslate nohighlight">
+\[FC_{H} = \sum_{j \in H} \left( k_{in}(j) + k_{out}(j) \right) - \text{Aristas Internas}\]</div>
 <p><strong>B. Fuerza Capilar Matemática / Estricta (Por Estación Individual):</strong>
-Calcula el grado de entrada y salida de un nodo topológico $i$, aplicando un filtro de frontera espacial (radio de 25m) para capturar únicamente los vectores de flujo. Representa la centralidad pura del nodo en el grafo:</p>
-<p>$$FC_i = k_{in}(i)<em>{frontera} + k</em>{out}(i)_{frontera}$$</p>
+Calcula el grado de entrada y salida de un nodo topológico <span class="math notranslate nohighlight">\(i\)</span>, aplicando un filtro de frontera espacial (radio de 25m) para capturar únicamente los vectores de flujo. Representa la centralidad pura del nodo en el grafo:</p>
+<div class="math notranslate nohighlight">
+\[FC_i = k_{in}(i)_{frontera} + k_{out}(i)_{frontera}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==========================================</span>
@@ -522,8 +532,11 @@ Calcula el grado de entrada y salida de un nodo topológico $i$, aplicando un fi
 </div>
 </div>
 <hr/>
-## 5. Análisis Geográfico: Macro-Hubs Intermodales
-Este enfoque revela la infraestructura física de transbordo. Al agrupar estaciones cercanas, emergen los grandes polígonos de movilidad de la ciudad.<div class="cell docutils container">
+</section>
+<section id="analisis-geografico-macro-hubs-intermodales">
+<h2>5. Análisis Geográfico: Macro-Hubs Intermodales<a class="headerlink" href="#analisis-geografico-macro-hubs-intermodales" title="Link to this heading">#</a></h2>
+<p>Este enfoque revela la infraestructura física de transbordo. Al agrupar estaciones cercanas, emergen los grandes polígonos de movilidad de la ciudad.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Gráfica de Barras ---</span>
 <span class="n">top_10_hubs</span> <span class="o">=</span> <span class="n">df_macro_hubs</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -10528,8 +10541,11 @@ Este enfoque revela la infraestructura física de transbordo. Al agrupar estacio
 &lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div></div>
 </div>
 <hr/>
-## 6. Análisis Matemático: Centralidad Estricta
-Evalúa la convergencia puntual sin agrupaciones, detectando puntos específicos (coordenadas únicas) que soportan una gran carga de vectores vehiculares.<div class="cell docutils container">
+</section>
+<section id="analisis-matematico-centralidad-estricta">
+<h2>6. Análisis Matemático: Centralidad Estricta<a class="headerlink" href="#analisis-matematico-centralidad-estricta" title="Link to this heading">#</a></h2>
+<p>Evalúa la convergencia puntual sin agrupaciones, detectando puntos específicos (coordenadas únicas) que soportan una gran carga de vectores vehiculares.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Gráfica de Barras ---</span>
 <span class="n">top_10_nodos</span> <span class="o">=</span> <span class="n">df_estricto</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -10917,9 +10933,11 @@ Evalúa la convergencia puntual sin agrupaciones, detectando puntos específicos
 &lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div></div>
 </div>
 <hr/>
-### 6.1. Distribución de la Capilaridad Matemática (Ley de Potencias)
-La topología de la red sigue una distribución de **Scale-Free Network** (Ley de Potencias). 
-¿Por qué ocurre esto? En los sistemas de transporte reales, la inmensa mayoría de las paradas actúan como nodos de paso simples (1 conexión de entrada y 1 de salida = FC de 2). Por el contrario, un grupo extremadamente reducido de nodos actúa como absorbedores masivos de rutas (decenas de conexiones). Esta desigualdad genera la curva logarítmica descendente que vemos a continuación.<div class="cell docutils container">
+<section id="distribucion-de-la-capilaridad-matematica-ley-de-potencias">
+<h3>6.1. Distribución de la Capilaridad Matemática (Ley de Potencias)<a class="headerlink" href="#distribucion-de-la-capilaridad-matematica-ley-de-potencias" title="Link to this heading">#</a></h3>
+<p>La topología de la red sigue una distribución de <strong>Scale-Free Network</strong> (Ley de Potencias).
+¿Por qué ocurre esto? En los sistemas de transporte reales, la inmensa mayoría de las paradas actúan como nodos de paso simples (1 conexión de entrada y 1 de salida = FC de 2). Por el contrario, un grupo extremadamente reducido de nodos actúa como absorbedores masivos de rutas (decenas de conexiones). Esta desigualdad genera la curva logarítmica descendente que vemos a continuación.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span>
@@ -11009,8 +11027,12 @@ La topología de la red sigue una distribución de **Scale-Free Network** (Ley d
 </div></div></div>
 </div>
 <hr/>
-## 7. Anexo: Diagnóstico Especulativo para Ruta Anillar (Periférico)
-Este apartado aísla los nodos y Macro-Hubs que cruzan o se nombran "Periférico". Se divide en la perspectiva Matemática y Geográfica para identificar anclajes potenciales.<div class="cell docutils container">
+</section>
+</section>
+<section id="anexo-diagnostico-especulativo-para-ruta-anillar-periferico">
+<h2>7. Anexo: Diagnóstico Especulativo para Ruta Anillar (Periférico)<a class="headerlink" href="#anexo-diagnostico-especulativo-para-ruta-anillar-periferico" title="Link to this heading">#</a></h2>
+<p>Este apartado aísla los nodos y Macro-Hubs que cruzan o se nombran “Periférico”. Se divide en la perspectiva Matemática y Geográfica para identificar anclajes potenciales.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Expresión regular para atrapar variantes de la palabra</span>
 <span class="n">patron</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;perif[eé]rico&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
@@ -18058,7 +18080,13 @@ Este apartado aísla los nodos y Macro-Hubs que cruzan o se nombran "Periférico
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-teorica">1. Justificación Teórica</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecucion-del-motor-topologico">4. Ejecución del Motor Topológico</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecucion-del-motor-topologico">4. Ejecución del Motor Topológico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-geografico-macro-hubs-intermodales">5. Análisis Geográfico: Macro-Hubs Intermodales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-matematico-centralidad-estricta">6. Análisis Matemático: Centralidad Estricta</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-la-capilaridad-matematica-ley-de-potencias">6.1. Distribución de la Capilaridad Matemática (Ley de Potencias)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anexo-diagnostico-especulativo-para-ruta-anillar-periferico">7. Anexo: Diagnóstico Especulativo para Ruta Anillar (Periférico)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eje-periferico-perspectiva-geografica-macro-hubs">7.1. Eje Periférico: Perspectiva Geográfica (Macro-Hubs)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eje-periferico-perspectiva-matematica-nodos-individuales">7.2. Eje Periférico: Perspectiva Matemática (Nodos Individuales)</a></li>
 </ul>

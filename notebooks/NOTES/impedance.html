@@ -183,7 +183,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -380,9 +380,19 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-constante-de-saturacion-de-la-cdmx">La Constante de Saturación de la CDMX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-derecho-de-via-a-coeficiente">De Derecho de Vía a Coeficiente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tablas-de-fallback">2.1 Tablas de Fallback</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frictioncalculator-el-coeficiente-de-friccion-vial-cf">1. <code class="docutils literal notranslate"><span class="pre">FrictionCalculator</span></code> — El Coeficiente de Fricción Vial (Cf)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-constante-de-saturacion-de-la-cdmx">La Constante de Saturación de la CDMX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#de-derecho-de-via-a-coeficiente">De Derecho de Vía a Coeficiente</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vftimpedancemodel-el-motor-de-impedancia">2. <code class="docutils literal notranslate"><span class="pre">VFTImpedanceModel</span></code> — El Motor de Impedancia</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tablas-de-fallback">2.1 Tablas de Fallback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#haversine-la-distancia-real-del-segmento">2.2 <code class="docutils literal notranslate"><span class="pre">haversine()</span></code> — La Distancia Real del Segmento</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-impedance-la-inyeccion-sobre-el-grafo">2.3 <code class="docutils literal notranslate"><span class="pre">apply_impedance()</span></code> — La Inyección sobre el Grafo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-flujo-completo-en-contexto">3. El Flujo Completo en Contexto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#issues-abiertos-sobre-este-modulo">4. Issues Abiertos sobre este Módulo</a></li>
 </ul>
             </nav>
         </div>
@@ -394,22 +404,23 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="notas-del-modulo-impedance-py">
+  <section class="tex2jax_ignore mathjax_ignore" id="notas-del-modulo-impedance-py">
 <h1>Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code><a class="headerlink" href="#notas-del-modulo-impedance-py" title="Link to this heading">#</a></h1>
 <p><strong>¿Qué hace este archivo en resumen?</strong>
 Es el “tasador de tiempo” de la red. Una vez que <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code> construyó el grafo con sus nodos y aristas, este módulo recorre cada segmento y le inyecta un <strong>peso temporal en minutos</strong> basado en tres factores reales: la distancia física del tramo, la velocidad comercial del sistema, y el nivel de interferencia del tráfico urbano sobre esa vía. Es la implementación directa de la <strong>Ecuación VFT</strong>.</p>
 <hr/>
-## 1. `FrictionCalculator` — El Coeficiente de Fricción Vial (Cf)
+<section id="frictioncalculator-el-coeficiente-de-friccion-vial-cf">
+<h2>1. <code class="docutils literal notranslate"><span class="pre">FrictionCalculator</span></code> — El Coeficiente de Fricción Vial (Cf)<a class="headerlink" href="#frictioncalculator-el-coeficiente-de-friccion-vial-cf" title="Link to this heading">#</a></h2>
 <p>Este módulo auxiliar traduce el tipo de derecho de vía de una línea en un penalizador matemático. La idea central: no es lo mismo correr por un túnel del Metro (sin semáforos, sin tráfico) que circular en un camión por Insurgentes entre autos particulares.</p>
 <section id="la-constante-de-saturacion-de-la-cdmx">
-<h2>La Constante de Saturación de la CDMX<a class="headerlink" href="#la-constante-de-saturacion-de-la-cdmx" title="Link to this heading">#</a></h2>
+<h3>La Constante de Saturación de la CDMX<a class="headerlink" href="#la-constante-de-saturacion-de-la-cdmx" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BETA_SATURACION_CDMX</span> <span class="o">=</span> <span class="mf">0.759</span>
 </pre></div>
 </div>
 <p>Este valor viene del <strong>TomTom Traffic Index</strong> para Ciudad de México, que mide el nivel promedio de congestión vial. Un beta de 0.759 significa que la ciudad opera al ~76% de saturación en condiciones promedio.</p>
 </section>
 <section id="de-derecho-de-via-a-coeficiente">
-<h2>De Derecho de Vía a Coeficiente<a class="headerlink" href="#de-derecho-de-via-a-coeficiente" title="Link to this heading">#</a></h2>
+<h3>De Derecho de Vía a Coeficiente<a class="headerlink" href="#de-derecho-de-via-a-coeficiente" title="Link to this heading">#</a></h3>
 <p>El método <code class="docutils literal notranslate"><span class="pre">get_friction()</span></code> usa un <code class="docutils literal notranslate"><span class="pre">alpha</span></code> que escala el impacto de la saturación:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alpha_map</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;exclusivo&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>   <span class="c1"># Metro, Suburbano: aislado del tráfico</span>
@@ -455,10 +466,12 @@ Es el “tasador de tiempo” de la red. Una vez que <code class="docutils liter
 </div>
 <p>El valor por defecto si no se conoce el derecho de vía es <code class="docutils literal notranslate"><span class="pre">&quot;mixto&quot;</span></code> (el peor caso).</p>
 <hr/>
-## 2. `VFTImpedanceModel` — El Motor de Impedancia
 </section>
+</section>
+<section id="vftimpedancemodel-el-motor-de-impedancia">
+<h2>2. <code class="docutils literal notranslate"><span class="pre">VFTImpedanceModel</span></code> — El Motor de Impedancia<a class="headerlink" href="#vftimpedancemodel-el-motor-de-impedancia" title="Link to this heading">#</a></h2>
 <section id="tablas-de-fallback">
-<h2>2.1 Tablas de Fallback<a class="headerlink" href="#tablas-de-fallback" title="Link to this heading">#</a></h2>
+<h3>2.1 Tablas de Fallback<a class="headerlink" href="#tablas-de-fallback" title="Link to this heading">#</a></h3>
 <p>Si un segmento del GeoJSON no reporta velocidad o frecuencia, el modelo usa valores calibrados por sistema. Estas son <strong>velocidades comerciales ajustadas</strong> (no de diseño):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">FALLBACK_VELOCIDAD</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;SUB&quot;</span><span class="p">:</span> <span class="mf">65.0</span><span class="p">,</span>        <span class="c1"># Tren Suburbano</span>
@@ -490,7 +503,9 @@ Es el “tasador de tiempo” de la red. Una vez que <code class="docutils liter
 <div><p><strong>Nota de inconsistencia:</strong> <code class="docutils literal notranslate"><span class="pre">CBB</span></code> tiene frecuencia <code class="docutils literal notranslate"><span class="pre">10.0</span></code> min aquí pero <code class="docutils literal notranslate"><span class="pre">1.0</span></code> min en <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code>. Requiere definición canónica.</p>
 </div></blockquote>
 <hr/>
-### 2.2 `haversine()` — La Distancia Real del Segmento
+</section>
+<section id="haversine-la-distancia-real-del-segmento">
+<h3>2.2 <code class="docutils literal notranslate"><span class="pre">haversine()</span></code> — La Distancia Real del Segmento<a class="headerlink" href="#haversine-la-distancia-real-del-segmento" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@staticmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">haversine</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="n">R</span> <span class="o">=</span> <span class="mi">6371000</span>  <span class="c1"># Radio de la Tierra en metros</span>
@@ -506,7 +521,9 @@ Es el “tasador de tiempo” de la red. Una vez que <code class="docutils liter
 <p><strong>¿Por qué Haversine y no distancia euclidiana?</strong> Porque las coordenadas son geográficas (lon/lat en grados). Una resta directa de coordenadas daría distancias en “grados”, no en metros, y además ignoraría la curvatura de la Tierra. Haversine traza la línea recta más corta sobre la superficie esférica terrestre (ortodrómica), dando metros reales con precisión suficiente para distancias urbanas (error &lt; 0.3% dentro de la CDMX).</p>
 <p><strong>Firma importante:</strong> recibe <code class="docutils literal notranslate"><span class="pre">(lon,</span> <span class="pre">lat,</span> <span class="pre">lon,</span> <span class="pre">lat)</span></code> — primero longitud, luego latitud. Los nodos del grafo están almacenados como <code class="docutils literal notranslate"><span class="pre">(lon,</span> <span class="pre">lat)</span></code>, así que la llamada siempre es <code class="docutils literal notranslate"><span class="pre">haversine(u[0],</span> <span class="pre">u[1],</span> <span class="pre">v[0],</span> <span class="pre">v[1])</span></code>.</p>
 <hr/>
-### 2.3 `apply_impedance()` — La Inyección sobre el Grafo
+</section>
+<section id="apply-impedance-la-inyeccion-sobre-el-grafo">
+<h3>2.3 <code class="docutils literal notranslate"><span class="pre">apply_impedance()</span></code> — La Inyección sobre el Grafo<a class="headerlink" href="#apply-impedance-la-inyeccion-sobre-el-grafo" title="Link to this heading">#</a></h3>
 <p>Este método itera sobre todas las aristas del grafo <code class="docutils literal notranslate"><span class="pre">DiGraph</span></code> y aplica la Ecuación VFT en 6 pasos:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
@@ -569,7 +586,10 @@ Es el “tasador de tiempo” de la red. Una vez que <code class="docutils liter
 <div><p><strong>Decisión de diseño clave:</strong> el <code class="docutils literal notranslate"><span class="pre">weight</span></code> solo incluye <code class="docutils literal notranslate"><span class="pre">travel_time_min</span></code>, <strong>no</strong> <code class="docutils literal notranslate"><span class="pre">boarding_cost_min</span></code>. El boarding cost se registra como atributo informativo pero no penaliza el camino en los segmentos normales. La penalización por espera ocurre únicamente en las aristas de transbordo peatonal, donde sí se suma al weight (<code class="docutils literal notranslate"><span class="pre">tiempo_caminata</span> <span class="pre">+</span> <span class="pre">wait</span></code>).</p>
 </div></blockquote>
 <hr/>
-## 3. El Flujo Completo en Contexto
+</section>
+</section>
+<section id="el-flujo-completo-en-contexto">
+<h2>3. El Flujo Completo en Contexto<a class="headerlink" href="#el-flujo-completo-en-contexto" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GeoJSON  →  VFTGraphBuilder  →  [Grafo base + transbordos peatonales]
                                            ↓
                               VFTImpedanceModel.apply_impedance()
@@ -581,7 +601,9 @@ Es el “tasador de tiempo” de la red. Una vez que <code class="docutils liter
 </pre></div>
 </div>
 <hr/>
-## 4. Issues Abiertos sobre este Módulo
+</section>
+<section id="issues-abiertos-sobre-este-modulo">
+<h2>4. Issues Abiertos sobre este Módulo<a class="headerlink" href="#issues-abiertos-sobre-este-modulo" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><strong>Velocidad INTERURBANO (160 km/h):</strong> El fallback de 160 km/h corresponde a velocidad de diseño del tren, no comercial. La velocidad operativa real es ~70 km/h. Requiere corrección.</p></li>
 <li><p><strong>Inconsistencia CBB:</strong> <code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA[&quot;CBB&quot;]</span></code> = 10.0 aquí vs 1.0 en <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code>. Definir el valor canónico.</p></li>
@@ -655,9 +677,19 @@ Es el “tasador de tiempo” de la red. Una vez que <code class="docutils liter
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-constante-de-saturacion-de-la-cdmx">La Constante de Saturación de la CDMX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-derecho-de-via-a-coeficiente">De Derecho de Vía a Coeficiente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tablas-de-fallback">2.1 Tablas de Fallback</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frictioncalculator-el-coeficiente-de-friccion-vial-cf">1. <code class="docutils literal notranslate"><span class="pre">FrictionCalculator</span></code> — El Coeficiente de Fricción Vial (Cf)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-constante-de-saturacion-de-la-cdmx">La Constante de Saturación de la CDMX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#de-derecho-de-via-a-coeficiente">De Derecho de Vía a Coeficiente</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vftimpedancemodel-el-motor-de-impedancia">2. <code class="docutils literal notranslate"><span class="pre">VFTImpedanceModel</span></code> — El Motor de Impedancia</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tablas-de-fallback">2.1 Tablas de Fallback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#haversine-la-distancia-real-del-segmento">2.2 <code class="docutils literal notranslate"><span class="pre">haversine()</span></code> — La Distancia Real del Segmento</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-impedance-la-inyeccion-sobre-el-grafo">2.3 <code class="docutils literal notranslate"><span class="pre">apply_impedance()</span></code> — La Inyección sobre el Grafo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-flujo-completo-en-contexto">3. El Flujo Completo en Contexto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#issues-abiertos-sobre-este-modulo">4. Issues Abiertos sobre este Módulo</a></li>
 </ul>
   </nav></div>
 

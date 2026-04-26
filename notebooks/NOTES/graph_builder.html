@@ -183,7 +183,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -380,12 +380,25 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#umbrales-de-caminata-statistical-thresholds">Umbrales de Caminata (<code class="docutils literal notranslate"><span class="pre">STATISTICAL_THRESHOLDS</span></code>)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempos-de-espera-fallback-frecuencia">Tiempos de Espera (<code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA</span></code>)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-costo-del-transbordo-caminata-espera">El Costo del Transbordo (Caminata + Espera)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema">El problema</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-se-corrigio-en-el-backend">Por qué no se corrigió en el backend</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg">La solución adoptada: KDTree con 50 m de tolerancia (<code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-diccionarios-base-los-acuerdos-de-la-realidad">1. Los Diccionarios Base (Los Acuerdos de la Realidad)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#umbrales-de-caminata-statistical-thresholds">Umbrales de Caminata (<code class="docutils literal notranslate"><span class="pre">STATISTICAL_THRESHOLDS</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempos-de-espera-fallback-frecuencia">Tiempos de Espera (<code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-director-de-orquesta-build-graph">2. El Director de Orquesta: <code class="docutils literal notranslate"><span class="pre">build_graph()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-magia-de-los-transbordos-apply-pedestrian-snapping">3. La Magia de los Transbordos: <code class="docutils literal notranslate"><span class="pre">_apply_pedestrian_snapping()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-costo-del-transbordo-caminata-espera">El Costo del Transbordo (Caminata + Espera)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-tecnica-de-la-velocidad-peatonal">🚨 Justificación Técnica de la Velocidad Peatonal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitante-de-datos-cobertura-incompleta-de-cablebus-cbb">⚠️ Limitante de Datos: Cobertura Incompleta de Cablebús (CBB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamento-del-coeficiente-de-friccion-vial-cf-alpha-por-derecho-de-via">📐 Fundamento del Coeficiente de Fricción Vial (CF) — alpha por derecho de vía</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observacion-de-semantica-de-datos-banqueta-vs-carril-apimetro-vftmodel">🔬 Observación de Semántica de Datos: Banqueta vs. Carril (Apimetro ↔ VFTModel)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema">El problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-se-corrigio-en-el-backend">Por qué no se corrigió en el backend</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg">La solución adoptada: KDTree con 50 m de tolerancia (<code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code>)</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -397,15 +410,16 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="notas-del-modulo-graph-builder-py">
+  <section class="tex2jax_ignore mathjax_ignore" id="notas-del-modulo-graph-builder-py">
 <h1>Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code><a class="headerlink" href="#notas-del-modulo-graph-builder-py" title="Link to this heading">#</a></h1>
 <p><strong>¿Qué hace este archivo en resumen?</strong>
 Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de transporte sueltas y las teje para formar un grafo (una red conectada). Su trabajo más importante es simular la realidad: conectar estaciones cercanas para que el usuario pueda transbordar caminando, cobrándole el tiempo de caminata más el tiempo de espera en el andén.</p>
 <hr/>
-## 1. Los Diccionarios Base (Los Acuerdos de la Realidad)
+<section id="los-diccionarios-base-los-acuerdos-de-la-realidad">
+<h2>1. Los Diccionarios Base (Los Acuerdos de la Realidad)<a class="headerlink" href="#los-diccionarios-base-los-acuerdos-de-la-realidad" title="Link to this heading">#</a></h2>
 <p>Antes de conectar cosas, la clase <code class="docutils literal notranslate"><span class="pre">VFTGraphBuilder</span></code> define las reglas del juego usando diccionarios:</p>
 <section id="umbrales-de-caminata-statistical-thresholds">
-<h2>Umbrales de Caminata (<code class="docutils literal notranslate"><span class="pre">STATISTICAL_THRESHOLDS</span></code>)<a class="headerlink" href="#umbrales-de-caminata-statistical-thresholds" title="Link to this heading">#</a></h2>
+<h3>Umbrales de Caminata (<code class="docutils literal notranslate"><span class="pre">STATISTICAL_THRESHOLDS</span></code>)<a class="headerlink" href="#umbrales-de-caminata-statistical-thresholds" title="Link to this heading">#</a></h3>
 <p>Define qué tan lejos estamos dispuestos a obligar al usuario a caminar para cambiar de transporte.</p>
 <ul class="simple">
 <li><p><strong>MIN (15m):</strong> Literalmente la misma estación o el mismo paradero.</p></li>
@@ -415,7 +429,7 @@ Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de tr
 </ul>
 </section>
 <section id="tiempos-de-espera-fallback-frecuencia">
-<h2>Tiempos de Espera (<code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA</span></code>)<a class="headerlink" href="#tiempos-de-espera-fallback-frecuencia" title="Link to this heading">#</a></h2>
+<h3>Tiempos de Espera (<code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA</span></code>)<a class="headerlink" href="#tiempos-de-espera-fallback-frecuencia" title="Link to this heading">#</a></h3>
 <p>Si un sistema no nos dice cada cuánto pasa, usamos estos promedios (en minutos) para calcular cuánto tiempo va a perder el usuario esperando en el andén durante un transbordo.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">FALLBACK_FRECUENCIA</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;METRO&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">&quot;MB&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="s2">&quot;TL&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span> <span class="s2">&quot;TROLE&quot;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">,</span>
@@ -424,18 +438,22 @@ Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de tr
 </pre></div>
 </div>
 <hr/>
-## 2. El Director de Orquesta: `build_graph()`
+</section>
+</section>
+<section id="el-director-de-orquesta-build-graph">
+<h2>2. El Director de Orquesta: <code class="docutils literal notranslate"><span class="pre">build_graph()</span></code><a class="headerlink" href="#el-director-de-orquesta-build-graph" title="Link to this heading">#</a></h2>
 <p>Es la función principal. Lo que hace es:</p>
 <ol class="arabic simple">
 <li><p>Construye las vías normales (trenes y camiones avanzando de estación a estación).</p></li>
 <li><p>Si le decimos que opere en modo <code class="docutils literal notranslate"><span class="pre">&quot;REALISTIC_INTEGRATION&quot;</span></code>, manda llamar a la función de “snapping” para crear los caminos peatonales invisibles entre estaciones cercanas.</p></li>
 </ol>
 <hr/>
-## 3. La Magia de los Transbordos: `_apply_pedestrian_snapping()`
-<p>Aquí es donde ocurre la integración intermodal. El algoritmo agarra un compás, se para en una estación y busca si hay otras estaciones dentro del radio de tolerancia (ej. 85 metros). Si encuentra una, crea un puente peatonal de ida y vuelta.</p>
 </section>
+<section id="la-magia-de-los-transbordos-apply-pedestrian-snapping">
+<h2>3. La Magia de los Transbordos: <code class="docutils literal notranslate"><span class="pre">_apply_pedestrian_snapping()</span></code><a class="headerlink" href="#la-magia-de-los-transbordos-apply-pedestrian-snapping" title="Link to this heading">#</a></h2>
+<p>Aquí es donde ocurre la integración intermodal. El algoritmo agarra un compás, se para en una estación y busca si hay otras estaciones dentro del radio de tolerancia (ej. 85 metros). Si encuentra una, crea un puente peatonal de ida y vuelta.</p>
 <section id="el-costo-del-transbordo-caminata-espera">
-<h2>El Costo del Transbordo (Caminata + Espera)<a class="headerlink" href="#el-costo-del-transbordo-caminata-espera" title="Link to this heading">#</a></h2>
+<h3>El Costo del Transbordo (Caminata + Espera)<a class="headerlink" href="#el-costo-del-transbordo-caminata-espera" title="Link to this heading">#</a></h3>
 <p>Cuando creamos esa conexión, le cobramos al usuario dos cosas en el <code class="docutils literal notranslate"><span class="pre">weight</span></code> (el peso que lee el algoritmo de rutas):</p>
 <ol class="arabic simple">
 <li><p>Lo que tarda en caminar.</p></li>
@@ -452,7 +470,10 @@ Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de tr
 </pre></div>
 </div>
 <hr/>
-## 🚨 Justificación Técnica de la Velocidad Peatonal
+</section>
+</section>
+<section id="justificacion-tecnica-de-la-velocidad-peatonal">
+<h2>🚨 Justificación Técnica de la Velocidad Peatonal<a class="headerlink" href="#justificacion-tecnica-de-la-velocidad-peatonal" title="Link to this heading">#</a></h2>
 <p>Para calcular el <code class="docutils literal notranslate"><span class="pre">tiempo_caminata_min</span></code>, en el código hacemos una conversión equivalente a caminar a <strong>5 km/h (1.38 m/s)</strong>.</p>
 <p><strong>¿De dónde sale este número para no inventarlo?</strong> Se toma el límite superior del estándar operativo nacional basado en el <a class="reference external" href="https://www.gob.mx/cms/uploads/attachment/file/509173/Manual_de_calles_2019.pdf"><em>Manual de Calles: Diseño Vial para Ciudades Mexicanas</em> (SEDATU, 2019)</a>. En la página 178 del documento oficial, se establece la siguiente norma para el diseño de infraestructura:</p>
 <blockquote>
@@ -460,7 +481,9 @@ Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de tr
 </div></blockquote>
 <p>Como nuestro modelo asume un trayecto de transferencia (población económicamente activa en movimiento continuo dentro de un nodo de transbordo sin esperar semáforos), adoptamos el límite superior de <strong>1.38 m/s (5 km/h)</strong>, logrando un balance entre la norma urbana y los cálculos de isócronas globales.</p>
 <hr/>
-## ⚠️ Limitante de Datos: Cobertura Incompleta de Cablebús (CBB)
+</section>
+<section id="limitante-de-datos-cobertura-incompleta-de-cablebus-cbb">
+<h2>⚠️ Limitante de Datos: Cobertura Incompleta de Cablebús (CBB)<a class="headerlink" href="#limitante-de-datos-cobertura-incompleta-de-cablebus-cbb" title="Link to this heading">#</a></h2>
 <p>El backend Go (<code class="docutils literal notranslate"><span class="pre">apimetro_db</span></code>) reporta únicamente <strong>19 estaciones de Cablebús</strong> en la tabla <code class="docutils literal notranslate"><span class="pre">lineas</span></code> (verificado 2026-04-18). El sistema real opera con más estaciones distribuidas en las Líneas 1 y 2.</p>
 <ul class="simple">
 <li><p><strong>Impacto en C (Cobertura):</strong> el buffer de 800 m subestima el área cubierta por CBB.</p></li>
@@ -468,7 +491,9 @@ Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de tr
 <li><p><strong>Acción requerida:</strong> verificar tabla <code class="docutils literal notranslate"><span class="pre">lineas</span></code> en <code class="docutils literal notranslate"><span class="pre">apimetro_db</span></code> filtrando <code class="docutils literal notranslate"><span class="pre">sistema</span> <span class="pre">=</span> <span class="pre">'CBB'</span></code> y completar el registro de estaciones faltantes. Hasta entonces, los indicadores de CBB deben interpretarse como estimaciones conservadoras.</p></li>
 </ul>
 <hr/>
-## 📐 Fundamento del Coeficiente de Fricción Vial (CF) — alpha por derecho de vía
+</section>
+<section id="fundamento-del-coeficiente-de-friccion-vial-cf-alpha-por-derecho-de-via">
+<h2>📐 Fundamento del Coeficiente de Fricción Vial (CF) — alpha por derecho de vía<a class="headerlink" href="#fundamento-del-coeficiente-de-friccion-vial-cf-alpha-por-derecho-de-via" title="Link to this heading">#</a></h2>
 <p>El <code class="docutils literal notranslate"><span class="pre">FrictionCalculator</span></code> en <code class="docutils literal notranslate"><span class="pre">src/core/models/impedance.py</span></code> usa la siguiente tabla de <code class="docutils literal notranslate"><span class="pre">alpha</span></code> para calcular <code class="docutils literal notranslate"><span class="pre">CF</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">+</span> <span class="pre">(alpha</span> <span class="pre">×</span> <span class="pre">BETA_SATURACION_CDMX)</span></code>:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -506,10 +531,11 @@ Es el “arquitecto” de nuestra red. Toma todas las estaciones y líneas de tr
 <p><strong>Fuente del BETA_SATURACION:</strong> TomTom Traffic Index 2023 para Ciudad de México — <code class="docutils literal notranslate"><span class="pre">Average</span> <span class="pre">congestion</span> <span class="pre">level</span> <span class="pre">=</span> <span class="pre">0.759</span></code> (76% de incremento en tiempo de viaje sobre flujo libre en hora pico).</p>
 <p><strong>Nota metodológica:</strong> Los <code class="docutils literal notranslate"><span class="pre">FALLBACK_VELOCIDAD</span></code> en <code class="docutils literal notranslate"><span class="pre">VFTImpedanceModel</span></code> representan <strong>velocidad de flujo libre</strong> (sin congestión). El CF aplica la penalización. Esta separación evita el double-counting que ocurriría si el fallback ya incorporara congestión y el CF la volviera a aplicar.</p>
 <hr/>
-## 🔬 Observación de Semántica de Datos: Banqueta vs. Carril (Apimetro ↔ VFTModel)
 </section>
+<section id="observacion-de-semantica-de-datos-banqueta-vs-carril-apimetro-vftmodel">
+<h2>🔬 Observación de Semántica de Datos: Banqueta vs. Carril (Apimetro ↔ VFTModel)<a class="headerlink" href="#observacion-de-semantica-de-datos-banqueta-vs-carril-apimetro-vftmodel" title="Link to this heading">#</a></h2>
 <section id="el-problema">
-<h2>El problema<a class="headerlink" href="#el-problema" title="Link to this heading">#</a></h2>
+<h3>El problema<a class="headerlink" href="#el-problema" title="Link to this heading">#</a></h3>
 <p>Los sistemas de transporte de superficie (MB, CC, RTP, TROLE) almacenan las coordenadas
 de sus paradas en la <strong>banqueta o cordón</strong>, mientras que la geometría del trazo
 (<code class="docutils literal notranslate"><span class="pre">ramals.geom</span></code> en Apimetro) sigue el <strong>eje del carril central</strong>. La diferencia típica
@@ -578,14 +604,14 @@ Endpoint sublínea (carril):   (-99.18227, 19.42809)  ← ≈ 8 m de diferencia
 </div>
 </section>
 <section id="por-que-no-se-corrigio-en-el-backend">
-<h2>Por qué no se corrigió en el backend<a class="headerlink" href="#por-que-no-se-corrigio-en-el-backend" title="Link to this heading">#</a></h2>
+<h3>Por qué no se corrigió en el backend<a class="headerlink" href="#por-que-no-se-corrigio-en-el-backend" title="Link to this heading">#</a></h3>
 <p>Mover el endpoint al punto proyectado sobre el carril introduciría una inconsistencia
 semántica: el nodo del grafo existiría en el asfalto, no en la posición GPS real de
 la parada. La coordenada original de cada estación es el dato canónico; el trazo es
 la geometría auxiliar.</p>
 </section>
 <section id="la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg">
-<h2>La solución adoptada: KDTree con 50 m de tolerancia (<code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code>)<a class="headerlink" href="#la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg" title="Link to this heading">#</a></h2>
+<h3>La solución adoptada: KDTree con 50 m de tolerancia (<code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code>)<a class="headerlink" href="#la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">_build_base_network</span></code> construye un <code class="docutils literal notranslate"><span class="pre">scipy.spatial.KDTree</span></code> sobre las coordenadas de
 las estaciones registradas en Fase 1. Para cada punto del trazo, consulta la estación
 más cercana dentro de <code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code> (≈ 50 m). Esto resuelve:</p>
@@ -600,6 +626,7 @@ waypoints a lo largo de toda la ruta sin importar la granularidad del GeoJSON.</
 <p>El nodo del grafo siempre es la <strong>coordenada GPS original de la estación</strong> (registrada
 en Fase 1 desde <code class="docutils literal notranslate"><span class="pre">geojsonEstacion</span></code>). Nunca se crean nodos huérfanos ni nodos en el
 punto medio del carril.</p>
+</section>
 </section>
 </section>
 
@@ -667,12 +694,25 @@ punto medio del carril.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#umbrales-de-caminata-statistical-thresholds">Umbrales de Caminata (<code class="docutils literal notranslate"><span class="pre">STATISTICAL_THRESHOLDS</span></code>)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempos-de-espera-fallback-frecuencia">Tiempos de Espera (<code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA</span></code>)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-costo-del-transbordo-caminata-espera">El Costo del Transbordo (Caminata + Espera)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema">El problema</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-se-corrigio-en-el-backend">Por qué no se corrigió en el backend</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg">La solución adoptada: KDTree con 50 m de tolerancia (<code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-diccionarios-base-los-acuerdos-de-la-realidad">1. Los Diccionarios Base (Los Acuerdos de la Realidad)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#umbrales-de-caminata-statistical-thresholds">Umbrales de Caminata (<code class="docutils literal notranslate"><span class="pre">STATISTICAL_THRESHOLDS</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempos-de-espera-fallback-frecuencia">Tiempos de Espera (<code class="docutils literal notranslate"><span class="pre">FALLBACK_FRECUENCIA</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-director-de-orquesta-build-graph">2. El Director de Orquesta: <code class="docutils literal notranslate"><span class="pre">build_graph()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-magia-de-los-transbordos-apply-pedestrian-snapping">3. La Magia de los Transbordos: <code class="docutils literal notranslate"><span class="pre">_apply_pedestrian_snapping()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-costo-del-transbordo-caminata-espera">El Costo del Transbordo (Caminata + Espera)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-tecnica-de-la-velocidad-peatonal">🚨 Justificación Técnica de la Velocidad Peatonal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitante-de-datos-cobertura-incompleta-de-cablebus-cbb">⚠️ Limitante de Datos: Cobertura Incompleta de Cablebús (CBB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamento-del-coeficiente-de-friccion-vial-cf-alpha-por-derecho-de-via">📐 Fundamento del Coeficiente de Fricción Vial (CF) — alpha por derecho de vía</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observacion-de-semantica-de-datos-banqueta-vs-carril-apimetro-vftmodel">🔬 Observación de Semántica de Datos: Banqueta vs. Carril (Apimetro ↔ VFTModel)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema">El problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-se-corrigio-en-el-backend">Por qué no se corrigió en el backend</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-solucion-adoptada-kdtree-con-50-m-de-tolerancia-snap-tolerance-deg">La solución adoptada: KDTree con 50 m de tolerancia (<code class="docutils literal notranslate"><span class="pre">SNAP_TOLERANCE_DEG</span></code>)</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

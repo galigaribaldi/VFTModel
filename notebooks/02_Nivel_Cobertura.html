@@ -57,10 +57,12 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02_Nivel_Cobertura';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)" href="03_Fuerza_capilar.html" />
+    <link rel="next" title="Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (\(FC\))" href="03_Fuerza_capilar.html" />
     <link rel="prev" title="Notas del Módulo: impedance.py" href="NOTES/impedance.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -183,7 +185,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -392,14 +394,15 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="reporte-02-nivel-de-cobertura-espacial-capilar-c">
+  <section class="tex2jax_ignore mathjax_ignore" id="reporte-02-nivel-de-cobertura-espacial-capilar-c">
 <h1>Reporte 02: Nivel de Cobertura Espacial Capilar (C)<a class="headerlink" href="#reporte-02-nivel-de-cobertura-espacial-capilar-c" title="Link to this heading">#</a></h1>
 <section id="justificacion-teorica">
 <h2>1. Justificación Teórica<a class="headerlink" href="#justificacion-teorica" title="Link to this heading">#</a></h2>
 <p>El presente indicador evalúa la equidad espacial de la red de transporte masivo. Se define un isócrono de accesibilidad peatonal (radio de caminata o <em>Buffer</em>) alrededor de cada estación, típicamente de <strong>800 metros</strong> (equivalente a 10-15 minutos caminando).<br />
 <strong>Definir área metropolitana en un polígono de CDXM y algunos municipios de EDOMEX</strong></p>
-<p>El Nivel de Cobertura ($C$) se calcula intersectando el área de influencia de las estaciones ($A_{cubierta}$) contra la superficie geodésica total de la demarcación política ($A_{total}$):</p>
-<p>$$C = \left( \frac{A_{cubierta}}{A_{total}} \right) \times 100$$</p>
+<p>El Nivel de Cobertura (<span class="math notranslate nohighlight">\(C\)</span>) se calcula intersectando el área de influencia de las estaciones (<span class="math notranslate nohighlight">\(A_{cubierta}\)</span>) contra la superficie geodésica total de la demarcación política (<span class="math notranslate nohighlight">\(A_{total}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[C = \left( \frac{A_{cubierta}}{A_{total}} \right) \times 100\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -1544,7 +1547,7 @@ Calculando coberturas independientes por sistema...
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal ($FC$)</p>
+        <p class="prev-next-title">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

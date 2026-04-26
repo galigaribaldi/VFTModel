@@ -4,6 +4,7 @@
 Es el "tasador de tiempo" de la red. Una vez que `graph_builder.py` construyó el grafo con sus nodos y aristas, este módulo recorre cada segmento y le inyecta un **peso temporal en minutos** basado en tres factores reales: la distancia física del tramo, la velocidad comercial del sistema, y el nivel de interferencia del tráfico urbano sobre esa vía. Es la implementación directa de la **Ecuación VFT**.
 
 <hr/>
+
 ## 1. `FrictionCalculator` — El Coeficiente de Fricción Vial (Cf)
 
 Este módulo auxiliar traduce el tipo de derecho de vía de una línea en un penalizador matemático. La idea central: no es lo mismo correr por un túnel del Metro (sin semáforos, sin tráfico) que circular en un camión por Insurgentes entre autos particulares.
@@ -42,6 +43,7 @@ cf = 1.0 + (alpha * BETA_SATURACION_CDMX)
 El valor por defecto si no se conoce el derecho de vía es `"mixto"` (el peor caso).
 
 <hr/>
+
 ## 2. `VFTImpedanceModel` — El Motor de Impedancia
 
 ### 2.1 Tablas de Fallback
@@ -79,6 +81,7 @@ FALLBACK_FRECUENCIA = {
 > **Nota de inconsistencia:** `CBB` tiene frecuencia `10.0` min aquí pero `1.0` min en `graph_builder.py`. Requiere definición canónica.
 
 <hr/>
+
 ### 2.2 `haversine()` — La Distancia Real del Segmento
 
 ```python
@@ -99,6 +102,7 @@ def haversine(lon1, lat1, lon2, lat2) -> float:
 **Firma importante:** recibe `(lon, lat, lon, lat)` — primero longitud, luego latitud. Los nodos del grafo están almacenados como `(lon, lat)`, así que la llamada siempre es `haversine(u[0], u[1], v[0], v[1])`.
 
 <hr/>
+
 ### 2.3 `apply_impedance()` — La Inyección sobre el Grafo
 
 Este método itera sobre todas las aristas del grafo `DiGraph` y aplica la Ecuación VFT en 6 pasos:
@@ -142,6 +146,7 @@ for u, v, data in self.G.edges(data=True):
 > **Decisión de diseño clave:** el `weight` solo incluye `travel_time_min`, **no** `boarding_cost_min`. El boarding cost se registra como atributo informativo pero no penaliza el camino en los segmentos normales. La penalización por espera ocurre únicamente en las aristas de transbordo peatonal, donde sí se suma al weight (`tiempo_caminata + wait`).
 
 <hr/>
+
 ## 3. El Flujo Completo en Contexto
 
 ```
@@ -156,6 +161,7 @@ GeoJSON  →  VFTGraphBuilder  →  [Grafo base + transbordos peatonales]
 ```
 
 <hr/>
+
 ## 4. Issues Abiertos sobre este Módulo
 
 1. **Velocidad INTERURBANO (160 km/h):** El fallback de 160 km/h corresponde a velocidad de diseño del tren, no comercial. La velocidad operativa real es ~70 km/h. Requiere corrección.
