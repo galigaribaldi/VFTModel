@@ -30,7 +30,7 @@ class DetourFactorOrchestrator:
         if dist_recta_total_m == 0: return {} if return_json else pd.DataFrame()
 
         try:
-            path = nx.shortest_path(self.G, source=u_red, target=v_red, weight='length')
+            path = nx.shortest_path(self.G, source=u_red, target=v_red, weight='weight')
         except nx.NetworkXNoPath:
             return {} if return_json else pd.DataFrame()
 

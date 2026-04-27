@@ -43,13 +43,25 @@ def get_closest_node_and_walking_distance(G: nx.DiGraph, punto):
     raise ValueError("La entrada debe ser un String (ID Nodo) o una Tupla (lon, lat).")
 
 def calculate_network_distance(G: nx.DiGraph, path: list) -> float:
-    """Suma las distancias reales de red iterando sobre los segmentos."""
+    """
+    Suma la distancia real del trazo entre estaciones consecutivas del path.
+
+    Usa distancia_segmento_m de la arista, que el graph_builder acumuló
+    vértice a vértice siguiendo el MultiLineString completo (curvas, esquinas,
+    diagonales). Para CC y RTP, que siguen vialidades urbanas sinuosas, este
+    valor puede ser hasta un 40% mayor que la cuerda directa entre paradas.
+
+    Fallback a haversine solo si la arista no tiene el atributo (caso defensivo).
+    """
     dist_red_topologica_m = 0.0
     for i in range(len(path) - 1):
-        n_actual_pos = G.nodes[path[i]]['pos']
-        n_siguiente_pos = G.nodes[path[i+1]]['pos']
-        dist_red_topologica_m += VFTImpedanceModel.haversine(
-            n_actual_pos[0], n_actual_pos[1], 
-            n_siguiente_pos[0], n_siguiente_pos[1]
-        )
+        edge_data = G[path[i]][path[i + 1]]
+        segmento = edge_data.get('distancia_segmento_m')
+        if segmento is None:
+            n_pos  = G.nodes[path[i]]['pos']
+            n1_pos = G.nodes[path[i + 1]]['pos']
+            segmento = VFTImpedanceModel.haversine(
+                n_pos[0], n_pos[1], n1_pos[0], n1_pos[1]
+            )
+        dist_red_topologica_m += segmento
     return dist_red_topologica_m
