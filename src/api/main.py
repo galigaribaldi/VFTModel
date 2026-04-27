@@ -24,7 +24,7 @@ from src.core.services.graph_builder import VFTGraphBuilder
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
 from src.core.algorithms.topologicalIndicators.spatial_coverate import SpatialCoverageAnalyzer
 from src.core.algorithms.topologicalIndicators.capillar_strength import CapillaryStrengthAnalyzer
-from src.core.algorithms.topologicalIndicators.detaur_factor import DetourFactorAnalyzer
+from src.core.algorithms.topologicalIndicators.detaurFactor import DetourFactorOrchestrator
 from src.core.utils.logger import vft_logger
 
 app = FastAPI(
@@ -181,71 +181,85 @@ async def get_geo_capillary(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en análisis geo-topológico: {str(e)}")
 
-@app.get("/api/v1/network/topological/detour-factor", summary="Factor de Desviación (Detour Factor) General")
+@app.get("/get_detour_factor")
 async def get_detour_factor(
-    sample_size: int = Query(500, description="Tamaño de la muestra estadística"),
-    mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
-    tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo")):
-    """
-    Evalúa la eficiencia de las rutas. Con REALISTIC_INTEGRATION, el modelo 
-    descubrirá atajos multimodales usando transbordos peatonales.
-    """
-    try:
-        G = await get_or_build_graph(mode, tolerance_m)
-        
-        analyzer = DetourFactorAnalyzer(G)
-        df_resultados = await asyncio.to_thread(analyzer.calculate_detaur_factor, sample_size)
-        clean_df = df_resultados.where(pd.notna(df_resultados), None)
-        
-        return {
-            "status": "success",
-            "parametros": {
-                "muestra_estadistica": sample_size,
-                "modo_grafo": mode,
-                "tolerancia_transbordo_m": tolerance_m
-                },
-            "data": clean_df.to_dict(orient="records")
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error en cálculo de Detour Factor: {str(e)}")
-
-@app.post("/api/v1/network/topological/detour-factor/any-node", summary="Detour Factor desde Coordenadas Arbitrarias")
-async def get_detour_factor_any_node(
-    origen: Union[str, Tuple[float, float]] = Body(..., description="ID del nodo o tupla (lon, lat)"),
-    destino: Union[str, Tuple[float, float]] = Body(..., description="ID del nodo o tupla (lon, lat)"),
+    muestra: int = Query(500, description="Tamaño de la muestra estadística"),
+    seed: Optional[int] = Query(None, description="Semilla para reproducibilidad"),
+    visualize: bool = Query(False, description="Si es True, devuelve geometrías para el mapa"),
     mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
     tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo")
 ):
     """
-    Calcula la eficiencia espacial entre dos puntos arbitrarios, incluyendo 
-    la caminata hacia la estación válida más cercana.
+    Calcula el Factor de Desviación masivo. 
+    Ahora puede devolver datos tabulares o enriquecidos para el visualizador.
     """
     try:
         G = await get_or_build_graph(mode, tolerance_m)
         
-        analyzer = DetourFactorAnalyzer(G)
+        # Instanciamos el Orquestador (Inyección de dependencia del grafo)
+        orchestrator = DetourFactorOrchestrator(G)
         
-        df_resultados = await asyncio.to_thread(
-            analyzer.calculate_any_node_detaur_factor, 
-            origen, 
-            destino
+        # Ejecución delegada a un hilo para no bloquear el event loop
+        resultados = await asyncio.to_thread(
+            orchestrator.calculate_sample_routes, 
+            muestra, 
+            seed, 
+            visualize # <--- Aquí pasamos el flag de retorno
         )
         
-        df_limpio = df_resultados.where(pd.notna(df_resultados), None)
+        # Si no es para visualizar, convertimos el DataFrame a diccionario
+        data_to_send = resultados if visualize else resultados.to_dict(orient="records")
         
         return {
             "status": "success",
             "parametros": {
-                "origen": origen,
-                "destino": destino,
+                "muestra_estadistica": muestra,
                 "modo_grafo": mode,
-                "tolerancia_transbordo_m": tolerance_m
-                },
-            "data": df_limpio.to_dict(orient="records")
+                "visualizacion_activa": visualize
+            },
+            "data": data_to_send
+        }
+    except Exception as e:
+        vft_logger.error(f"Error en Detour Factor: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/get_detour_factor_any_node")
+async def get_detour_factor_any_node(
+    origen: Union[str, Tuple[float, float]] = Body(..., description="ID del nodo o tupla (lon, lat)"),
+    destino: Union[str, Tuple[float, float]] = Body(..., description="ID del nodo o tupla (lon, lat)"),
+    visualize: bool = Query(True, description="Por defecto devuelve geometrías para rutas únicas"),
+    mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo")
+):
+    """
+    Calcula la eficiencia entre dos puntos, devolviendo métricas detalladas 
+    y la geometría de la ruta paso a paso.
+    """
+    try:
+        G = await get_or_build_graph(mode, tolerance_m)
+        
+        orchestrator = DetourFactorOrchestrator(G)
+        
+        # Llamada al método de ruta personalizada
+        res = await asyncio.to_thread(
+            orchestrator.calculate_custom_route, 
+            origen, 
+            destino, 
+            visualize
+        )
+        
+        if (visualize and not res) or (not visualize and res.empty):
+            return {"status": "no_path", "message": "No se encontró una ruta válida entre los puntos."}
+
+        data_to_send = res if visualize else res.to_dict(orient="records")
+
+        return {
+            "status": "success",
+            "data": data_to_send
         }
     except Exception as e:
         vft_logger.error(f"Error en Detour Factor Arbitrario: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"No se pudo calcular la ruta: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error en el motor: {str(e)}")
 
 if __name__ == "__main__":
     """Arranca el servidor de desarrollo Uvicorn en el puerto 8000."""
