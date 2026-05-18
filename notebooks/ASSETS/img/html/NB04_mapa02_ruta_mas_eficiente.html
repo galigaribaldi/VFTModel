@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_be807b13d248f4150e32bd880c370cae {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_be807b13d248f4150e32bd880c370cae" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_be807b13d248f4150e32bd880c370cae = L.map(
+                "map_be807b13d248f4150e32bd880c370cae",
+                {
+                    center: [19.37801, -99.04796],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_db9d374b560733a7b8cad5c2c41142b6 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_db9d374b560733a7b8cad5c2c41142b6.addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+            var poly_line_1686710f01c2a746a276625c21c4429e = L.polyline(
+                [[19.37801, -99.04796], [19.37281, -99.04]],
+                {"bubblingMouseEvents": true, "color": "#E74C3C", "dashArray": "5", "dashOffset": null, "fill": false, "fillColor": "#E74C3C", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.7, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+            poly_line_1686710f01c2a746a276625c21c4429e.bindTooltip(
+                `<div>
+                     Distancia Directa: 1.02 km
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_ee62537b0d10d9f57241778df1e3e862 = L.polyline(
+                [[19.37801, -99.04796], [19.37631, -99.04533], [19.37532, -99.04379], [19.37454, -99.0426], [19.37384, -99.04156], [19.37328, -99.0408], [19.37281, -99.04]],
+                {"bubblingMouseEvents": true, "color": "#2E86C1", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2E86C1", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+            poly_line_ee62537b0d10d9f57241778df1e3e862.bindTooltip(
+                `<div>
+                     Distancia en Red: 0.99 km
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_25b8d6bf181b1bb761d8de4afb977696 = L.circleMarker(
+                [19.37801, -99.04796],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_951b0f053cd06766b21fff583e1ca0b3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_37d513e374d6c3582ff991c4f75f81b9 = $(`<div id="html_37d513e374d6c3582ff991c4f75f81b9" style="width: 100.0%; height: 100.0%;"><b>Plutarco Elias Calles</b><br>Sistema: RTP</div>`)[0];
+                popup_951b0f053cd06766b21fff583e1ca0b3.setContent(html_37d513e374d6c3582ff991c4f75f81b9);
+            
+        
+
+        circle_marker_25b8d6bf181b1bb761d8de4afb977696.bindPopup(popup_951b0f053cd06766b21fff583e1ca0b3)
+        ;
+
+        
+    
+    
+            var circle_marker_341423db6df5e23c83aadfc7eda1bc69 = L.circleMarker(
+                [19.37631, -99.04533],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_46bba63211c1f7fd665c4dcc6a2f3f04 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_11aa8ffb09eaf9d5e629fa4701c2f92e = $(`<div id="html_11aa8ffb09eaf9d5e629fa4701c2f92e" style="width: 100.0%; height: 100.0%;"><b>Plutarco Elias Calles - Humberto G. Tamayo y Parque</b><br>Sistema: RTP</div>`)[0];
+                popup_46bba63211c1f7fd665c4dcc6a2f3f04.setContent(html_11aa8ffb09eaf9d5e629fa4701c2f92e);
+            
+        
+
+        circle_marker_341423db6df5e23c83aadfc7eda1bc69.bindPopup(popup_46bba63211c1f7fd665c4dcc6a2f3f04)
+        ;
+
+        
+    
+    
+            var circle_marker_440e42cbcc5048a7587398226233842e = L.circleMarker(
+                [19.37532, -99.04379],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_c50fc4d1292c86b236199b17c75cc56e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b77e8dbffa3fbdba36c3a2b7cfee574d = $(`<div id="html_b77e8dbffa3fbdba36c3a2b7cfee574d" style="width: 100.0%; height: 100.0%;"><b>Plutarco Elias Calles 2</b><br>Sistema: RTP</div>`)[0];
+                popup_c50fc4d1292c86b236199b17c75cc56e.setContent(html_b77e8dbffa3fbdba36c3a2b7cfee574d);
+            
+        
+
+        circle_marker_440e42cbcc5048a7587398226233842e.bindPopup(popup_c50fc4d1292c86b236199b17c75cc56e)
+        ;
+
+        
+    
+    
+            var circle_marker_772029b979b82ca676d24fee6b921184 = L.circleMarker(
+                [19.37454, -99.0426],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_28d2ccd8b31cb077d94de4b04c12d979 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_262bd3ad8c1831e0c7e060c3ec8e98e7 = $(`<div id="html_262bd3ad8c1831e0c7e060c3ec8e98e7" style="width: 100.0%; height: 100.0%;"><b>Plutarco Elias Calles - F. P. F. V.</b><br>Sistema: RTP</div>`)[0];
+                popup_28d2ccd8b31cb077d94de4b04c12d979.setContent(html_262bd3ad8c1831e0c7e060c3ec8e98e7);
+            
+        
+
+        circle_marker_772029b979b82ca676d24fee6b921184.bindPopup(popup_28d2ccd8b31cb077d94de4b04c12d979)
+        ;
+
+        
+    
+    
+            var circle_marker_e3ab0a642f189c5ac352a167edd9f937 = L.circleMarker(
+                [19.37384, -99.04156],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_bf2d66ff5072b922c7cc800881b8059d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fcf7ad913ee495312bc14b3b0a9fe2ad = $(`<div id="html_fcf7ad913ee495312bc14b3b0a9fe2ad" style="width: 100.0%; height: 100.0%;"><b>Plutarco Elias Calles - F. P. F. V. 2</b><br>Sistema: RTP</div>`)[0];
+                popup_bf2d66ff5072b922c7cc800881b8059d.setContent(html_fcf7ad913ee495312bc14b3b0a9fe2ad);
+            
+        
+
+        circle_marker_e3ab0a642f189c5ac352a167edd9f937.bindPopup(popup_bf2d66ff5072b922c7cc800881b8059d)
+        ;
+
+        
+    
+    
+            var circle_marker_84f724c78c5d31b7d1e19fefb18fb2fb = L.circleMarker(
+                [19.37328, -99.0408],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_fa171de40e07db3a6f84007d17c9bb4a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_af2ce2d1ea50bae5f535c528248ac22c = $(`<div id="html_af2ce2d1ea50bae5f535c528248ac22c" style="width: 100.0%; height: 100.0%;"><b>Plutarco Elias Calles - F. P. F. V. 2</b><br>Sistema: RTP</div>`)[0];
+                popup_fa171de40e07db3a6f84007d17c9bb4a.setContent(html_af2ce2d1ea50bae5f535c528248ac22c);
+            
+        
+
+        circle_marker_84f724c78c5d31b7d1e19fefb18fb2fb.bindPopup(popup_fa171de40e07db3a6f84007d17c9bb4a)
+        ;
+
+        
+    
+    
+            var circle_marker_32c1ca6d426305d02a96c9cd2294984c = L.circleMarker(
+                [19.37281, -99.04],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_be807b13d248f4150e32bd880c370cae);
+        
+    
+        var popup_974ae960b90be71187d6f85de2f81d4f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3855fd59f2e8e498b3e8df4ee603e186 = $(`<div id="html_3855fd59f2e8e498b3e8df4ee603e186" style="width: 100.0%; height: 100.0%;"><b>Fuente de Loreto - Av. Guelatao</b><br>Sistema: RTP</div>`)[0];
+                popup_974ae960b90be71187d6f85de2f81d4f.setContent(html_3855fd59f2e8e498b3e8df4ee603e186);
+            
+        
+
+        circle_marker_32c1ca6d426305d02a96c9cd2294984c.bindPopup(popup_974ae960b90be71187d6f85de2f81d4f)
+        ;
+
+        
+    
+</script>
+</html>

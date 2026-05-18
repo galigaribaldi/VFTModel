@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_20065f1364af667c1503ed21bbceede1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_20065f1364af667c1503ed21bbceede1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_20065f1364af667c1503ed21bbceede1 = L.map(
+                "map_20065f1364af667c1503ed21bbceede1",
+                {
+                    center: [19.4326, -99.1332],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_63db9987276513dadb0081a65519d7f8 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_63db9987276513dadb0081a65519d7f8.addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+            var circle_marker_e4ddd651ab22feb92b4b4fef7b150fe3 = L.circleMarker(
+                [19.29909, -99.15056],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8.200000000000001, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_0b4313dd8341e42b1ce9ff281942e360 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b7f0d2e13101beea8ff2d3bda0182519 = $(`<div id="html_b7f0d2e13101beea8ff2d3bda0182519" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Luis Murillo<br><b>FC Matemática:</b> 41</div>`)[0];
+                popup_0b4313dd8341e42b1ce9ff281942e360.setContent(html_b7f0d2e13101beea8ff2d3bda0182519);
+            
+        
+
+        circle_marker_e4ddd651ab22feb92b4b4fef7b150fe3.bindPopup(popup_0b4313dd8341e42b1ce9ff281942e360)
+        ;
+
+        
+    
+    
+            var circle_marker_9ef98d68b3b14e6d20bf743bc7510279 = L.circleMarker(
+                [19.29858, -99.15056],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.800000000000001, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_345501342476ad7d123ae771cd20aacb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c5dfcee0a3567a1958987fb21a0be4d7 = $(`<div id="html_c5dfcee0a3567a1958987fb21a0be4d7" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Calz. de Tlalpan - Glorieta Huipulco<br><b>FC Matemática:</b> 34</div>`)[0];
+                popup_345501342476ad7d123ae771cd20aacb.setContent(html_c5dfcee0a3567a1958987fb21a0be4d7);
+            
+        
+
+        circle_marker_9ef98d68b3b14e6d20bf743bc7510279.bindPopup(popup_345501342476ad7d123ae771cd20aacb)
+        ;
+
+        
+    
+    
+            var circle_marker_18dfbf7b9ce22c6690d57148a3cd54f0 = L.circleMarker(
+                [19.29903108, -99.15071309],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.6000000000000005, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_0c8b01bb37e5483d9e6aee760071533d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f0e43540b3fa09fe7e6653c88bf6a80b = $(`<div id="html_f0e43540b3fa09fe7e6653c88bf6a80b" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Sobre Calz. De Tlalpan y Luis Murillo<br><b>FC Matemática:</b> 33</div>`)[0];
+                popup_0c8b01bb37e5483d9e6aee760071533d.setContent(html_f0e43540b3fa09fe7e6653c88bf6a80b);
+            
+        
+
+        circle_marker_18dfbf7b9ce22c6690d57148a3cd54f0.bindPopup(popup_0c8b01bb37e5483d9e6aee760071533d)
+        ;
+
+        
+    
+    
+            var circle_marker_fe13c64afe62e5d367a03ba8e26044b3 = L.circleMarker(
+                [19.29906, -99.15054],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.6000000000000005, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_5a12b13ac2a1753c0a5cbae3dbd6ce17 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e4d81a88899f352b3aff546339f445e1 = $(`<div id="html_e4d81a88899f352b3aff546339f445e1" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Tlalpan y Luis Murillo<br><b>FC Matemática:</b> 33</div>`)[0];
+                popup_5a12b13ac2a1753c0a5cbae3dbd6ce17.setContent(html_e4d81a88899f352b3aff546339f445e1);
+            
+        
+
+        circle_marker_fe13c64afe62e5d367a03ba8e26044b3.bindPopup(popup_5a12b13ac2a1753c0a5cbae3dbd6ce17)
+        ;
+
+        
+    
+    
+            var circle_marker_e98220b8ccc5c33bfb508d40ebc9785c = L.circleMarker(
+                [19.30132, -99.14703],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.4, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_2c0b56acf01d9df2e5ab21ab235a2b2e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a4b72c5ea0326cbd225ea50999357b76 = $(`<div id="html_a4b72c5ea0326cbd225ea50999357b76" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Estadio Azteca 2<br><b>FC Matemática:</b> 32</div>`)[0];
+                popup_2c0b56acf01d9df2e5ab21ab235a2b2e.setContent(html_a4b72c5ea0326cbd225ea50999357b76);
+            
+        
+
+        circle_marker_e98220b8ccc5c33bfb508d40ebc9785c.bindPopup(popup_2c0b56acf01d9df2e5ab21ab235a2b2e)
+        ;
+
+        
+    
+    
+            var circle_marker_f3d823bf9ea5aa4d7a0ffcdf311453f7 = L.circleMarker(
+                [19.29819034, -99.15103594],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.2, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_581da2fe0ba6dbfa9fcc05fc3b7dc0e9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_45d41eafdaa67a81da3b9953b5c20cb4 = $(`<div id="html_45d41eafdaa67a81da3b9953b5c20cb4" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Sobre Calz. De Tlalpan y Av. Acueducto<br><b>FC Matemática:</b> 31</div>`)[0];
+                popup_581da2fe0ba6dbfa9fcc05fc3b7dc0e9.setContent(html_45d41eafdaa67a81da3b9953b5c20cb4);
+            
+        
+
+        circle_marker_f3d823bf9ea5aa4d7a0ffcdf311453f7.bindPopup(popup_581da2fe0ba6dbfa9fcc05fc3b7dc0e9)
+        ;
+
+        
+    
+    
+            var circle_marker_cded9cc4e5c355b83ee83ed660b2951b = L.circleMarker(
+                [19.30109, -99.14716],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.2, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_50513adcce798d2cb5c27aa497e832fe = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_59dc965043e7545413e79957260c34e0 = $(`<div id="html_59dc965043e7545413e79957260c34e0" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Tlalpan - Acoxpa<br><b>FC Matemática:</b> 31</div>`)[0];
+                popup_50513adcce798d2cb5c27aa497e832fe.setContent(html_59dc965043e7545413e79957260c34e0);
+            
+        
+
+        circle_marker_cded9cc4e5c355b83ee83ed660b2951b.bindPopup(popup_50513adcce798d2cb5c27aa497e832fe)
+        ;
+
+        
+    
+    
+            var circle_marker_1292c324f5bf402889cc464c1fb67386 = L.circleMarker(
+                [19.30154, -99.14756],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.2, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_c8de36ca07341509a452df920705aa75 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_780f26d12f047f8d836f453c2c2a2449 = $(`<div id="html_780f26d12f047f8d836f453c2c2a2449" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Calz. de Tlalpan - Estadio Azteca<br><b>FC Matemática:</b> 31</div>`)[0];
+                popup_c8de36ca07341509a452df920705aa75.setContent(html_780f26d12f047f8d836f453c2c2a2449);
+            
+        
+
+        circle_marker_1292c324f5bf402889cc464c1fb67386.bindPopup(popup_c8de36ca07341509a452df920705aa75)
+        ;
+
+        
+    
+    
+            var circle_marker_ca78f31701c4273f1edf79bc7a943401 = L.circleMarker(
+                [19.30157, -99.1468],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.2, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_6e3d56c3655a68eee7fba3b0357c50a3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_aa4910aa6eeb4e5f923d6a5230b7bd15 = $(`<div id="html_aa4910aa6eeb4e5f923d6a5230b7bd15" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Tlalpan - Estadio Azteca<br><b>FC Matemática:</b> 31</div>`)[0];
+                popup_6e3d56c3655a68eee7fba3b0357c50a3.setContent(html_aa4910aa6eeb4e5f923d6a5230b7bd15);
+            
+        
+
+        circle_marker_ca78f31701c4273f1edf79bc7a943401.bindPopup(popup_6e3d56c3655a68eee7fba3b0357c50a3)
+        ;
+
+        
+    
+    
+            var circle_marker_03f940001ddb87a28f07d6865413a69b = L.circleMarker(
+                [19.29488, -99.15562],
+                {"bubblingMouseEvents": true, "color": "#C73E5C", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#C73E5C", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.0, "stroke": true, "weight": 3}
+            ).addTo(map_20065f1364af667c1503ed21bbceede1);
+        
+    
+        var popup_c49a86485af8ede0640edf8a68545d0b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2fa5fba9ace3ac5f62b5f0214c62e403 = $(`<div id="html_2fa5fba9ace3ac5f62b5f0214c62e403" style="width: 100.0%; height: 100.0%;"><b>Nodo:</b> Anillo Periférico y Blvd. Adolfo Ruíz Cortines<br><b>FC Matemática:</b> 30</div>`)[0];
+                popup_c49a86485af8ede0640edf8a68545d0b.setContent(html_2fa5fba9ace3ac5f62b5f0214c62e403);
+            
+        
+
+        circle_marker_03f940001ddb87a28f07d6865413a69b.bindPopup(popup_c49a86485af8ede0640edf8a68545d0b)
+        ;
+
+        
+    
+</script>
+</html>
