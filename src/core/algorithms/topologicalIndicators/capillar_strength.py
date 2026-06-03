@@ -256,7 +256,8 @@ class CapillaryStrengthAnalyzer:
                 nombres_limpios = " - ".join(sorted(list(nombres)))
                 sistemas_lista = sorted(list(sistemas))
                 detalle_limpio = {k: sorted(list(v)) for k, v in detalle_estaciones.items()}
-                
+                pos_repr = self.G.nodes[list(component)[0]]['pos']  # (lon, lat) WGS84 — punto representativo del hub
+
                 resultados.append({
                     "Macro_Hub": nombres_limpios,
                     "Sistemas_Integrados": sistemas_lista,           # <-- Array
@@ -264,7 +265,8 @@ class CapillaryStrengthAnalyzer:
                     "Estaciones_Agrupadas": len(component),
                     "Conexiones_Entrada": len(aristas_entrada_unicas),
                     "Conexiones_Salida": len(aristas_salida_unicas),
-                    "Fuerza_Capilar_Total": total_degree
+                    "Fuerza_Capilar_Total": total_degree,
+                    "Pos_Representativa": pos_repr                   # (lon, lat) para serialización GeoJSON
                 })
                 
         df_resultados = pd.DataFrame(resultados)
