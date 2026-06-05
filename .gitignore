@@ -150,6 +150,8 @@ activemq-data/
 
 # Environments
 .env
+.env.local
+.env.dev
 .envrc
 .venv
 env/
@@ -219,6 +221,7 @@ __marimo__/
 #CLAUDE
 .claude/
 # Archivos generados y datos crudos locales
+requestss.json
 VFT_Render.jpg
 *.geojson
 *.PNG

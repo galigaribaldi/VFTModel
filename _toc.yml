@@ -2,16 +2,7 @@ format: jb-book
 root: notebooks/intro
 
 chapters:
-  - file: notebooks/00_Construccion_grafo
-    sections:
-      - file: notebooks/NOTES/graph_builder
-
-  - file: notebooks/01_Analisis_Impedancia_VFT
-    sections:
-      - file: notebooks/NOTES/impedance
-
-  - file: notebooks/02_Nivel_Cobertura
-
-  - file: notebooks/03_Fuerza_capilar
-
+  - file: notebooks/NOTES/graph_builder
+  - file: notebooks/NOTES/impedance
+  - file: notebooks/NOTES/detaur_factor
   - file: notebooks/NOTES/issues

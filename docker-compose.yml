@@ -1,0 +1,10 @@
+services:
+  vftmodel:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Sobrescribir si se necesita apuntar a LOCAL u otro entorno:
+      # APIMETRO_URL: http://host.docker.internal:8080/movilidad
+      APIMETRO_URL: https://apimetro.dev/movilidad
+    restart: unless-stopped

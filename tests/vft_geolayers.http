@@ -1,0 +1,72 @@
+# VFT GeoLayers — Pruebas locales (VS Code REST Client)
+# Requiere: servidor activo en localhost:8000 + backend Go corriendo
+# Cómo usar: Ctrl+Alt+R sobre cada bloque para disparar la petición
+# Nota: las respuestas completas pueden ser ~500 KB — revisar sólo el metadata
+
+@baseUrl = http://localhost:8000
+@mode    = REALISTIC_INTEGRATION
+@tol     = 85
+
+# ============================================================
+# PASO 0 — Cache warming (ejecutar siempre primero)
+# ============================================================
+
+### [0] Build & cache graph
+GET {{baseUrl}}/api/v1/network/build-auto?mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · nodos ~11115 · aristas ~45494
+
+# ============================================================
+# PASO 1 — /coverage
+# ============================================================
+
+### [1a] coverage · cobertura_por_alcaldia ✅ (probado 2026-06-04)
+GET {{baseUrl}}/api/v1/network/geolayers/coverage?layer=cobertura_por_alcaldia&radio_m=800&entidades=Ciudad de México&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features=16 · geometría Polygon
+
+### [1b] coverage · estaciones
+GET {{baseUrl}}/api/v1/network/geolayers/coverage?layer=estaciones&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features>1000 · geometría Point · tipo_entidad="estacion"
+
+### [1c] coverage · cobertura_800m
+GET {{baseUrl}}/api/v1/network/geolayers/coverage?layer=cobertura_800m&radio_m=800&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features=1 · geometría MultiPolygon (unión de todos los buffers)
+
+# ============================================================
+# PASO 2 — /capillary
+# ============================================================
+
+### [2a] capillary · fc_puntos (umbral mínimo fc=3)
+GET {{baseUrl}}/api/v1/network/geolayers/capillary?layer=fc_puntos&min_fc=3&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features>0 · geometría Point · fc_total>=3
+
+### [2b] capillary · fc_hubs (top 20 macro-hubs)
+GET {{baseUrl}}/api/v1/network/geolayers/capillary?layer=fc_hubs&top_n=20&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features=20 · geometría Point · incluye Pantitlán, Indios Verdes
+
+# ============================================================
+# PASO 3 — /detour
+# ============================================================
+
+### [3a] detour · df_puntos (muestra 100 rutas, semilla fija)
+GET {{baseUrl}}/api/v1/network/geolayers/detour?layer=df_puntos&sample_size=100&seed=42&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features<=100 · factor_desviacion>=1.0 · geometría Point
+
+### [3b] detour · df_por_alcaldia
+GET {{baseUrl}}/api/v1/network/geolayers/detour?layer=df_por_alcaldia&sample_size=100&seed=42&entidades=Ciudad de México&mode={{mode}}&tolerance_m={{tol}}
+Accept: application/json
+
+# Esperado: 200 OK · n_features<=16 · df_promedio>=1.0 · geometría Polygon

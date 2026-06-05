@@ -12,9 +12,7 @@ import asyncio
 import json
 import os
 from src.core.utils.logger import vft_logger
-
-## URL de la API en Go que sirve el GeoJSON de la red de transporte
-GO_API_BASE_URL = "http://localhost:8080/movilidad"
+from src.infrastructure.go_client.settings import APIMETRO_URL
 
 
 # Lista de sistemas aceptados
@@ -48,8 +46,8 @@ async def fetch_full_network() -> dict:
     vft_logger.info("Construyendo el puente hacia el módulo espacial de Go...")
 
     # Rutas exactas del módulo espacial según contrato
-    url_estaciones = f"{GO_API_BASE_URL}/mapas/geojsonEstacion"#?sistema=TL
-    url_lineas = f"{GO_API_BASE_URL}/mapas/geojsonLinea"
+    url_estaciones = f"{APIMETRO_URL}/mapas/geojsonEstacion"
+    url_lineas = f"{APIMETRO_URL}/mapas/geojsonLinea"
 
     # Ejecutamos las dos peticiones HTTP al mismo tiempo (concurrencia)
     resultados = await asyncio.gather(
@@ -59,7 +57,8 @@ async def fetch_full_network() -> dict:
     
     features_unificados = []
     for geojson in resultados:
-        features_unificados.extend(geojson.get("features", []))
+        payload = geojson.get("data", geojson)          # desenvuelve {"data": {...}} si existe
+        features_unificados.extend(payload.get("features", []))
 
     # Protocolo Fallback local
     if not features_unificados:
