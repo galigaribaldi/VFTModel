@@ -1,32 +1,109 @@
-# Vanishing Fig-Tree Model (VFT Model) / Modelo del Punto de Higuera (MPH)
+# Vanishing Fig-Tree Model (VFT Model)
 
-> Motor analítico geoespacial y topológico para la evaluación de redes de transporte anillares y alimentadoras en la Ciudad de México. Desarrollado como parte de la tesis **TAICMAM**.
+Motor analítico geoespacial y topológico para la evaluación de redes de transporte urbano en la Ciudad de México. Desarrollado como parte de la tesis **TAICMAM** — calcula tres indicadores topológicos sobre el grafo de la red: cobertura espacial, fuerza capilar nodal y factor de desviación de rutas.
 
-## 📖 Sobre el Proyecto
+📖 [Documentación técnica](https://galigaribaldi.github.io/VFTModel)
 
-El **Modelo VFT (Modelo del Punto de Higuera)** es una arquitectura de software diseñada para procesar, validar y analizar matemáticamente grafos de transporte urbano masivo. 
+---
 
-El nombre obedece a una dualidad conceptual:
-* **La Higuera (The Fig Tree):** Inspirado en la metáfora literaria de Sylvia Plath, el grafo de transporte representa un árbol de decisiones críticas. Si la red capilar no se optimiza temporal y espacialmente, las opciones convergen en la saturación sistémica.
-* **El Punto de Fuga (The Vanishing Point):** Arquitectónicamente, el sistema actúa como el punto donde múltiples variables independientes (coordenadas 2D, fricción vial, capacidades) convergen en una perspectiva analítica unificada.
+## Prerequisites
 
-## 🏗️ Arquitectura del Sistema
+| Requisito | Versión | Notas |
+|---|---|---|
+| Python | 3.12 | Recomendado con `venv` |
+| [apimetro](https://github.com/galigaribaldi/apimetro) | — | Backend Go en `localhost:8080` — debe estar corriendo antes de iniciar el servidor |
 
-El proyecto utiliza una adaptación de la **Arquitectura Hexagonal Pragmática**, optimizada para flujos de Data Science y Sistemas de Información Geográfica (SIG).
+El modelo consume estaciones y líneas desde el backend Go. Sin apimetro activo, el grafo se construye vacío.
 
-* **Adaptadores de Entrada (API):** Construidos con `FastAPI`, reciben peticiones asíncronas de servicios externos.
-* **Dominio Matemático (Core):** Utiliza `GeoPandas`, `NetworkX` y `Momepy` para transformar geometrías vectoriales (`GeoJSON`, `MultiLineString`) en topologías ruteables evaluando métricas como la Fuerza Nodal y el Grado Capilar.
-* **Adaptadores de Salida (Infraestructura):** Clientes asíncronos (`httpx`) para consumo de APIs en Go y futuros conectores para bases de datos relacionales espaciales.
+---
 
-## 📂 Estructura del Repositorio
+## Instalación
 
-```text
+```bash
+git clone https://github.com/galigaribaldi/VFTModel.git
+cd VFTModel
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+---
+
+## Correr el servidor
+
+```bash
+source venv/bin/activate
+python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Swagger UI disponible en `http://localhost:8000/docs`.
+
+Para cachear el grafo antes de usar los endpoints analíticos:
+
+```
+GET http://localhost:8000/api/v1/network/build-auto?mode=REALISTIC_INTEGRATION&tolerance_m=85
+```
+
+---
+
+## Correr los tests
+
+La suite de integración requiere el servidor activo y apimetro corriendo:
+
+```bash
+source venv/bin/activate
+pytest tests/ -v
+```
+
+39 tests — cobertura de los 7 GeoLayers de la API (`/coverage`, `/capillary`, `/detour`).
+
+---
+
+## Arquitectura
+
+Arquitectura hexagonal en tres capas:
+
+```
+FastAPI (src/api/)  →  Dominio (src/core/)  →  Infraestructura (src/infrastructure/)
+```
+
+```
 VFTModel/
 ├── src/
-│   ├── api/            # Endpoints de FastAPI y esquemas de Pydantic
-│   ├── core/           # Motor matemático, algoritmos de grafos y logs
-│   └── infrastructure/ # Clientes externos (Go API) y persistencia
-├── notebooks/          # Entornos interactivos de validación
-├── requirements.txt    # Dependencias del proyecto
-└── README.md
+│   ├── api/
+│   │   ├── routes/         # GeoLayers API — output adapters GeoJSON
+│   │   └── schemas/        # Validación Pydantic del GeoJSON de Go
+│   ├── core/
+│   │   ├── algorithms/     # Indicadores topológicos (cobertura, capilar, detour)
+│   │   ├── models/         # Modelo de impedancia y fricción vial
+│   │   └── services/       # Constructor del grafo NetworkX
+│   └── infrastructure/
+│       └── go_client/      # Clientes HTTP al backend apimetro
+├── tests/                  # Suite pytest de integración (39 tests)
+├── notebooks/              # Análisis exploratorio y validación local
+├── VFT_CLIENT_SPEC.md      # Contrato de datos para consumidores externos
+└── requirements.txt
 ```
+
+**Flujo de una petición:**
+1. FastAPI valida el request con Pydantic
+2. `get_or_build_graph()` consulta el caché en memoria; si hay miss, descarga de apimetro y construye el grafo con `VFTGraphBuilder`
+3. El algoritmo topológico corre sobre el grafo y devuelve un DataFrame
+4. El router GeoLayers serializa el resultado como FeatureCollection GeoJSON
+
+**Consumidor externo:** [Transport-gis-zmvm-mjg](https://github.com/galigaribaldi/Transport-gis-zmvm-mjg) consume los GeoLayers via `vft_fetcher.py` y genera capas GPKG para QGIS.
+
+---
+
+## Indicadores implementados
+
+| Indicador | Endpoint | Estado |
+|---|---|---|
+| Cobertura espacial (C) | `GET /api/v1/network/geolayers/coverage` | ✅ |
+| Fuerza capilar (k_in) | `GET /api/v1/network/geolayers/capillary` | ✅ |
+| Factor de desviación (DI) | `GET /api/v1/network/geolayers/detour` | ✅ |
+| Tiempo promedio (T) | — | Pendiente Fase 3 |
+| Centralidad de intermediación (B) | — | Pendiente Fase 3 |
+| Robustez geométrica (ΔE) | — | Pendiente Fase 4 |

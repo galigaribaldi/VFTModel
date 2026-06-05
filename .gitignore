@@ -219,6 +219,7 @@ __marimo__/
 #CLAUDE
 .claude/
 # Archivos generados y datos crudos locales
+requestss.json
 VFT_Render.jpg
 *.geojson
 *.PNG
