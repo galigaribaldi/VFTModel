@@ -8,8 +8,7 @@ import httpx
 import asyncio
 from typing import Dict, Any, List
 from src.core.utils.logger import vft_logger
-
-BASE_URL = "http://localhost:8080/movilidad"
+from src.infrastructure.go_client.settings import APIMETRO_URL
 
 async def fetch_territorial_polygons(entidades: List[str] = None) -> Dict[str, Any]:
     """
@@ -19,7 +18,7 @@ async def fetch_territorial_polygons(entidades: List[str] = None) -> Dict[str, A
         entidades = ["Ciudad de México", "México"]
         
     async def fetch_single(client: httpx.AsyncClient, entidad: str):
-        endpoint = f"{BASE_URL}/mapas/geojsonPoligono"
+        endpoint = f"{APIMETRO_URL}/mapas/geojsonPoligono"
         
         # REGLA ESTRICTA: Solo enviar 2 parámetros ("existe" y "entidad")
         params = {

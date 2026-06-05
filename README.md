@@ -11,9 +11,20 @@ Motor analítico geoespacial y topológico para la evaluación de redes de trans
 | Requisito | Versión | Notas |
 |---|---|---|
 | Python | 3.12 | Recomendado con `venv` |
-| [apimetro](https://github.com/galigaribaldi/apimetro) | — | Backend Go en `localhost:8080` — debe estar corriendo antes de iniciar el servidor |
+| GDAL / libgdal-dev | — | Requerido por GeoPandas/Fiona — instalar a nivel del SO antes de `pip install` |
+| [apimetro](https://github.com/galigaribaldi/apimetro) | — | Backend Go — ver sección **Variables de Entorno** para modos de conexión |
 
-El modelo consume estaciones y líneas desde el backend Go. Sin apimetro activo, el grafo se construye vacío.
+El modelo consume estaciones y líneas desde el backend Go. Sin apimetro activo, el grafo se construye vacío (fallback a `map.geojson` local si existe).
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install -y libgdal-dev gdal-bin
+```
+
+**macOS (Homebrew):**
+```bash
+brew install gdal
+```
 
 ---
 
@@ -31,11 +42,38 @@ pip install -r requirements.txt
 
 ---
 
+## Variables de Entorno
+
+El modelo soporta dos entornos de ejecución configurados via archivo `.env`:
+
+| Variable | Descripción | LOCAL | DEV |
+|---|---|---|---|
+| `APIMETRO_URL` | URL base del backend Go | `http://localhost:8080/movilidad` | `https://apimetro.dev/movilidad` |
+
+**Configuración inicial:**
+```bash
+# LOCAL — apimetro corriendo en localhost
+cp .env.example .env.local
+
+# DEV — apimetro.dev (servidor remoto)
+cp .env.example .env.dev
+# Editar .env.dev y cambiar APIMETRO_URL a https://apimetro.dev/movilidad
+```
+
+El archivo activo se selecciona al arrancar con la variable `ENV_FILE` (ver sección siguiente).
+
+---
+
 ## Correr el servidor
 
 ```bash
 source venv/bin/activate
+
+# Modo LOCAL (default — requiere apimetro en localhost:8080)
 python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Modo DEV (conecta a apimetro.dev)
+ENV_FILE=.env.dev python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Swagger UI disponible en `http://localhost:8000/docs`.

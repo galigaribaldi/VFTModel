@@ -11,10 +11,14 @@
             Se implementó un Caché en Memoria (Singleton) y delegación a hilos (to_thread)
             para evitar bloqueos (TimeOuts) del Event Loop de FastAPI.        
 """
+import os
 import uvicorn
 import asyncio
 import pandas as pd
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query, Body
+
+load_dotenv(os.getenv("ENV_FILE", ".env.local"))
 from typing import List, Optional, Union, Tuple
 
 

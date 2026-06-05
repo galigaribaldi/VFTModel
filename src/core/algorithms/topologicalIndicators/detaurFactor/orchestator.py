@@ -83,19 +83,30 @@ class DetourFactorOrchestrator:
     def calculate_sample_routes(self, sample_size: int = 500, seed: int = None, return_json=False):
         """Muestreo masivo que ahora incluye toda la trazabilidad."""
         if seed is not None: random.seed(seed)
-        
+
         nodos_validos = [n for n, attr in self.G.nodes(data=True) if attr.get('tipo') != 'trazo' and 'nombre' in attr]
         resultados = []
-        
+        intentos = 0
+        max_intentos = sample_size * 10
+
         while len(resultados) < sample_size:
+            if intentos >= max_intentos:
+                raise RuntimeError(
+                    f"No se pudieron encontrar {sample_size} rutas válidas tras {max_intentos} intentos. "
+                    f"El grafo puede ser demasiado esparso o estar desconectado. "
+                    f"Rutas encontradas: {len(resultados)}. "
+                    f"Considera reducir sample_size o usar mode=REALISTIC_INTEGRATION."
+                )
+            intentos += 1
+
             u_id = random.choice(nodos_validos)
             reachable = list(nx.descendants(self.G, u_id).intersection(set(nodos_validos)))
             if not reachable: continue
-            
+
             v_id = random.choice(reachable)
             res = self.calculate_custom_route(u_id, v_id, return_json=True)
-            
+
             if res and (res["metrics"]["Distancia_Recta_km"] * 1000) >= 100:
                 resultados.append(res if return_json else res["metrics"])
-                    
+
         return resultados if return_json else pd.DataFrame(resultados)
