@@ -375,8 +375,14 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion">Instalación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisito-make">Prerequisito: Make</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-entorno">Variables de Entorno</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-el-servidor">Correr el servidor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uvicorn-vs-docker-cuando-usar-cada-uno">uvicorn vs Docker — ¿Cuándo usar cada uno?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-el-servidor">Correr el servidor</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#con-make-recomendado">Con Make (recomendado)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sin-make-manual">Sin Make (manual)</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-los-tests">Correr los tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">Arquitectura</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indicadores-implementados">Indicadores implementados</a></li>
@@ -445,6 +451,33 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 </div>
 </section>
 <hr class="docutils" />
+<section id="prerequisito-make">
+<h2>Prerequisito: Make<a class="headerlink" href="#prerequisito-make" title="Link to this heading">#</a></h2>
+<p>Los comandos de este proyecto se ejecutan con <code class="docutils literal notranslate"><span class="pre">make</span></code>. Instalación por SO:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>SO</p></th>
+<th class="head"><p>Instrucción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Ubuntu / Debian</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">-y</span> <span class="pre">make</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>macOS</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">xcode-select</span> <span class="pre">--install</span></code> (ya incluye make)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Windows</strong></p></td>
+<td><p>Instalar <a class="reference external" href="https://gitforwindows.org/">Git Bash</a> — incluye make. Alternativamente: <code class="docutils literal notranslate"><span class="pre">choco</span> <span class="pre">install</span> <span class="pre">make</span></code> (Chocolatey) o <code class="docutils literal notranslate"><span class="pre">scoop</span> <span class="pre">install</span> <span class="pre">make</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p>En Windows se recomienda correr todos los comandos desde <strong>Git Bash</strong> o <strong>WSL</strong>, no desde CMD ni PowerShell.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
 <section id="variables-de-entorno">
 <h2>Variables de Entorno<a class="headerlink" href="#variables-de-entorno" title="Link to this heading">#</a></h2>
 <p>El modelo soporta dos entornos de ejecución configurados via archivo <code class="docutils literal notranslate"><span class="pre">.env</span></code>:</p>
@@ -477,15 +510,100 @@ cp<span class="w"> </span>.env.example<span class="w"> </span>.env.dev
 <p>El archivo activo se selecciona al arrancar con la variable <code class="docutils literal notranslate"><span class="pre">ENV_FILE</span></code> (ver sección siguiente).</p>
 </section>
 <hr class="docutils" />
+<section id="uvicorn-vs-docker-cuando-usar-cada-uno">
+<h2>uvicorn vs Docker — ¿Cuándo usar cada uno?<a class="headerlink" href="#uvicorn-vs-docker-cuando-usar-cada-uno" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>uvicorn (directo)</p></th>
+<th class="head"><p>Docker</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RAM extra</p></td>
+<td><p>—</p></td>
+<td><p>~10 MB overhead del contenedor</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU overhead</p></td>
+<td><p>—</p></td>
+<td><p>&lt;1% en Linux (sin VM); mayor en Mac/Windows</p></td>
+</tr>
+<tr class="row-even"><td><p>Arranque</p></td>
+<td><p>~2-3 s</p></td>
+<td><p>~5-10 s</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hot reload al guardar</p></td>
+<td><p>✅ <code class="docutils literal notranslate"><span class="pre">--reload</span></code> automático</p></td>
+<td><p>❌ requiere rebuild</p></td>
+</tr>
+<tr class="row-even"><td><p>Dependencias GDAL del SO</p></td>
+<td><p>Requieren instalación manual</p></td>
+<td><p>✅ incluidas en la imagen</p></td>
+</tr>
+<tr class="row-odd"><td><p>Acceso al debugger / IDE</p></td>
+<td><p>✅ directo</p></td>
+<td><p>Más complejo</p></td>
+</tr>
+<tr class="row-even"><td><p>Reproducibilidad entre máquinas</p></td>
+<td><p>Depende del SO</p></td>
+<td><p>✅ garantizada</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Recomendación:</strong></p>
+<ul class="simple">
+<li><p><strong>Desarrollo del modelo</strong> → <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run</span></code> o <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">run-dev</span></code>. El hot reload al guardar un archivo es clave cuando se itera sobre algoritmos o endpoints.</p></li>
+<li><p><strong>Consumo desde clientes externos</strong> (QGIS, Transport-gis-zmvm-mjg) → <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docker-run</span></code>. Entorno estable apuntando a <code class="docutils literal notranslate"><span class="pre">apimetro.dev</span></code>, sin dependencias del OS local del desarrollador.</p></li>
+</ul>
+<blockquote>
+<div><p>En Linux el overhead de Docker es mínimo (los contenedores son procesos con namespaces, no VMs). En macOS y Windows, Docker Desktop corre una VM Linux — el overhead de CPU/RAM es mayor y el arranque más lento.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
 <section id="correr-el-servidor">
 <h2>Correr el servidor<a class="headerlink" href="#correr-el-servidor" title="Link to this heading">#</a></h2>
+<section id="con-make-recomendado">
+<h3>Con Make (recomendado)<a class="headerlink" href="#con-make-recomendado" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>venv/bin/activate<span class="w">   </span><span class="c1"># Linux / macOS</span>
+<span class="c1"># En Windows (Git Bash): source venv/Scripts/activate</span>
+
+make<span class="w"> </span>run<span class="w">                   </span><span class="c1"># uvicorn LOCAL  — puerto 8000</span>
+make<span class="w"> </span>run-dev<span class="w">               </span><span class="c1"># uvicorn DEV    — puerto 8000 → apimetro.dev</span>
+make<span class="w"> </span>docker-build<span class="w">          </span><span class="c1"># construye la imagen Docker</span>
+make<span class="w"> </span>docker-run<span class="w">            </span><span class="c1"># Docker DEV     — puerto 8000 → apimetro.dev</span>
+make<span class="w"> </span>docker-run-local<span class="w">      </span><span class="c1"># Docker LOCAL   — puerto 8000 → localhost:8080</span>
+</pre></div>
+</div>
+<p><strong>Puerto personalizado</strong> — cualquier comando acepta <code class="docutils literal notranslate"><span class="pre">PORT=</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>run<span class="w"> </span><span class="nv">PORT</span><span class="o">=</span><span class="m">8001</span>
+make<span class="w"> </span>docker-run<span class="w"> </span><span class="nv">PORT</span><span class="o">=</span><span class="m">8002</span>
+</pre></div>
+</div>
+<p>Ver todos los comandos disponibles:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nb">help</span>
+</pre></div>
+</div>
+</section>
+<section id="sin-make-manual">
+<h3>Sin Make (manual)<a class="headerlink" href="#sin-make-manual" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
 
-<span class="c1"># Modo LOCAL (default — requiere apimetro en localhost:8080)</span>
+<span class="c1"># uvicorn LOCAL</span>
 python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>src.api.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--reload
 
-<span class="c1"># Modo DEV (conecta a apimetro.dev)</span>
+<span class="c1"># uvicorn DEV</span>
 <span class="nv">ENV_FILE</span><span class="o">=</span>.env.dev<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>src.api.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--reload
+
+<span class="c1"># Docker DEV</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>vftmodel
+
+<span class="c1"># Docker LOCAL (Linux)</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>--add-host<span class="o">=</span>host.docker.internal:host-gateway<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">APIMETRO_URL</span><span class="o">=</span>http://host.docker.internal:8080/movilidad<span class="w"> </span>vftmodel
+
+<span class="c1"># Docker LOCAL (macOS / Windows — host.docker.internal resuelve automáticamente)</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>-e<span class="w"> </span><span class="nv">APIMETRO_URL</span><span class="o">=</span>http://host.docker.internal:8080/movilidad<span class="w"> </span>vftmodel
 </pre></div>
 </div>
 <p>Swagger UI disponible en <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/docs</span></code>.</p>
@@ -493,6 +611,7 @@ python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET http://localhost:8000/api/v1/network/build-auto?mode=REALISTIC_INTEGRATION&amp;tolerance_m=85
 </pre></div>
 </div>
+</section>
 </section>
 <hr class="docutils" />
 <section id="correr-los-tests">
@@ -626,8 +745,14 @@ pytest<span class="w"> </span>tests/<span class="w"> </span>-v
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion">Instalación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisito-make">Prerequisito: Make</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-entorno">Variables de Entorno</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-el-servidor">Correr el servidor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uvicorn-vs-docker-cuando-usar-cada-uno">uvicorn vs Docker — ¿Cuándo usar cada uno?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-el-servidor">Correr el servidor</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#con-make-recomendado">Con Make (recomendado)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sin-make-manual">Sin Make (manual)</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-los-tests">Correr los tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">Arquitectura</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indicadores-implementados">Indicadores implementados</a></li>
