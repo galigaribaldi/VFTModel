@@ -20,7 +20,11 @@ from typing import List, Optional, Union, Tuple
 
 from src.api.schemas.schemas import GeoJSONTransportSchema
 from src.infrastructure.go_client.client import fetch_full_network
+
 from src.core.services.graph_builder import VFTGraphBuilder
+from src.api.dependencies import DEFAULT_TOLERANCE, get_or_build_graph
+from src.api.routes import router as geo_router
+
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
 from src.core.algorithms.topologicalIndicators.spatial_coverate import SpatialCoverageAnalyzer
 from src.core.algorithms.topologicalIndicators.capillar_strength import CapillaryStrengthAnalyzer
@@ -32,37 +36,7 @@ app = FastAPI(
     description="Motor analítico para topología de red de la Ciudad de México y su área Metropolitana.",
     version="1.0.0"
 )
-
-# Constante extraída del diccionario de la clase para mantener consistencia
-DEFAULT_TOLERANCE = VFTGraphBuilder.STATISTICAL_THRESHOLDS["Q1"]
-
-## Grafo topológico en memoria Caché
-GRAPH_CACHE = {}
-
-async def get_or_build_graph(mode: str, tolerance_m: float):
-    """
-    Recupera el grafo de la memoria si ya fue construido con esos parámetros.
-    Si no existe, lo construye en un hilo separado para no bloquear FastAPI.
-    Delegamos el cálculo pesado (CPU-bound) a un hilo de fondo
-    Instanciamos el Builder
-    Guardamos en caché
-    """
-    cache_key = f"{mode}_{tolerance_m}"
-    
-    if cache_key in GRAPH_CACHE:
-        vft_logger.info(f"⚡ Recuperando grafo desde caché en memoria: [{cache_key}]")
-        return GRAPH_CACHE[cache_key]
-        
-    vft_logger.info(f"⏳ Construyendo grafo desde cero para: [{cache_key}]")
-    raw_data = await fetch_full_network()
-    validated_payload = GeoJSONTransportSchema(**raw_data)
-
-    builder = VFTGraphBuilder(validated_payload)
-    G = await asyncio.to_thread(builder.build_graph, mode, tolerance_m)    
-    
-    GRAPH_CACHE[cache_key] = G
-    return G
-
+app.include_router(geo_router)
 
 @app.get("/api/v1/network/build-auto", summary="Descarga y valida la red completa (Cache Warming)")
 async def build_network_auto(

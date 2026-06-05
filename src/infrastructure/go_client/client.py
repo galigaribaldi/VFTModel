@@ -59,7 +59,8 @@ async def fetch_full_network() -> dict:
     
     features_unificados = []
     for geojson in resultados:
-        features_unificados.extend(geojson.get("features", []))
+        payload = geojson.get("data", geojson)          # desenvuelve {"data": {...}} si existe
+        features_unificados.extend(payload.get("features", []))
 
     # Protocolo Fallback local
     if not features_unificados:
