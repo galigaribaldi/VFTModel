@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Vanishing Fig-Tree Model (VFT Model) / Modelo del Punto de Higuera (MPH) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+    <title>Vanishing Fig-Tree Model (VFT Model) &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
   
   
   
@@ -169,21 +169,14 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="notebooks/intro.html">
-                    Bienvenido al Modelo VFT (Vanishing Fig-Tree)
+                    Modelo VFT — Documentación Técnica
                 </a>
             </li>
         </ul>
         <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/00_Construccion_grafo.html">Reporte 00: Construcción del Grafo Topológico (Modelo VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/01_Analisis_Impedancia_VFT.html">Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
-</ul>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/detaur_factor.html">Notas del Módulo: Detour Factor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -370,7 +363,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Vanishing Fig-Tree Model (VFT Model) / Modelo del Punto de Higuera (MPH)</h1>
+    <h1>Vanishing Fig-Tree Model (VFT Model)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -380,9 +373,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-el-proyecto">📖 Sobre el Proyecto</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-del-sistema">🏗️ Arquitectura del Sistema</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-repositorio">📂 Estructura del Repositorio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion">Instalación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-entorno">Variables de Entorno</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-el-servidor">Correr el servidor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-los-tests">Correr los tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">Arquitectura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indicadores-implementados">Indicadores implementados</a></li>
 </ul>
             </nav>
         </div>
@@ -394,40 +391,189 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="vanishing-fig-tree-model-vft-model-modelo-del-punto-de-higuera-mph">
-<h1>Vanishing Fig-Tree Model (VFT Model) / Modelo del Punto de Higuera (MPH)<a class="headerlink" href="#vanishing-fig-tree-model-vft-model-modelo-del-punto-de-higuera-mph" title="Link to this heading">#</a></h1>
-<blockquote>
-<div><p>Motor analítico geoespacial y topológico para la evaluación de redes de transporte anillares y alimentadoras en la Ciudad de México. Desarrollado como parte de la tesis <strong>TAICMAM</strong>.</p>
-</div></blockquote>
-<section id="sobre-el-proyecto">
-<h2>📖 Sobre el Proyecto<a class="headerlink" href="#sobre-el-proyecto" title="Link to this heading">#</a></h2>
-<p>El <strong>Modelo VFT (Modelo del Punto de Higuera)</strong> es una arquitectura de software diseñada para procesar, validar y analizar matemáticamente grafos de transporte urbano masivo.</p>
-<p>El nombre obedece a una dualidad conceptual:</p>
-<ul class="simple">
-<li><p><strong>La Higuera (The Fig Tree):</strong> Inspirado en la metáfora literaria de Sylvia Plath, el grafo de transporte representa un árbol de decisiones críticas. Si la red capilar no se optimiza temporal y espacialmente, las opciones convergen en la saturación sistémica.</p></li>
-<li><p><strong>El Punto de Fuga (The Vanishing Point):</strong> Arquitectónicamente, el sistema actúa como el punto donde múltiples variables independientes (coordenadas 2D, fricción vial, capacidades) convergen en una perspectiva analítica unificada.</p></li>
-</ul>
-</section>
-<section id="arquitectura-del-sistema">
-<h2>🏗️ Arquitectura del Sistema<a class="headerlink" href="#arquitectura-del-sistema" title="Link to this heading">#</a></h2>
-<p>El proyecto utiliza una adaptación de la <strong>Arquitectura Hexagonal Pragmática</strong>, optimizada para flujos de Data Science y Sistemas de Información Geográfica (SIG).</p>
-<ul class="simple">
-<li><p><strong>Adaptadores de Entrada (API):</strong> Construidos con <code class="docutils literal notranslate"><span class="pre">FastAPI</span></code>, reciben peticiones asíncronas de servicios externos.</p></li>
-<li><p><strong>Dominio Matemático (Core):</strong> Utiliza <code class="docutils literal notranslate"><span class="pre">GeoPandas</span></code>, <code class="docutils literal notranslate"><span class="pre">NetworkX</span></code> y <code class="docutils literal notranslate"><span class="pre">Momepy</span></code> para transformar geometrías vectoriales (<code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiLineString</span></code>) en topologías ruteables evaluando métricas como la Fuerza Nodal y el Grado Capilar.</p></li>
-<li><p><strong>Adaptadores de Salida (Infraestructura):</strong> Clientes asíncronos (<code class="docutils literal notranslate"><span class="pre">httpx</span></code>) para consumo de APIs en Go y futuros conectores para bases de datos relacionales espaciales.</p></li>
-</ul>
-</section>
-<section id="estructura-del-repositorio">
-<h2>📂 Estructura del Repositorio<a class="headerlink" href="#estructura-del-repositorio" title="Link to this heading">#</a></h2>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>VFTModel/
-├── src/
-│   ├── api/            # Endpoints de FastAPI y esquemas de Pydantic
-│   ├── core/           # Motor matemático, algoritmos de grafos y logs
-│   └── infrastructure/ # Clientes externos (Go API) y persistencia
-├── notebooks/          # Entornos interactivos de validación
-├── requirements.txt    # Dependencias del proyecto
-└── README.md
+  <section class="tex2jax_ignore mathjax_ignore" id="vanishing-fig-tree-model-vft-model">
+<h1>Vanishing Fig-Tree Model (VFT Model)<a class="headerlink" href="#vanishing-fig-tree-model-vft-model" title="Link to this heading">#</a></h1>
+<p>Motor analítico geoespacial y topológico para la evaluación de redes de transporte urbano en la Ciudad de México. Desarrollado como parte de la tesis <strong>TAICMAM</strong> — calcula tres indicadores topológicos sobre el grafo de la red: cobertura espacial, fuerza capilar nodal y factor de desviación de rutas.</p>
+<p>📖 <a class="reference external" href="https://galigaribaldi.github.io/VFTModel">Documentación técnica</a></p>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Requisito</p></th>
+<th class="head"><p>Versión</p></th>
+<th class="head"><p>Notas</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>3.12</p></td>
+<td><p>Recomendado con <code class="docutils literal notranslate"><span class="pre">venv</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>GDAL / libgdal-dev</p></td>
+<td><p>—</p></td>
+<td><p>Requerido por GeoPandas/Fiona — instalar a nivel del SO antes de <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/galigaribaldi/apimetro">apimetro</a></p></td>
+<td><p>—</p></td>
+<td><p>Backend Go — ver sección <strong>Variables de Entorno</strong> para modos de conexión</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El modelo consume estaciones y líneas desde el backend Go. Sin apimetro activo, el grafo se construye vacío (fallback a <code class="docutils literal notranslate"><span class="pre">map.geojson</span></code> local si existe).</p>
+<p><strong>Ubuntu/Debian:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>libgdal-dev<span class="w"> </span>gdal-bin
 </pre></div>
+</div>
+<p><strong>macOS (Homebrew):</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>gdal
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="instalacion">
+<h2>Instalación<a class="headerlink" href="#instalacion" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/galigaribaldi/VFTModel.git
+<span class="nb">cd</span><span class="w"> </span>VFTModel
+
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="variables-de-entorno">
+<h2>Variables de Entorno<a class="headerlink" href="#variables-de-entorno" title="Link to this heading">#</a></h2>
+<p>El modelo soporta dos entornos de ejecución configurados via archivo <code class="docutils literal notranslate"><span class="pre">.env</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Descripción</p></th>
+<th class="head"><p>LOCAL</p></th>
+<th class="head"><p>DEV</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">APIMETRO_URL</span></code></p></td>
+<td><p>URL base del backend Go</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://localhost:8080/movilidad</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">https://apimetro.dev/movilidad</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Configuración inicial:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># LOCAL — apimetro corriendo en localhost</span>
+cp<span class="w"> </span>.env.example<span class="w"> </span>.env.local
+
+<span class="c1"># DEV — apimetro.dev (servidor remoto)</span>
+cp<span class="w"> </span>.env.example<span class="w"> </span>.env.dev
+<span class="c1"># Editar .env.dev y cambiar APIMETRO_URL a https://apimetro.dev/movilidad</span>
+</pre></div>
+</div>
+<p>El archivo activo se selecciona al arrancar con la variable <code class="docutils literal notranslate"><span class="pre">ENV_FILE</span></code> (ver sección siguiente).</p>
+</section>
+<hr class="docutils" />
+<section id="correr-el-servidor">
+<h2>Correr el servidor<a class="headerlink" href="#correr-el-servidor" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+
+<span class="c1"># Modo LOCAL (default — requiere apimetro en localhost:8080)</span>
+python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>src.api.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--reload
+
+<span class="c1"># Modo DEV (conecta a apimetro.dev)</span>
+<span class="nv">ENV_FILE</span><span class="o">=</span>.env.dev<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>src.api.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--reload
+</pre></div>
+</div>
+<p>Swagger UI disponible en <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/docs</span></code>.</p>
+<p>Para cachear el grafo antes de usar los endpoints analíticos:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET http://localhost:8000/api/v1/network/build-auto?mode=REALISTIC_INTEGRATION&amp;tolerance_m=85
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="correr-los-tests">
+<h2>Correr los tests<a class="headerlink" href="#correr-los-tests" title="Link to this heading">#</a></h2>
+<p>La suite de integración requiere el servidor activo y apimetro corriendo:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+pytest<span class="w"> </span>tests/<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>39 tests — cobertura de los 7 GeoLayers de la API (<code class="docutils literal notranslate"><span class="pre">/coverage</span></code>, <code class="docutils literal notranslate"><span class="pre">/capillary</span></code>, <code class="docutils literal notranslate"><span class="pre">/detour</span></code>).</p>
+</section>
+<hr class="docutils" />
+<section id="arquitectura">
+<h2>Arquitectura<a class="headerlink" href="#arquitectura" title="Link to this heading">#</a></h2>
+<p>Arquitectura hexagonal en tres capas:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FastAPI (src/api/)  →  Dominio (src/core/)  →  Infraestructura (src/infrastructure/)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>VFTModel/
+├── src/
+│   ├── api/
+│   │   ├── routes/         # GeoLayers API — output adapters GeoJSON
+│   │   └── schemas/        # Validación Pydantic del GeoJSON de Go
+│   ├── core/
+│   │   ├── algorithms/     # Indicadores topológicos (cobertura, capilar, detour)
+│   │   ├── models/         # Modelo de impedancia y fricción vial
+│   │   └── services/       # Constructor del grafo NetworkX
+│   └── infrastructure/
+│       └── go_client/      # Clientes HTTP al backend apimetro
+├── tests/                  # Suite pytest de integración (39 tests)
+├── notebooks/              # Análisis exploratorio y validación local
+├── VFT_CLIENT_SPEC.md      # Contrato de datos para consumidores externos
+└── requirements.txt
+</pre></div>
+</div>
+<p><strong>Flujo de una petición:</strong></p>
+<ol class="arabic simple">
+<li><p>FastAPI valida el request con Pydantic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_or_build_graph()</span></code> consulta el caché en memoria; si hay miss, descarga de apimetro y construye el grafo con <code class="docutils literal notranslate"><span class="pre">VFTGraphBuilder</span></code></p></li>
+<li><p>El algoritmo topológico corre sobre el grafo y devuelve un DataFrame</p></li>
+<li><p>El router GeoLayers serializa el resultado como FeatureCollection GeoJSON</p></li>
+</ol>
+<p><strong>Consumidor externo:</strong> <a class="reference external" href="https://github.com/galigaribaldi/Transport-gis-zmvm-mjg">Transport-gis-zmvm-mjg</a> consume los GeoLayers via <code class="docutils literal notranslate"><span class="pre">vft_fetcher.py</span></code> y genera capas GPKG para QGIS.</p>
+</section>
+<hr class="docutils" />
+<section id="indicadores-implementados">
+<h2>Indicadores implementados<a class="headerlink" href="#indicadores-implementados" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Indicador</p></th>
+<th class="head"><p>Endpoint</p></th>
+<th class="head"><p>Estado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cobertura espacial (C)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/network/geolayers/coverage</span></code></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fuerza capilar (k_in)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/network/geolayers/capillary</span></code></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Factor de desviación (DI)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/v1/network/geolayers/detour</span></code></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tiempo promedio (T)</p></td>
+<td><p>—</p></td>
+<td><p>Pendiente Fase 3</p></td>
+</tr>
+<tr class="row-even"><td><p>Centralidad de intermediación (B)</p></td>
+<td><p>—</p></td>
+<td><p>Pendiente Fase 3</p></td>
+</tr>
+<tr class="row-odd"><td><p>Robustez geométrica (ΔE)</p></td>
+<td><p>—</p></td>
+<td><p>Pendiente Fase 4</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 </section>
@@ -478,9 +624,13 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-el-proyecto">📖 Sobre el Proyecto</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-del-sistema">🏗️ Arquitectura del Sistema</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-repositorio">📂 Estructura del Repositorio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion">Instalación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-de-entorno">Variables de Entorno</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-el-servidor">Correr el servidor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correr-los-tests">Correr los tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">Arquitectura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indicadores-implementados">Indicadores implementados</a></li>
 </ul>
   </nav></div>
 

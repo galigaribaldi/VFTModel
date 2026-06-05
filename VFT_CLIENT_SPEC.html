@@ -1,0 +1,927 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Especificación del cliente VFTModel → Transport-gis-zmvm-mjg &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'VFT_CLIENT_SPEC';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="notebooks/intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="notebooks/intro.html">
+                    Modelo VFT — Documentación Técnica
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/detaur_factor.html">Notas del Módulo: Detour Factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2FVFT_CLIENT_SPEC.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/VFT_CLIENT_SPEC.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Especificación del cliente VFTModel → Transport-gis-zmvm-mjg</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-de-ejecucion-del-cliente">1. Modelo de ejecución del cliente</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endpoints-requeridos-de-vftmodel">2. Endpoints requeridos de VFTModel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrato-de-datos">3. Contrato de datos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#envoltura-estandar-todas-las-respuestas">3.1 Envoltura estándar (todas las respuestas)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#campos-estandar-en-properties-toda-feature-toda-capa">3.2 Campos estándar en <code class="docutils literal notranslate"><span class="pre">properties</span></code> (toda feature, toda capa)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crs">3.3 CRS</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#campos-por-capa">4. Campos por capa</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-por-alcaldia-poligono">4.1 <code class="docutils literal notranslate"><span class="pre">cobertura_por_alcaldia</span></code> — Polígono</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estaciones-point">4.2 <code class="docutils literal notranslate"><span class="pre">estaciones</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-800m-multipolygon">4.3 <code class="docutils literal notranslate"><span class="pre">cobertura_800m</span></code> — MultiPolygon</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fc-puntos-point">4.4 <code class="docutils literal notranslate"><span class="pre">fc_puntos</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fc-hubs-point">4.5 <code class="docutils literal notranslate"><span class="pre">fc_hubs</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-puntos-point">4.6 <code class="docutils literal notranslate"><span class="pre">df_puntos</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-por-alcaldia-polygon">4.7 <code class="docutils literal notranslate"><span class="pre">df_por_alcaldia</span></code> — Polygon</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-de-trazabilidad-meta">5. Capa de trazabilidad <code class="docutils literal notranslate"><span class="pre">_meta</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-simulada-del-cliente">6. Estructura simulada del cliente</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#salida-data-processed-vftoutput-gpkg">7. Salida: <code class="docutils literal notranslate"><span class="pre">data/processed/VFTOutput.gpkg</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="especificacion-del-cliente-vftmodel-transport-gis-zmvm-mjg">
+<h1>Especificación del cliente VFTModel → Transport-gis-zmvm-mjg<a class="headerlink" href="#especificacion-del-cliente-vftmodel-transport-gis-zmvm-mjg" title="Link to this heading">#</a></h1>
+<p>Documento de referencia para la integración entre los repositorios
+<strong>VFTModel</strong> (fuente de indicadores) y <strong>Transport-gis-zmvm-mjg</strong> (visualización cartográfica).</p>
+<hr class="docutils" />
+<section id="modelo-de-ejecucion-del-cliente">
+<h2>1. Modelo de ejecución del cliente<a class="headerlink" href="#modelo-de-ejecucion-del-cliente" title="Link to this heading">#</a></h2>
+<p>El cliente es un <strong>script CLI de Python</strong> que corre en un entorno virtual propio
+del repo <code class="docutils literal notranslate"><span class="pre">Transport-gis-zmvm-mjg</span></code>. No levanta ningún servidor; es un consumidor
+puntual que se ejecuta manualmente cuando el analista necesita actualizar los datos.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Activar entorno virtual</span>
+<span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+
+<span class="c1"># Regenerar todas las capas</span>
+<span class="n">python</span> <span class="n">analysis</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">vft_fetcher</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">mode</span> <span class="n">live</span>
+
+<span class="c1"># Regenerar solo una capa</span>
+<span class="n">python</span> <span class="n">analysis</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">vft_fetcher</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">mode</span> <span class="n">live</span> <span class="o">--</span><span class="n">layer</span> <span class="n">df_por_alcaldia</span>
+
+<span class="c1"># Usar caché existente (no llama a VFTModel, QGIS ya tiene el .gpkg)</span>
+<span class="n">python</span> <span class="n">analysis</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">vft_fetcher</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">mode</span> <span class="n">cached</span>
+</pre></div>
+</div>
+<p><strong>Dependencias del cliente (<code class="docutils literal notranslate"><span class="pre">.venv</span></code>):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Paquete</p></th>
+<th class="head"><p>Uso</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">requests</span></code></p></td>
+<td><p>HTTP GET a la API de VFTModel</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">geopandas</span></code></p></td>
+<td><p>Conversión GeoJSON → GeoDataFrame → <code class="docutils literal notranslate"><span class="pre">.gpkg</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shapely</span></code></p></td>
+<td><p>Implícita en geopandas</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El resultado de cada ejecución en modo <code class="docutils literal notranslate"><span class="pre">live</span></code> es un único archivo:
+<code class="docutils literal notranslate"><span class="pre">data/processed/VFTOutput.gpkg</span></code> con todas las capas temáticas.
+QGIS consume este archivo del disco; nunca llama a la API directamente.</p>
+</section>
+<hr class="docutils" />
+<section id="endpoints-requeridos-de-vftmodel">
+<h2>2. Endpoints requeridos de VFTModel<a class="headerlink" href="#endpoints-requeridos-de-vftmodel" title="Link to this heading">#</a></h2>
+<p>El cliente espera que VFTModel exponga los siguientes endpoints bajo el router
+<code class="docutils literal notranslate"><span class="pre">/api/v1/network/geolayers</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Método</p></th>
+<th class="head"><p>Ruta</p></th>
+<th class="head"><p>Parámetros query</p></th>
+<th class="head"><p>Capas que produce</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/api/v1/network/geolayers/coverage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">radio_m=800</span></code>, <code class="docutils literal notranslate"><span class="pre">entidades=[&quot;Ciudad</span> <span class="pre">de</span> <span class="pre">México&quot;]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cobertura_por_alcaldia</span></code>, <code class="docutils literal notranslate"><span class="pre">estaciones</span></code>, <code class="docutils literal notranslate"><span class="pre">cobertura_800m</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/api/v1/network/geolayers/capillary</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">min_fc=3</span></code>, <code class="docutils literal notranslate"><span class="pre">top_n=20</span></code>, <code class="docutils literal notranslate"><span class="pre">snap_tolerance_m=50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fc_puntos</span></code>, <code class="docutils literal notranslate"><span class="pre">fc_hubs</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/api/v1/network/geolayers/detour</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sample_size=100</span></code>, <code class="docutils literal notranslate"><span class="pre">seed=42</span></code>, <code class="docutils literal notranslate"><span class="pre">entidades=[&quot;Ciudad</span> <span class="pre">de</span> <span class="pre">México&quot;]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df_puntos</span></code>, <code class="docutils literal notranslate"><span class="pre">df_por_alcaldia</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El parámetro <code class="docutils literal notranslate"><span class="pre">layer</span></code> en cada request indica qué capa devolver.
+Si se omite, el endpoint devuelve la primera capa por defecto.</p>
+</section>
+<hr class="docutils" />
+<section id="contrato-de-datos">
+<h2>3. Contrato de datos<a class="headerlink" href="#contrato-de-datos" title="Link to this heading">#</a></h2>
+<section id="envoltura-estandar-todas-las-respuestas">
+<h3>3.1 Envoltura estándar (todas las respuestas)<a class="headerlink" href="#envoltura-estandar-todas-las-respuestas" title="Link to this heading">#</a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;indicador&quot;</span><span class="p">:</span><span class="w">   </span><span class="s2">&quot;cobertura | capillary | detour&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;layer&quot;</span><span class="p">:</span><span class="w">       </span><span class="s2">&quot;nombre_del_layer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;n_features&quot;</span><span class="p">:</span><span class="w">  </span><span class="mi">141</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;crs&quot;</span><span class="p">:</span><span class="w">         </span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fetched_at&quot;</span><span class="p">:</span><span class="w">  </span><span class="s2">&quot;2026-06-02T14:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;parametros&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;radio_m&quot;</span><span class="p">:</span><span class="w">   </span><span class="mi">800</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;entidades&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Ciudad de México&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Toda respuesta es un GeoJSON <code class="docutils literal notranslate"><span class="pre">FeatureCollection</span></code> válido.
+El cliente usa <code class="docutils literal notranslate"><span class="pre">geopandas.GeoDataFrame.from_features(response[&quot;features&quot;])</span></code> directamente.</p>
+</section>
+<section id="campos-estandar-en-properties-toda-feature-toda-capa">
+<h3>3.2 Campos estándar en <code class="docutils literal notranslate"><span class="pre">properties</span></code> (toda feature, toda capa)<a class="headerlink" href="#campos-estandar-en-properties-toda-feature-toda-capa" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Campo</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Identificador único dentro del layer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nombre</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Nombre legible (estación, alcaldía, hub, ruta)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">indicador</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Replica <code class="docutils literal notranslate"><span class="pre">metadata.indicador</span></code> — permite filtrar en QGIS sin joins</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layer</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Replica <code class="docutils literal notranslate"><span class="pre">metadata.layer</span></code> — mismo motivo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="crs">
+<h3>3.3 CRS<a class="headerlink" href="#crs" title="Link to this heading">#</a></h3>
+<p><strong>VFTModel entrega todas las capas en <code class="docutils literal notranslate"><span class="pre">EPSG:4326</span></code>.</strong>
+El cliente no reprojecta. Si una capa se calcula internamente en <code class="docutils literal notranslate"><span class="pre">EPSG:32614</span></code>
+(sjoin métrico, buffers), VFTModel aplica <code class="docutils literal notranslate"><span class="pre">.to_crs(&quot;EPSG:4326&quot;)</span></code> antes de
+serializar a GeoJSON.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="campos-por-capa">
+<h2>4. Campos por capa<a class="headerlink" href="#campos-por-capa" title="Link to this heading">#</a></h2>
+<section id="cobertura-por-alcaldia-poligono">
+<h3>4.1 <code class="docutils literal notranslate"><span class="pre">cobertura_por_alcaldia</span></code> — Polígono<a class="headerlink" href="#cobertura-por-alcaldia-poligono" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── campos base ──────────────────────────────────────
+nombre              string   Nombre de la alcaldía
+area_total_km2      float    Área total de la alcaldía
+area_cubierta_km2   float    Área cubierta por buffers de estaciones
+cobertura_pct       float    (area_cubierta / area_total) × 100
+
+── subcampos calculados por VFTModel ────────────────
+cobertura_deficit   float    = 100 - cobertura_pct
+                             Facilita mapas de déficit sin operar en QGIS
+categoria_cobertura string   = &quot;alta&quot;  si cobertura_pct &gt; 60
+                             = &quot;media&quot; si cobertura_pct 30–60
+                             = &quot;baja&quot;  si cobertura_pct &lt; 30
+                             Permite simbología categórica directa en QGIS
+</pre></div>
+</div>
+</section>
+<section id="estaciones-point">
+<h3>4.2 <code class="docutils literal notranslate"><span class="pre">estaciones</span></code> — Point<a class="headerlink" href="#estaciones-point" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── campos base ──────────────────────────────────────
+nombre              string   Nombre de la estación
+sistema             string   Metro | Metrobús | RTP | Tren Ligero | ...
+tipo_entidad        string   estacion | paradero | terminal
+
+── subcampos calculados por VFTModel ────────────────
+sistemas_count      int      Número de sistemas distintos que conecta
+                             Proxy de intermodalidad; útil para clasificar nodos
+</pre></div>
+</div>
+</section>
+<section id="cobertura-800m-multipolygon">
+<h3>4.3 <code class="docutils literal notranslate"><span class="pre">cobertura_800m</span></code> — MultiPolygon<a class="headerlink" href="#cobertura-800m-multipolygon" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── sin campos temáticos (solo geometría de la mancha unificada) ──
+
+── subcampo de trazabilidad ─────────────────────────
+radio_m             int      Radio usado para el buffer (ej. 800)
+                             Permite comparar escenarios 800 m vs 1000 m
+</pre></div>
+</div>
+</section>
+<section id="fc-puntos-point">
+<h3>4.4 <code class="docutils literal notranslate"><span class="pre">fc_puntos</span></code> — Point<a class="headerlink" href="#fc-puntos-point" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── campos base ──────────────────────────────────────
+nombre              string   Nombre de la estación / nodo
+fc_total            float    Fuerza Capilar Total del nodo
+cx_entrada          int      Conexiones de entrada
+cx_salida           int      Conexiones de salida
+
+── subcampos calculados por VFTModel ────────────────
+sistemas            string   JSON-encoded list, ej. &#39;[&quot;Metro&quot;,&quot;Metrobús&quot;]&#39;
+                             GPKG no soporta arrays nativos; JSON string es el estándar
+sistemas_count      int      = len(sistemas)
+tipo_nodo           string   Clasificación por umbral de fc_total:
+                             &quot;hub_principal&quot;   fc_total &gt; 20
+                             &quot;hub_secundario&quot;  fc_total 10–20
+                             &quot;nodo_relevante&quot;  fc_total 6–10
+                             &quot;nodo_basico&quot;     fc_total 3–6
+                             Mismos umbrales usados en la simbología del Coloquio 2026-2
+</pre></div>
+</div>
+</section>
+<section id="fc-hubs-point">
+<h3>4.5 <code class="docutils literal notranslate"><span class="pre">fc_hubs</span></code> — Point<a class="headerlink" href="#fc-hubs-point" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── campos base ──────────────────────────────────────
+nombre              string   Nombre del macro-hub (hub_nombre en origen)
+estaciones_agrupadas int     Número de estaciones agrupadas en el hub
+fc_total            float    Fuerza Capilar Total del hub
+
+── subcampos calculados por VFTModel ────────────────
+sistemas            string   JSON-encoded list
+sistemas_count      int      = len(sistemas)
+</pre></div>
+</div>
+</section>
+<section id="df-puntos-point">
+<h3>4.6 <code class="docutils literal notranslate"><span class="pre">df_puntos</span></code> — Point<a class="headerlink" href="#df-puntos-point" title="Link to this heading">#</a></h3>
+<p>Geometría: coordenada de inicio de la ruta (<code class="docutils literal notranslate"><span class="pre">network_route[0]</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── campos base ──────────────────────────────────────
+nombre              string   &quot;Origen → Destino&quot; (etiqueta compuesta)
+factor_desviacion   float    DF de la ruta
+origen              string   Nombre del nodo origen
+destino             string   Nombre del nodo destino
+dist_red_km         float    Distancia recorrida por la red
+dist_recta_km       float    Distancia en línea recta
+
+── subcampos calculados por VFTModel ────────────────
+sistemas            string   JSON-encoded list de sistemas involucrados
+categoria_df        string   Clasificación por umbral de factor_desviacion:
+                             &quot;eficiente&quot; DF ≤ 1.3
+                             &quot;moderado&quot;  DF 1.3–1.6
+                             &quot;alto&quot;      DF 1.6–2.0
+                             &quot;critico&quot;   DF &gt; 2.0
+                             Mismos umbrales del choroplético del Coloquio 2026-2
+</pre></div>
+</div>
+</section>
+<section id="df-por-alcaldia-polygon">
+<h3>4.7 <code class="docutils literal notranslate"><span class="pre">df_por_alcaldia</span></code> — Polygon<a class="headerlink" href="#df-por-alcaldia-polygon" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>── campos base ──────────────────────────────────────
+nombre              string   Nombre de la alcaldía
+df_promedio         float    Media del Factor de Desviación en la alcaldía
+n_rutas             int      Número de rutas de muestra que pasan por la alcaldía
+
+── subcampos calculados por VFTModel ────────────────
+df_stddev           float    Desviación estándar del DF en la alcaldía
+                             Muestra variabilidad interna, no solo el promedio
+categoria_df        string   Misma clasificación que df_puntos (basada en df_promedio)
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="capa-de-trazabilidad-meta">
+<h2>5. Capa de trazabilidad <code class="docutils literal notranslate"><span class="pre">_meta</span></code><a class="headerlink" href="#capa-de-trazabilidad-meta" title="Link to this heading">#</a></h2>
+<p>Una capa sin geometría, una sola fila. El cliente la escribe al final de cada
+ejecución exitosa en modo <code class="docutils literal notranslate"><span class="pre">live</span></code>. Permite saber si <code class="docutils literal notranslate"><span class="pre">VFTOutput.gpkg</span></code> está actualizado.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Campo</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Ejemplo</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fetched_at</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;2026-06-02T14:30:00Z&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vftmodel_url</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;http://localhost:8000&quot;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">radio_m</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">800</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">entidades</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'[&quot;Ciudad</span> <span class="pre">de</span> <span class="pre">México&quot;]'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">git_sha</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Hash del commit HEAD de VFTModel al momento del fetch</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="estructura-simulada-del-cliente">
+<h2>6. Estructura simulada del cliente<a class="headerlink" href="#estructura-simulada-del-cliente" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>analysis/scripts/vft_fetcher.py
+│
+├── CONFIG
+│   BASE_URL    = &quot;http://localhost:8000/api/v1/network/geolayers&quot;
+│   OUTPUT_PATH = &quot;data/processed/VFTOutput.gpkg&quot;
+│
+├── LAYER_REGISTRY: list[LayerDef]
+│   Cada LayerDef tiene: endpoint, layer_name, params_default
+│   ┌──────────────────────┬────────────────┬──────────────────────────────┐
+│   │ endpoint             │ layer_name     │ params_default               │
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /coverage            │ cobertura_por_ │ radio_m=800                  │
+│   │                      │ alcaldia       │ entidades=[&quot;Ciudad de México&quot;]│
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /coverage            │ estaciones     │ (mismos)                     │
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /coverage            │ cobertura_800m │ (mismos)                     │
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /capillary           │ fc_puntos      │ min_fc=3, snap_tolerance_m=50│
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /capillary           │ fc_hubs        │ top_n=20, snap_tolerance_m=50│
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /detour              │ df_puntos      │ sample_size=100, seed=42     │
+│   ├──────────────────────┼────────────────┼──────────────────────────────┤
+│   │ /detour              │ df_por_alcaldia│ sample_size=100, seed=42     │
+│   │                      │                │ entidades=[&quot;Ciudad de México&quot;]│
+│   └──────────────────────┴────────────────┴──────────────────────────────┘
+│
+├── fetch_layer(session, layer_def, overrides) → GeoDataFrame
+│   └── GET {BASE_URL}/{endpoint}?layer={layer_name}&amp;{params}
+│       → response.json() → GeoDataFrame.from_features(features)
+│
+├── write_gpkg(gdfs: dict[str, GeoDataFrame], path: Path)
+│   └── por cada (layer_name, gdf): gdf.to_file(path, layer=layer_name, driver=&quot;GPKG&quot;)
+│   └── escribe capa _meta al final
+│
+└── main()  ← argparse
+    --mode      live | cached          (default: live)
+    --layer     nombre_layer | all     (default: all)
+    --url       base URL de VFTModel   (default: http://localhost:8000)
+    --output    ruta del .gpkg         (default: data/processed/VFTOutput.gpkg)
+    --radio-m   int                    (default: 800)
+    --entidades JSON string            (default: &#39;[&quot;Ciudad de México&quot;]&#39;)
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="salida-data-processed-vftoutput-gpkg">
+<h2>7. Salida: <code class="docutils literal notranslate"><span class="pre">data/processed/VFTOutput.gpkg</span></code><a class="headerlink" href="#salida-data-processed-vftoutput-gpkg" title="Link to this heading">#</a></h2>
+<p>Un solo archivo GeoPackage con las siguientes capas:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Geometría</p></th>
+<th class="head"><p>CRS de escritura</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cobertura_por_alcaldia</span></code></p></td>
+<td><p>Polygon</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">estaciones</span></code></p></td>
+<td><p>Point</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cobertura_800m</span></code></p></td>
+<td><p>MultiPolygon</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fc_puntos</span></code></p></td>
+<td><p>Point</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fc_hubs</span></code></p></td>
+<td><p>Point</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">df_puntos</span></code></p></td>
+<td><p>Point</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df_por_alcaldia</span></code></p></td>
+<td><p>Polygon</p></td>
+<td><p>EPSG:4326</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_meta</span></code></p></td>
+<td><p><em>(sin geometría)</em></p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>QGIS carga este archivo como fuente de datos. Los proyectos <code class="docutils literal notranslate"><span class="pre">.qgz</span></code> referencian
+las capas por nombre, por lo que los nombres de layer son <strong>estables y no deben cambiar</strong>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-de-ejecucion-del-cliente">1. Modelo de ejecución del cliente</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endpoints-requeridos-de-vftmodel">2. Endpoints requeridos de VFTModel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrato-de-datos">3. Contrato de datos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#envoltura-estandar-todas-las-respuestas">3.1 Envoltura estándar (todas las respuestas)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#campos-estandar-en-properties-toda-feature-toda-capa">3.2 Campos estándar en <code class="docutils literal notranslate"><span class="pre">properties</span></code> (toda feature, toda capa)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crs">3.3 CRS</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#campos-por-capa">4. Campos por capa</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-por-alcaldia-poligono">4.1 <code class="docutils literal notranslate"><span class="pre">cobertura_por_alcaldia</span></code> — Polígono</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estaciones-point">4.2 <code class="docutils literal notranslate"><span class="pre">estaciones</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-800m-multipolygon">4.3 <code class="docutils literal notranslate"><span class="pre">cobertura_800m</span></code> — MultiPolygon</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fc-puntos-point">4.4 <code class="docutils literal notranslate"><span class="pre">fc_puntos</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fc-hubs-point">4.5 <code class="docutils literal notranslate"><span class="pre">fc_hubs</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-puntos-point">4.6 <code class="docutils literal notranslate"><span class="pre">df_puntos</span></code> — Point</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#df-por-alcaldia-polygon">4.7 <code class="docutils literal notranslate"><span class="pre">df_por_alcaldia</span></code> — Polygon</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capa-de-trazabilidad-meta">5. Capa de trazabilidad <code class="docutils literal notranslate"><span class="pre">_meta</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-simulada-del-cliente">6. Estructura simulada del cliente</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#salida-data-processed-vftoutput-gpkg">7. Salida: <code class="docutils literal notranslate"><span class="pre">data/processed/VFTOutput.gpkg</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hernán Galileo Cabrera Garibaldi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,953 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Enriquecimiento Ponderado del Grafo VFT &#8212; Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/NOTES/weighted_graph_enrichment';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Modelo VFT - Reportes de Ingeniería de Transportes en Urbanismo</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Modelo VFT — Documentación Técnica
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="detaur_factor.html">Notas del Módulo: Detour Factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="issues.html">Issues y Correcciones — VFT Model</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/galigaribaldi/VFTModel/issues/new?title=Issue%20on%20page%20%2Fnotebooks/NOTES/weighted_graph_enrichment.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/NOTES/weighted_graph_enrichment.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Enriquecimiento Ponderado del Grafo VFT</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-y-motivacion">1. Contexto y motivación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#las-dos-formulas-del-modelo-vft">2. Las dos fórmulas del modelo VFT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipo-a-edge-weight-enrutamiento-implementado">Tipo A — Edge Weight (enrutamiento) ✅ Implementado</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipo-b-node-score-importancia-de-nodo-este-documento">Tipo B — Node Score (importancia de nodo) ⬅ Este documento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componente-hat-a-i-afluencia-estimada-por-estacion">3. Componente <span class="math notranslate nohighlight">\(\hat{a}_i\)</span> — Afluencia estimada por estación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema">3.1 El problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metodo-de-desagregacion-grado-topologico">3.2 Método de desagregación — Grado Topológico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-independencia">3.3 Verificación de independencia</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componente-hat-p-i-poblacion-captada-en-buffer-800m">4. Componente <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> — Población captada en buffer 800m</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion">4.1 Definición</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencia-con-el-indicador-de-cobertura-espacial-c">4.2 Diferencia con el indicador de Cobertura Espacial (C)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalizacion">5. Normalización</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determinacion-de-los-alpha-tres-fases">6. Determinación de los <span class="math notranslate nohighlight">\(\alpha\)</span> — tres fases</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-1-baseline-tan-pronto-lleguen-mv1-mv2">Fase 1 — Baseline (tan pronto lleguen MV1 + MV2)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-2-pesos-por-entropia-critic-con-los-3-componentes-calculados">Fase 2 — Pesos por Entropía / CRITIC (con los 3 componentes calculados)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-3-analisis-de-sensibilidad-por-escenarios">Fase 3 — Análisis de sensibilidad por escenarios</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-completa-del-node-score">7. Fórmula completa del Node Score</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plan-de-implementacion">8. Plan de implementación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enriquecimiento-opcional-de-indicadores-topologicos-existentes">9. Enriquecimiento opcional de indicadores topológicos existentes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-espacial-variante-demografica">9.1 Cobertura Espacial — variante demográfica</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detour-factor-variante-por-pares-de-alta-demanda">9.2 Detour Factor — variante por pares de alta demanda</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-variante-ponderada-por-demanda">9.3 Tiempo de Viaje Promedio — variante ponderada por demanda</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-variante-ponderada-por-od">9.4 Centralidad de Intermediación — variante ponderada por OD</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-de-dependencias-y-prioridades">10. Resumen de dependencias y prioridades</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="enriquecimiento-ponderado-del-grafo-vft">
+<h1>Enriquecimiento Ponderado del Grafo VFT<a class="headerlink" href="#enriquecimiento-ponderado-del-grafo-vft" title="Link to this heading">#</a></h1>
+<p><strong>Fecha:</strong> 2026-04-28
+<strong>Estado:</strong> Planificación — sin implementación aún
+<strong>Dependencias:</strong> MV1 (afluencia por línea) + MV2 (AGEBs) de Apimetro</p>
+<hr class="docutils" />
+<section id="contexto-y-motivacion">
+<h2>1. Contexto y motivación<a class="headerlink" href="#contexto-y-motivacion" title="Link to this heading">#</a></h2>
+<p>El grafo VFT en su estado actual modela la red de transporte con dos tipos de atributos:</p>
+<ul class="simple">
+<li><p><strong>Aristas:</strong> peso de enrutamiento (tiempo de viaje con fricción) — <em>ya implementado y validado</em></p></li>
+<li><p><strong>Nodos:</strong> atributos estructurales (modo, sistema, coordenadas) — <em>sin peso de demanda</em></p></li>
+</ul>
+<p>Los indicadores topológicos actuales (fuerza capilar, cobertura espacial, detour factor) miden propiedades <strong>estructurales</strong> de la red: cómo está construida, qué tan eficiente es geométricamente, qué tan bien cubre el territorio. Sin embargo, no incorporan <strong>demanda real</strong>: cuántas personas usan cada estación, cuánta población vive cerca, qué tan cargados están los flujos.</p>
+<p>Este documento define la segunda capa de pesos del modelo VFT: el <strong>Node Score</strong>, un indicador compuesto que enriquece cada nodo del grafo con información de demanda observada y potencial.</p>
+</section>
+<hr class="docutils" />
+<section id="las-dos-formulas-del-modelo-vft">
+<h2>2. Las dos fórmulas del modelo VFT<a class="headerlink" href="#las-dos-formulas-del-modelo-vft" title="Link to this heading">#</a></h2>
+<section id="tipo-a-edge-weight-enrutamiento-implementado">
+<h3>Tipo A — Edge Weight (enrutamiento) ✅ Implementado<a class="headerlink" href="#tipo-a-edge-weight-enrutamiento-implementado" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[w(u,v) = \frac{D_{uv}}{V_{\text{modo}}} \cdot CF_{\text{vía}} + W_{\text{transbordo}}\]</div>
+<p>Donde <span class="math notranslate nohighlight">\(D_{uv}\)</span> es la distancia real del segmento, <span class="math notranslate nohighlight">\(V_{\text{modo}}\)</span> la velocidad operacional, <span class="math notranslate nohighlight">\(CF_{\text{vía}}\)</span> el coeficiente de fricción vial y <span class="math notranslate nohighlight">\(W_{\text{transbordo}}\)</span> la penalización por transferencia. Sin dependencia de nuevos datos.</p>
+</section>
+<section id="tipo-b-node-score-importancia-de-nodo-este-documento">
+<h3>Tipo B — Node Score (importancia de nodo) ⬅ Este documento<a class="headerlink" href="#tipo-b-node-score-importancia-de-nodo-este-documento" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\text{VFT\_score}_i = \alpha_1 \hat{k}_i + \alpha_2 \hat{a}_i + \alpha_3 \hat{p}_i \quad \left[+ \; \alpha_4 \hat{d}_i \text{ — fase posterior}\right]\]</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Símbolo</p></th>
+<th class="head"><p>Componente</p></th>
+<th class="head"><p>Fuente</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\hat{k}_i\)</span></p></td>
+<td><p>Fuerza capilar normalizada</p></td>
+<td><p>VFT interno — ya calculado</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\hat{a}_i\)</span></p></td>
+<td><p>Afluencia estimada por estación normalizada</p></td>
+<td><p>MV1 Apimetro + desagregación VFT</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\hat{p}_i\)</span></p></td>
+<td><p>Población captada en buffer 800m normalizada</p></td>
+<td><p>MV2 Apimetro + intersección espacial VFT</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\hat{d}_i\)</span></p></td>
+<td><p>Flujo OD asignado normalizado</p></td>
+<td><p>Fase posterior — sin ETA</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="componente-hat-a-i-afluencia-estimada-por-estacion">
+<h2>3. Componente <span class="math notranslate nohighlight">\(\hat{a}_i\)</span> — Afluencia estimada por estación<a class="headerlink" href="#componente-hat-a-i-afluencia-estimada-por-estacion" title="Link to this heading">#</a></h2>
+<section id="el-problema">
+<h3>3.1 El problema<a class="headerlink" href="#el-problema" title="Link to this heading">#</a></h3>
+<p>Apimetro entrega afluencia a nivel de <strong>línea</strong> (<span class="math notranslate nohighlight">\(A_\ell\)</span>: pasajeros/día por línea). El grafo requiere afluencia a nivel de <strong>nodo</strong> (<span class="math notranslate nohighlight">\(a_i\)</span>: pasajeros/día por estación). Esta desagregación la realiza VFT internamente.</p>
+</section>
+<section id="metodo-de-desagregacion-grado-topologico">
+<h3>3.2 Método de desagregación — Grado Topológico<a class="headerlink" href="#metodo-de-desagregacion-grado-topologico" title="Link to this heading">#</a></h3>
+<p>Se distribuye la afluencia de cada línea entre sus estaciones en proporción al <strong>grado topológico</strong> de cada nodo en el grafo. El grado <span class="math notranslate nohighlight">\(g_i\)</span> cuenta el número de aristas (conexiones) que inciden en el nodo <span class="math notranslate nohighlight">\(i\)</span>, independientemente de su peso.</p>
+<div class="math notranslate nohighlight">
+\[a_i = A_\ell \cdot \frac{g_i}{\displaystyle\sum_{j \in \ell} g_j}\]</div>
+<p>Donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A_\ell\)</span> = afluencia diaria promedio de la línea <span class="math notranslate nohighlight">\(\ell\)</span> (pasajeros/día)</p></li>
+<li><p><span class="math notranslate nohighlight">\(g_i = \deg(i)\)</span> = grado del nodo <span class="math notranslate nohighlight">\(i\)</span> en el grafo NetworkX</p></li>
+<li><p>La suma <span class="math notranslate nohighlight">\(\sum_{j \in \ell}\)</span> recorre todas las estaciones pertenecientes a la línea <span class="math notranslate nohighlight">\(\ell\)</span></p></li>
+</ul>
+<p><strong>¿Por qué grado topológico y no fuerza capilar (<span class="math notranslate nohighlight">\(k_{in}\)</span>)?</strong></p>
+<p>La fuerza capilar <span class="math notranslate nohighlight">\(k_{in}\)</span> es un indicador ya normalizado que entra al Node Score como componente independiente <span class="math notranslate nohighlight">\(\hat{k}_i\)</span>. Usar <span class="math notranslate nohighlight">\(k_{in}\)</span> para desagregar <span class="math notranslate nohighlight">\(a_i\)</span> crearía una dependencia circular:</p>
+<div class="math notranslate nohighlight">
+\[\hat{k}_i \xrightarrow{\text{desagregación}} \hat{a}_i \xrightarrow{\text{VFT\_score}} \hat{k}_i + \hat{a}_i \approx 2\hat{k}_i\]</div>
+<p>El grado topológico <span class="math notranslate nohighlight">\(g_i\)</span> es una medida bruta de conectividad (número de aristas, sin ponderación) que está correlacionada con <span class="math notranslate nohighlight">\(k_{in}\)</span> pero no es derivada de él, preservando la independencia entre componentes.</p>
+<p><strong>Si una estación pertenece a más de una línea</strong>, se acumula la afluencia de todas sus líneas:</p>
+<div class="math notranslate nohighlight">
+\[a_i = \sum_{\ell \ni i} A_\ell \cdot \frac{g_i}{\displaystyle\sum_{j \in \ell} g_j}\]</div>
+</section>
+<section id="verificacion-de-independencia">
+<h3>3.3 Verificación de independencia<a class="headerlink" href="#verificacion-de-independencia" title="Link to this heading">#</a></h3>
+<p>Antes de calcular los <span class="math notranslate nohighlight">\(\alpha\)</span>, se debe verificar la correlación entre componentes:</p>
+<div class="math notranslate nohighlight">
+\[\rho(\hat{k}, \hat{a}) = \frac{\text{Cov}(\hat{k}, \hat{a})}{\sigma_{\hat{k}} \cdot \sigma_{\hat{a}}}\]</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Resultado</p></th>
+<th class="head"><p>Acción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\rho &lt; 0.50\)</span></p></td>
+<td><p>Componentes independientes → usar los 3 por separado</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(0.50 \leq \rho &lt; 0.75\)</span></p></td>
+<td><p>Redundancia moderada → documentar y continuar</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\rho \geq 0.75\)</span></p></td>
+<td><p>Redundancia alta → fusionar en <span class="math notranslate nohighlight">\(\delta_i = \beta \hat{k}_i + (1-\beta)\hat{a}_i\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="componente-hat-p-i-poblacion-captada-en-buffer-800m">
+<h2>4. Componente <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> — Población captada en buffer 800m<a class="headerlink" href="#componente-hat-p-i-poblacion-captada-en-buffer-800m" title="Link to this heading">#</a></h2>
+<section id="definicion">
+<h3>4.1 Definición<a class="headerlink" href="#definicion" title="Link to this heading">#</a></h3>
+<p>Para cada estación <span class="math notranslate nohighlight">\(i\)</span> se traza un buffer de 800m (radio peatonal estándar ITDP/BID). La población captada es la suma de la población de los AGEBs que intersectan ese buffer, ponderada por la fracción de área de cada AGEB dentro del buffer.</p>
+<div class="math notranslate nohighlight">
+\[p_i = \sum_{j \in \mathcal{A}_i} \text{pob}_j \cdot \frac{\text{área}(B_i \cap \text{AGEB}_j)}{\text{área}(\text{AGEB}_j)}\]</div>
+<p>Donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(B_i\)</span> = buffer circular de 800m alrededor de la estación <span class="math notranslate nohighlight">\(i\)</span> (en CRS proyectado EPSG:6372)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{A}_i\)</span> = conjunto de AGEBs que intersectan <span class="math notranslate nohighlight">\(B_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{pob}_j\)</span> = población total del AGEB <span class="math notranslate nohighlight">\(j\)</span> (Censo INEGI 2020)</p></li>
+<li><p>La fracción de área asume distribución uniforme de población dentro del AGEB</p></li>
+</ul>
+<p><strong>Nota de implementación:</strong> el cálculo de área debe realizarse en un CRS métrico proyectado (EPSG:6372 — México Centro) para que las áreas en m² sean correctas. Las coordenadas de estaciones se reproyectan antes del buffer.</p>
+</section>
+<section id="diferencia-con-el-indicador-de-cobertura-espacial-c">
+<h3>4.2 Diferencia con el indicador de Cobertura Espacial (C)<a class="headerlink" href="#diferencia-con-el-indicador-de-cobertura-espacial-c" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Indicador</p></th>
+<th class="head"><p>Mide</p></th>
+<th class="head"><p>Unidad</p></th>
+<th class="head"><p>Uso</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cobertura Espacial <span class="math notranslate nohighlight">\(C\)</span></p></td>
+<td><p>Fracción de territorio cubierto por buffers</p></td>
+<td><p>% de área</p></td>
+<td><p>Indicador Fase 1 — ya implementado</p></td>
+</tr>
+<tr class="row-odd"><td><p>Población captada <span class="math notranslate nohighlight">\(p_i\)</span></p></td>
+<td><p>Personas dentro del buffer de cada estación</p></td>
+<td><p>Personas</p></td>
+<td><p>Componente del Node Score</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span class="math notranslate nohighlight">\(C\)</span> responde “¿qué fracción del territorio tiene acceso?” mientras que <span class="math notranslate nohighlight">\(p_i\)</span> responde “¿cuántas personas tiene acceso esta estación?”. Son métricas complementarias, no redundantes.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="normalizacion">
+<h2>5. Normalización<a class="headerlink" href="#normalizacion" title="Link to this heading">#</a></h2>
+<p>Todos los componentes se normalizan al rango <span class="math notranslate nohighlight">\([0, 1]\)</span> usando normalización min-max antes de calcular el Node Score:</p>
+<div class="math notranslate nohighlight">
+\[\hat{x}_i = \frac{x_i - \min(\mathbf{x})}{\max(\mathbf{x}) - \min(\mathbf{x})}\]</div>
+<p>Donde <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> es el vector de valores del componente sobre todos los nodos del grafo.</p>
+<p><strong>Consideración sobre outliers:</strong> si algún nodo tiene un valor extremo (ej. Pantitlán con afluencia o grado muy superior al resto), la normalización min-max comprimirá el resto de la distribución. En ese caso se puede usar normalización por percentil:</p>
+<div class="math notranslate nohighlight">
+\[\hat{x}_i = \frac{x_i - P_5(\mathbf{x})}{P_{95}(\mathbf{x}) - P_5(\mathbf{x})}, \quad \text{acotado a } [0, 1]\]</div>
+</section>
+<hr class="docutils" />
+<section id="determinacion-de-los-alpha-tres-fases">
+<h2>6. Determinación de los <span class="math notranslate nohighlight">\(\alpha\)</span> — tres fases<a class="headerlink" href="#determinacion-de-los-alpha-tres-fases" title="Link to this heading">#</a></h2>
+<section id="fase-1-baseline-tan-pronto-lleguen-mv1-mv2">
+<h3>Fase 1 — Baseline (tan pronto lleguen MV1 + MV2)<a class="headerlink" href="#fase-1-baseline-tan-pronto-lleguen-mv1-mv2" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\alpha_1 = \alpha_2 = \alpha_3 = \frac{1}{3}\]</div>
+<p>Objetivo: validar que el score corre correctamente. Verificar que nodos conocidos de alta importancia (Pantitlán, Insurgentes, Pino Suárez, Balderas) aparecen en el top-10. Si no lo hacen, el problema está en los datos de entrada, no en los pesos.</p>
+</section>
+<section id="fase-2-pesos-por-entropia-critic-con-los-3-componentes-calculados">
+<h3>Fase 2 — Pesos por Entropía / CRITIC (con los 3 componentes calculados)<a class="headerlink" href="#fase-2-pesos-por-entropia-critic-con-los-3-componentes-calculados" title="Link to this heading">#</a></h3>
+<p>Los pesos se derivan de la variabilidad observada de cada componente sobre todos los nodos:</p>
+<div class="math notranslate nohighlight">
+\[\alpha_n = \frac{\sigma_n}{\displaystyle\sum_{m=1}^{3} \sigma_m}, \qquad \sigma_n = \text{std}(\hat{x}_n)\]</div>
+<p>Un componente más discriminante (mayor dispersión entre nodos) recibe mayor peso. Esto penaliza automáticamente componentes redundantes o de baja varianza.</p>
+<p><strong>Procedimiento:</strong></p>
+<ol class="arabic simple">
+<li><p>Calcular los 3 componentes normalizados para todos los nodos</p></li>
+<li><p>Calcular <span class="math notranslate nohighlight">\(\text{corr}(\hat{k}, \hat{a})\)</span> — si <span class="math notranslate nohighlight">\(\rho \geq 0.75\)</span>, fusionar antes de continuar</p></li>
+<li><p>Calcular <span class="math notranslate nohighlight">\(\sigma_n\)</span> para cada componente</p></li>
+<li><p>Derivar los <span class="math notranslate nohighlight">\(\alpha_n\)</span> y documentarlos como los pesos oficiales del modelo</p></li>
+</ol>
+</section>
+<section id="fase-3-analisis-de-sensibilidad-por-escenarios">
+<h3>Fase 3 — Análisis de sensibilidad por escenarios<a class="headerlink" href="#fase-3-analisis-de-sensibilidad-por-escenarios" title="Link to this heading">#</a></h3>
+<p>Con los <span class="math notranslate nohighlight">\(\alpha\)</span> de entropía como referencia, correr 3 escenarios adicionales y comparar rankings:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Escenario</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\alpha_1\)</span> (<span class="math notranslate nohighlight">\(\hat{k}\)</span>)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\alpha_2\)</span> (<span class="math notranslate nohighlight">\(\hat{a}\)</span>)</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\alpha_3\)</span> (<span class="math notranslate nohighlight">\(\hat{p}\)</span>)</p></th>
+<th class="head"><p>Hipótesis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Estructural</p></td>
+<td><p>0.60</p></td>
+<td><p>0.25</p></td>
+<td><p>0.15</p></td>
+<td><p>La topología de la red determina la importancia</p></td>
+</tr>
+<tr class="row-odd"><td><p>Demanda</p></td>
+<td><p>0.15</p></td>
+<td><p>0.65</p></td>
+<td><p>0.20</p></td>
+<td><p>Los flujos medidos de pasajeros mandan</p></td>
+</tr>
+<tr class="row-even"><td><p>Equidad</p></td>
+<td><p>0.15</p></td>
+<td><p>0.20</p></td>
+<td><p>0.65</p></td>
+<td><p>El acceso poblacional define la relevancia</p></td>
+</tr>
+<tr class="row-odd"><td><p>Entropía</p></td>
+<td><p><span class="math notranslate nohighlight">\(\alpha^\star_1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\alpha^\star_2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\alpha^\star_3\)</span></p></td>
+<td><p>Pesos emergentes de los datos</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Métrica de robustez:</strong> un nodo es <strong>estructuralmente robusto</strong> si aparece en el top-10 en los 4 escenarios. Un nodo es <strong>sensible a la hipótesis</strong> si varía más de 20 posiciones entre escenarios. Esta distinción alimenta directamente el análisis de vulnerabilidad <span class="math notranslate nohighlight">\(\Delta E\)</span>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="formula-completa-del-node-score">
+<h2>7. Fórmula completa del Node Score<a class="headerlink" href="#formula-completa-del-node-score" title="Link to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[\boxed{\text{VFT\_score}_i = \alpha_1 \hat{k}_i + \alpha_2 \hat{a}_i + \alpha_3 \hat{p}_i}\]</div>
+<div class="math notranslate nohighlight">
+\[\hat{k}_i = \frac{k_i - \min(\mathbf{k})}{\max(\mathbf{k}) - \min(\mathbf{k})}, \quad \hat{a}_i = \frac{a_i - \min(\mathbf{a})}{\max(\mathbf{a}) - \min(\mathbf{a})}, \quad \hat{p}_i = \frac{p_i - \min(\mathbf{p})}{\max(\mathbf{p}) - \min(\mathbf{p})}\]</div>
+<div class="math notranslate nohighlight">
+\[a_i = \sum_{\ell \ni i} A_\ell \cdot \frac{g_i}{\sum_{j \in \ell} g_j}, \qquad p_i = \sum_{j \in \mathcal{A}_i} \text{pob}_j \cdot \frac{\text{área}(B_i \cap \text{AGEB}_j)}{\text{área}(\text{AGEB}_j)}\]</div>
+</section>
+<hr class="docutils" />
+<section id="plan-de-implementacion">
+<h2>8. Plan de implementación<a class="headerlink" href="#plan-de-implementacion" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>BLOQUE 0 — Ya disponible (sin Apimetro)
+├── k_in por nodo              ← capillar_strength.py
+└── g_i por nodo               ← nx.degree(G) — disponible hoy
+
+BLOQUE 1 — Infraestructura (antes de recibir datos reales)
+├── src/core/services/node_scorer.py
+│   ├── disaggregate_ridership(G, afluencia_df) → dict[node_id, float]
+│   ├── compute_population_capture(stations_gdf, agebs_gdf) → dict[node_id, float]
+│   ├── normalize_component(series) → series [0,1]
+│   └── compute_vft_score(k, a, p, alphas) → DataFrame
+│
+└── src/infrastructure/go_client/client_agebs.py   ← nuevo cliente
+    └── fetch_agebs() → GeoDataFrame  (patrón fan-out igual a client_spatial.py)
+
+BLOQUE 2 — Con MV1 + MV2 de Apimetro
+├── Validación Fase 1 (α igual) — notebook 05_Node_Score.ipynb
+├── Diagnóstico de correlación ρ(k̂, â)
+└── Validación Fase 2 (α entropía)
+
+BLOQUE 3 — Análisis de sensibilidad
+└── Notebook 05 sección 3: 4 escenarios + tabla de nodos robustos vs sensibles
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<hr class="docutils" />
+<section id="enriquecimiento-opcional-de-indicadores-topologicos-existentes">
+<h2>9. Enriquecimiento opcional de indicadores topológicos existentes<a class="headerlink" href="#enriquecimiento-opcional-de-indicadores-topologicos-existentes" title="Link to this heading">#</a></h2>
+<p>Los indicadores de Fases 1 y 2 fueron diseñados y validados como métricas <strong>estructurales</strong> de la red. No requieren los pesos ponderados para funcionar correctamente. Esta sección documenta extensiones <strong>opcionales</strong> que incorporan demanda real una vez que el Node Score esté validado.</p>
+<blockquote>
+<div><p><strong>Regla de implementación:</strong> ninguna extensión de esta sección modifica el código existente.
+Se implementan como variantes paralelas con sufijo <code class="docutils literal notranslate"><span class="pre">_dem</span></code> (demand-weighted) en los mismos módulos o notebooks, sin reemplazar las versiones estructurales.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="cobertura-espacial-variante-demografica">
+<h3>9.1 Cobertura Espacial — variante demográfica<a class="headerlink" href="#cobertura-espacial-variante-demografica" title="Link to this heading">#</a></h3>
+<p><strong>Versión actual (estructural):</strong></p>
+<div class="math notranslate nohighlight">
+\[C = \frac{\text{Área}\left(\bigcup_i B_i\right)}{\text{Área}_{\text{zona}}}\]</div>
+<p>Responde: <em>¿qué fracción del territorio está dentro de 800m de alguna estación?</em></p>
+<p><strong>Variante ponderada por demanda:</strong></p>
+<div class="math notranslate nohighlight">
+\[C_{\text{dem}} = \frac{\displaystyle\sum_{j \in \mathcal{A}} \text{pob}_j \cdot \mathbb{1}\left[\text{AGEB}_j \cap \bigcup_i B_i \neq \emptyset\right] \cdot \frac{\text{área}(\text{AGEB}_j \cap \bigcup_i B_i)}{\text{área}(\text{AGEB}_j)}}{\displaystyle\sum_{j \in \mathcal{A}} \text{pob}_j}\]</div>
+<p>Responde: <em>¿qué fracción de la <strong>población</strong> está dentro de 800m de alguna estación?</em></p>
+<p><strong>Requiere:</strong> MV2 (AGEBs) — mismos datos que <span class="math notranslate nohighlight">\(\hat{p}_i\)</span>.
+<strong>Prioridad:</strong> media. Mejora significativamente la narrativa de equidad del modelo.</p>
+</section>
+<hr class="docutils" />
+<section id="detour-factor-variante-por-pares-de-alta-demanda">
+<h3>9.2 Detour Factor — variante por pares de alta demanda<a class="headerlink" href="#detour-factor-variante-por-pares-de-alta-demanda" title="Link to this heading">#</a></h3>
+<p><strong>Versión actual:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{DF} = \frac{1}{|S|} \sum_{(o,d) \in S} \frac{d_{\text{red}}(o,d)}{d_{\text{euclídea}}(o,d)}\]</div>
+<p>Donde <span class="math notranslate nohighlight">\(S\)</span> es una muestra aleatoria de pares O-D del grafo.</p>
+<p><strong>Variante ponderada por demanda:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{DF}_{\text{dem}} = \frac{\displaystyle\sum_{(o,d) \in S} \hat{a}_o \cdot \hat{a}_d \cdot \frac{d_{\text{red}}(o,d)}{d_{\text{euclídea}}(o,d)}}{\displaystyle\sum_{(o,d) \in S} \hat{a}_o \cdot \hat{a}_d}\]</div>
+<p>El muestreo de pares O-D se pondera por la afluencia de los nodos: los pares entre nodos de alta demanda tienen mayor probabilidad de ser seleccionados.</p>
+<p><strong>Interpretación:</strong> en lugar de medir la ineficiencia promedio de cualquier ruta, mide la ineficiencia de las rutas <strong>que más gente usa</strong>. Un DF estructural bajo con DF_dem alto indicaría que las rutas de mayor demanda son las más ineficientes — dato crítico para política de infraestructura.</p>
+<p><strong>Requiere:</strong> <span class="math notranslate nohighlight">\(\hat{a}_i\)</span> (Bloque 2).
+<strong>Prioridad:</strong> baja. El DF actual ya es válido; esta variante es análisis de segunda capa.</p>
+</section>
+<hr class="docutils" />
+<section id="tiempo-de-viaje-promedio-variante-ponderada-por-demanda">
+<h3>9.3 Tiempo de Viaje Promedio — variante ponderada por demanda<a class="headerlink" href="#tiempo-de-viaje-promedio-variante-ponderada-por-demanda" title="Link to this heading">#</a></h3>
+<p><strong>Versión P3 (topológica):</strong></p>
+<div class="math notranslate nohighlight">
+\[T = \frac{1}{N(N-1)} \sum_{i \neq j} t(i,j)\]</div>
+<p>Promedio simple sobre todos los pares de nodos alcanzables.</p>
+<p><strong>Variante ponderada por demanda:</strong></p>
+<div class="math notranslate nohighlight">
+\[T_{\text{dem}} = \frac{\displaystyle\sum_{i \neq j} \hat{a}_i \cdot \hat{a}_j \cdot t(i,j)}{\displaystyle\sum_{i \neq j} \hat{a}_i \cdot \hat{a}_j}\]</div>
+<p>Las rutas entre nodos de alta demanda pesan más en el promedio. Si dos nodos tienen <span class="math notranslate nohighlight">\(\hat{a}_i \approx 0\)</span> (estaciones de baja afluencia), su par O-D contribuye marginalmente al promedio.</p>
+<p><strong>Interpretación:</strong> <span class="math notranslate nohighlight">\(T\)</span> mide el tiempo promedio de la red como sistema físico. <span class="math notranslate nohighlight">\(T_{\text{dem}}\)</span> mide el tiempo promedio que experimenta el <strong>pasajero promedio</strong>. Para política pública, <span class="math notranslate nohighlight">\(T_{\text{dem}}\)</span> es más informativo.</p>
+<p><strong>Requiere:</strong> <span class="math notranslate nohighlight">\(\hat{a}_i\)</span> (Bloque 2) + P3 implementado.
+<strong>Prioridad:</strong> media-alta. La diferencia <span class="math notranslate nohighlight">\(T_{\text{dem}} - T\)</span> cuantifica el sesgo de la red: si <span class="math notranslate nohighlight">\(T_{\text{dem}} &gt; T\)</span>, las rutas más demandadas son más lentas que el promedio estructural.</p>
+</section>
+<hr class="docutils" />
+<section id="centralidad-de-intermediacion-variante-ponderada-por-od">
+<h3>9.4 Centralidad de Intermediación — variante ponderada por OD<a class="headerlink" href="#centralidad-de-intermediacion-variante-ponderada-por-od" title="Link to this heading">#</a></h3>
+<p><strong>Versión P4 (topológica):</strong></p>
+<div class="math notranslate nohighlight">
+\[B(v) = \frac{1}{(N-1)(N-2)} \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}\]</div>
+<p>Donde <span class="math notranslate nohighlight">\(\sigma_{st}\)</span> es el número de caminos más cortos entre <span class="math notranslate nohighlight">\(s\)</span> y <span class="math notranslate nohighlight">\(t\)</span>, y <span class="math notranslate nohighlight">\(\sigma_{st}(v)\)</span> los que pasan por <span class="math notranslate nohighlight">\(v\)</span>.</p>
+<p><strong>Variante ponderada por demanda (demand-weighted betweenness):</strong></p>
+<div class="math notranslate nohighlight">
+\[B_{\text{dem}}(v) = \frac{\displaystyle\sum_{s \neq v \neq t} \hat{a}_s \cdot \hat{a}_t \cdot \frac{\sigma_{st}(v)}{\sigma_{st}}}{\displaystyle\sum_{s \neq t} \hat{a}_s \cdot \hat{a}_t}\]</div>
+<p>Los pares O-D con alta demanda en ambos extremos pesan más. Un nodo que está en el camino mínimo entre dos terminales de alta afluencia tiene <span class="math notranslate nohighlight">\(B_{\text{dem}}\)</span> alto aunque su <span class="math notranslate nohighlight">\(B\)</span> topológico sea moderado.</p>
+<p><strong>Interpretación:</strong> <span class="math notranslate nohighlight">\(B\)</span> identifica nodos críticos para la conectividad estructural de la red. <span class="math notranslate nohighlight">\(B_{\text{dem}}\)</span> identifica nodos críticos para los <strong>pasajeros reales</strong>. El análisis de vulnerabilidad <span class="math notranslate nohighlight">\(\Delta E\)</span> debería usar <span class="math notranslate nohighlight">\(B_{\text{dem}}\)</span> en lugar de <span class="math notranslate nohighlight">\(B\)</span> para que la hipótesis del Anillo Periférico sea válida empíricamente.</p>
+<p><strong>Requiere:</strong> <span class="math notranslate nohighlight">\(\hat{a}_i\)</span> (Bloque 2) + P4 implementado. Con OD matrix disponible, <span class="math notranslate nohighlight">\(\hat{a}_s \cdot \hat{a}_t\)</span> se reemplaza por el flujo OD real <span class="math notranslate nohighlight">\(f_{st}\)</span>.
+<strong>Prioridad:</strong> alta. Es la extensión de mayor impacto analítico — cambia directamente la conclusión sobre qué nodo es más vulnerable.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="resumen-de-dependencias-y-prioridades">
+<h2>10. Resumen de dependencias y prioridades<a class="headerlink" href="#resumen-de-dependencias-y-prioridades" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Disponible hoy:
+├── k_in ────────────────────────────────── k̂_i  ✅
+└── nx.degree(G) ──────── para desagregar â_i  ✅ (lógica, sin datos aún)
+
+Con MV1 (afluencia por línea):
+└── a_i (desagregación) ──────────────────  â_i  ✅ → habilita 9.2 DF_dem
+
+Con MV2 (AGEBs):
+└── p_i (intersección espacial) ──────────  p̂_i  ✅ → habilita 9.1 C_dem
+
+Con MV1 + MV2 + P3 implementado:
+└── T_dem (ponderado por afluencia) ────────────── 9.3
+
+Con MV1 + MV2 + P4 implementado:
+└── B_dem (intermediación ponderada) ───────────── 9.4  ← mayor impacto
+
+Con Matriz OD (sin ETA):
+└── ôd_i + B_dem mejorado ──────────────────────── fase 4
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Extensión</p></th>
+<th class="head"><p>Requiere</p></th>
+<th class="head"><p>Impacto</p></th>
+<th class="head"><p>Prioridad</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(C_{\text{dem}}\)</span></p></td>
+<td><p>MV2</p></td>
+<td><p>Narrativa de equidad</p></td>
+<td><p>Media</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\text{DF}_{\text{dem}}\)</span></p></td>
+<td><p>MV1</p></td>
+<td><p>Análisis de segunda capa</p></td>
+<td><p>Baja</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(T_{\text{dem}}\)</span></p></td>
+<td><p>MV1 + P3</p></td>
+<td><p>Experiencia del pasajero promedio</p></td>
+<td><p>Media-alta</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(B_{\text{dem}}\)</span></p></td>
+<td><p>MV1 + P4</p></td>
+<td><p>Vulnerabilidad empíricamente válida</p></td>
+<td><p><strong>Alta</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/NOTES"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-y-motivacion">1. Contexto y motivación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#las-dos-formulas-del-modelo-vft">2. Las dos fórmulas del modelo VFT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipo-a-edge-weight-enrutamiento-implementado">Tipo A — Edge Weight (enrutamiento) ✅ Implementado</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipo-b-node-score-importancia-de-nodo-este-documento">Tipo B — Node Score (importancia de nodo) ⬅ Este documento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componente-hat-a-i-afluencia-estimada-por-estacion">3. Componente <span class="math notranslate nohighlight">\(\hat{a}_i\)</span> — Afluencia estimada por estación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema">3.1 El problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metodo-de-desagregacion-grado-topologico">3.2 Método de desagregación — Grado Topológico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-independencia">3.3 Verificación de independencia</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componente-hat-p-i-poblacion-captada-en-buffer-800m">4. Componente <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> — Población captada en buffer 800m</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion">4.1 Definición</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencia-con-el-indicador-de-cobertura-espacial-c">4.2 Diferencia con el indicador de Cobertura Espacial (C)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalizacion">5. Normalización</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determinacion-de-los-alpha-tres-fases">6. Determinación de los <span class="math notranslate nohighlight">\(\alpha\)</span> — tres fases</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-1-baseline-tan-pronto-lleguen-mv1-mv2">Fase 1 — Baseline (tan pronto lleguen MV1 + MV2)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-2-pesos-por-entropia-critic-con-los-3-componentes-calculados">Fase 2 — Pesos por Entropía / CRITIC (con los 3 componentes calculados)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fase-3-analisis-de-sensibilidad-por-escenarios">Fase 3 — Análisis de sensibilidad por escenarios</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-completa-del-node-score">7. Fórmula completa del Node Score</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plan-de-implementacion">8. Plan de implementación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enriquecimiento-opcional-de-indicadores-topologicos-existentes">9. Enriquecimiento opcional de indicadores topológicos existentes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-espacial-variante-demografica">9.1 Cobertura Espacial — variante demográfica</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detour-factor-variante-por-pares-de-alta-demanda">9.2 Detour Factor — variante por pares de alta demanda</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tiempo-de-viaje-promedio-variante-ponderada-por-demanda">9.3 Tiempo de Viaje Promedio — variante ponderada por demanda</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centralidad-de-intermediacion-variante-ponderada-por-od">9.4 Centralidad de Intermediación — variante ponderada por OD</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-de-dependencias-y-prioridades">10. Resumen de dependencias y prioridades</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hernán Galileo Cabrera Garibaldi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

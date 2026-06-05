@@ -62,8 +62,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_Analisis_Impedancia_VFT';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Notas del Módulo: impedance.py" href="NOTES/impedance.html" />
-    <link rel="prev" title="Notas del Módulo: graph_builder.py" href="NOTES/graph_builder.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -126,6 +124,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -171,21 +171,14 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    Bienvenido al Modelo VFT (Vanishing Fig-Tree)
+                    Modelo VFT — Documentación Técnica
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="00_Construccion_grafo.html">Reporte 00: Construcción del Grafo Topológico (Modelo VFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Reporte 01: Discretización Espacial y Asignación de Impedancia Temporal (VFT)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
-</ul>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="02_Nivel_Cobertura.html">Reporte 02: Nivel de Cobertura Espacial Capilar (C)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_Fuerza_capilar.html">Reporte 03: Fuerza Capilar (Grado Nodal) y Nodos de Transferencia Intermodal (<span class="math notranslate nohighlight">\(FC\)</span>)</a></li>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="NOTES/graph_builder.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="NOTES/impedance.html">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="NOTES/detaur_factor.html">Notas del Módulo: Detour Factor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NOTES/issues.html">Issues y Correcciones — VFT Model</a></li>
 </ul>
 
@@ -1327,15 +1320,7 @@ MUESTRA de 10 segmentos por sistema (ordenados de mayor a menor distancia)
 <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;ASSETS/fig01_impedancia_sistemas.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Figura guardada en notebooks/ASSETS/fig01_impedancia_sistemas.png&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2d73da8ef2fa3edebff5c75848abc1c5bb3ef33a70eed87821090f0ba162030f.png" src="../_images/2d73da8ef2fa3edebff5c75848abc1c5bb3ef33a70eed87821090f0ba162030f.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Figura guardada en notebooks/ASSETS/fig01_impedancia_sistemas.png
 </pre></div>
 </div>
 </div>
@@ -1372,8 +1357,6 @@ La tesis plantea valores dinámicos de $C_{f,h}$ por franja horaria para una rut
 
 > El modelo VFT representa razonablemente las horas pico y vespertino, pero no captura variabilidad horaria. La diferencia máxima es del 5 %, dentro de los márgenes aceptables para análisis estructural de red (no predicción dinámica).
 > comentario --></section>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1406,24 +1389,6 @@ La tesis plantea valores dinámicos de $C_{f,h}$ por franja horaria para una rut
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="NOTES/graph_builder.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">graph_builder.py</span></code></p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="NOTES/impedance.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Notas del Módulo: <code class="docutils literal notranslate"><span class="pre">impedance.py</span></code></p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
