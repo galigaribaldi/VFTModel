@@ -42,6 +42,20 @@ pip install -r requirements.txt
 
 ---
 
+## Prerequisito: Make
+
+Los comandos de este proyecto se ejecutan con `make`. Instalación por SO:
+
+| SO | Instrucción |
+|---|---|
+| **Ubuntu / Debian** | `sudo apt-get install -y make` |
+| **macOS** | `xcode-select --install` (ya incluye make) |
+| **Windows** | Instalar [Git Bash](https://gitforwindows.org/) — incluye make. Alternativamente: `choco install make` (Chocolatey) o `scoop install make` |
+
+> En Windows se recomienda correr todos los comandos desde **Git Bash** o **WSL**, no desde CMD ni PowerShell.
+
+---
+
 ## Variables de Entorno
 
 El modelo soporta dos entornos de ejecución configurados via archivo `.env`:
@@ -64,16 +78,73 @@ El archivo activo se selecciona al arrancar con la variable `ENV_FILE` (ver secc
 
 ---
 
+## uvicorn vs Docker — ¿Cuándo usar cada uno?
+
+| | uvicorn (directo) | Docker |
+|---|---|---|
+| RAM extra | — | ~10 MB overhead del contenedor |
+| CPU overhead | — | <1% en Linux (sin VM); mayor en Mac/Windows |
+| Arranque | ~2-3 s | ~5-10 s |
+| Hot reload al guardar | ✅ `--reload` automático | ❌ requiere rebuild |
+| Dependencias GDAL del SO | Requieren instalación manual | ✅ incluidas en la imagen |
+| Acceso al debugger / IDE | ✅ directo | Más complejo |
+| Reproducibilidad entre máquinas | Depende del SO | ✅ garantizada |
+
+**Recomendación:**
+
+- **Desarrollo del modelo** → `make run` o `make run-dev`. El hot reload al guardar un archivo es clave cuando se itera sobre algoritmos o endpoints.
+- **Consumo desde clientes externos** (QGIS, Transport-gis-zmvm-mjg) → `make docker-run`. Entorno estable apuntando a `apimetro.dev`, sin dependencias del OS local del desarrollador.
+
+> En Linux el overhead de Docker es mínimo (los contenedores son procesos con namespaces, no VMs). En macOS y Windows, Docker Desktop corre una VM Linux — el overhead de CPU/RAM es mayor y el arranque más lento.
+
+---
+
 ## Correr el servidor
+
+### Con Make (recomendado)
+
+```bash
+source venv/bin/activate   # Linux / macOS
+# En Windows (Git Bash): source venv/Scripts/activate
+
+make run                   # uvicorn LOCAL  — puerto 8000
+make run-dev               # uvicorn DEV    — puerto 8000 → apimetro.dev
+make docker-build          # construye la imagen Docker
+make docker-run            # Docker DEV     — puerto 8000 → apimetro.dev
+make docker-run-local      # Docker LOCAL   — puerto 8000 → localhost:8080
+```
+
+**Puerto personalizado** — cualquier comando acepta `PORT=`:
+```bash
+make run PORT=8001
+make docker-run PORT=8002
+```
+
+Ver todos los comandos disponibles:
+```bash
+make help
+```
+
+### Sin Make (manual)
 
 ```bash
 source venv/bin/activate
 
-# Modo LOCAL (default — requiere apimetro en localhost:8080)
+# uvicorn LOCAL
 python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
 
-# Modo DEV (conecta a apimetro.dev)
+# uvicorn DEV
 ENV_FILE=.env.dev python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Docker DEV
+docker run -p 8000:8000 vftmodel
+
+# Docker LOCAL (Linux)
+docker run -p 8000:8000 --add-host=host.docker.internal:host-gateway \
+  -e APIMETRO_URL=http://host.docker.internal:8080/movilidad vftmodel
+
+# Docker LOCAL (macOS / Windows — host.docker.internal resuelve automáticamente)
+docker run -p 8000:8000 -e APIMETRO_URL=http://host.docker.internal:8080/movilidad vftmodel
 ```
 
 Swagger UI disponible en `http://localhost:8000/docs`.

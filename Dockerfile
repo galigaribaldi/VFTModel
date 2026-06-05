@@ -1,6 +1,6 @@
 # ── Stage 1: Builder ──────────────────────────────────────────────────────────
 # Instala dependencias en una imagen temporal para no contaminar la final
-FROM python:3.12-slim AS builder
+FROM python:3.12-slim-bookworm AS builder
 
 # GDAL y dependencias del SO para GeoPandas / Fiona / Shapely
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 
 # ── Stage 2: Runtime ──────────────────────────────────────────────────────────
-FROM python:3.12-slim AS runtime
+FROM python:3.12-slim-bookworm AS runtime
 
 # Solo las libs del SO que necesita el runtime (no el compilador)
 RUN apt-get update && apt-get install -y --no-install-recommends \
