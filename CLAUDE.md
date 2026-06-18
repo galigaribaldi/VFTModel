@@ -209,3 +209,33 @@ xelatex main.tex && biber main && xelatex main.tex && xelatex main.tex
 ```
 
 Genera `main.pdf` (~25 páginas). Requiere XeLaTeX + Biber.
+
+## Retomar Trabajo en Curso
+
+Al inicio de una sesión donde se retome trabajo previo o se necesite contexto sobre lo avanzado, ejecutar:
+
+```bash
+# Estado general — issues abiertos con etiquetas
+gh issue list --state open --label "fase-3,fase-4,deuda-tecnica,bloqueado"
+
+# Detalle de un issue específico (descripción + comentarios)
+gh issue view <N> --comments
+
+# PRs recientes — qué se ha mergeado y qué está en revisión
+gh pr list --state all --limit 10
+
+# Historial de la rama actual — últimos cambios
+git log --oneline -20
+
+# Cambios entre la rama actual y DEV (si estás en una feature branch)
+git log --oneline DEV..HEAD
+```
+
+### Convención para issues
+
+Al cerrar o avanzar en un issue, dejar un comentario en GitHub con:
+- Qué se hizo (resumen de 2-3 líneas)
+- Qué queda pendiente (si aplica)
+- Archivos modificados relevantes
+
+Esto permite que cualquier miembro del equipo o sesión de Claude Code reconstruya el contexto sin depender de memoria local.
