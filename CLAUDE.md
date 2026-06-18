@@ -1,108 +1,211 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Este archivo guía a Claude Code cuando trabaja con este repositorio.
 
-## Project Overview
+## Descripción del Proyecto
 
-**Vanishing Fig-Tree Model (VFT Model)** — Motor analítico geoespacial y topológico para la evaluación de redes de transporte en la Ciudad de México. Calculates three topological indicators for urban transport networks: capillary strength (nodal centrality), spatial coverage (geographic reach), and detour factor (route efficiency).
+**Vanishing Fig-Tree Model (VFT Model)** — Motor analítico geoespacial y topológico para la evaluación de redes de transporte en la Zona Metropolitana del Valle de México. Calcula 8 indicadores topológicos en 4 fases de desarrollo para redes de transporte urbano.
 
-## Running the Server
+Este es un proyecto de investigación académica en transporte urbano. El autor del modelo conoce la arquitectura en profundidad.
+
+## Estructura de Carpetas
+
+```
+src/
+├── api/                    # FastAPI — endpoints y schemas Pydantic
+│   ├── main.py             # Entry point (monolítico, pendiente split en routers — Issue #9)
+│   ├── routes/             # GeoLayers API (geo_layers.py)
+│   └── schemas/            # Validación Pydantic: jerarquía 4 niveles, 4 tipos vía, CETRAM
+├── core/                   # Dominio — algoritmos, modelos, servicios
+│   ├── algorithms/
+│   │   └── topologicalIndicators/
+│   │       ├── capillar_strength.py   # Fuerza Capilar (k_in) — Fase 1 ✅
+│   │       ├── spatial_coverage.py    # Cobertura Espacial (C) — Fase 1 ✅
+│   │       └── detaur_factor.py       # Detour Factor (DI) — Fase 1 ✅
+│   ├── models/
+│   │   └── impedance.py              # Fricción Vial (CF) — Fase 2 ✅
+│   ├── services/
+│   │   ├── graph_builder.py           # VFTGraphBuilder (STRICT / REALISTIC)
+│   │   └── orchestator.py            # Orquestador de cálculo de rutas
+│   └── utils/
+└── infrastructure/
+    ├── go_client/
+    │   ├── client.py                  # Fetch estaciones + líneas de Apimetro
+    │   ├── client_spatial.py          # Fetch polígonos territoriales
+    │   └── settings.py               # APIMETRO_URL via os.getenv (fuente única)
+    ├── geojson_service/
+    └── persistence/
+
+tests/                      # Suite pytest de integración (39 tests)
+notebooks/                  # Análisis exploratorio y validación (no publicados)
+├── ASSETS/                 # GeoJSON y datos locales para notebooks
+├── NOTES/                  # Documentación técnica (PDFs, markdown)
+DOCSL/                      # Documentación LaTeX del modelo (XeLaTeX + Biber)
+```
+
+## Comandos de Ejecución
 
 ```bash
-# Activate virtual environment first
+# Activar entorno virtual
 source venv/bin/activate
 
-# Start FastAPI server (development)
+# --- Con Make (recomendado) ---
+make run               # uvicorn LOCAL en puerto 8000
+make run-dev           # uvicorn DEV en puerto 8000
+make docker-build      # Build imagen Docker
+make docker-run        # Docker DEV en puerto 8000
+make docker-run-local  # Docker LOCAL (Linux: requiere --add-host)
+make install           # pip install -r requirements.txt
+make test              # pytest (requiere servidor activo + apimetro)
+# Override de puerto: make run PORT=9000
+
+# --- Sin Make ---
 python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
-
-# Or directly
-python src/api/main.py
 ```
 
-API docs available at `http://localhost:8000/docs` (Swagger UI).
+### Multi-entorno
 
-## Key Dependencies
+- `.env.local` → `APIMETRO_URL=http://localhost:8080` (desarrollo local con apimetro corriendo)
+- `.env.dev` → `APIMETRO_URL=https://apimetro.dev/movilidad` (servidor remoto)
+- Selección: `ENV_FILE=.env.dev make run-dev`
+
+API docs: `http://localhost:8000/docs` (Swagger UI)
+
+## Dependencias y Requisitos
 
 ```
+Python 3.12
 FastAPI 0.110.0, Uvicorn 0.29.0, httpx 0.27.0, Pydantic 2.6.4
 GeoPandas 0.14.3, NetworkX 3.2.1, Momepy 0.7.0, Shapely 2.0.3
+python-dotenv 1.0.1, pytest
 ```
 
-Install: `pip install -r requirements.txt`
+**Requisito de sistema:** GDAL debe estar instalado a nivel de SO:
+- Linux: `sudo apt install gdal-bin libgdal-dev`
+- macOS: `brew install gdal`
+- Windows: via OSGeo4W o conda
 
-There is no formal test suite. Validation happens via Pydantic schemas and Jupyter notebooks in `notebooks/`.
+**Docker:** `python:3.12-slim-bookworm` (bookworm fijado — Trixie no tiene libgdal32)
 
-## Architecture
+Instalar deps Python: `pip install -r requirements.txt`
 
-Hexagonal architecture with three layers:
+## Arquitectura
+
+Arquitectura hexagonal en tres capas:
 
 ```
-FastAPI (src/api/)  →  Domain Logic (src/core/)  →  Infrastructure (src/infrastructure/)
+FastAPI (src/api/)  →  Dominio (src/core/)  →  Infraestructura (src/infrastructure/)
 ```
 
-**Request flow for a typical topological endpoint:**
-1. FastAPI validates request with Pydantic schemas (`src/api/schemas/`)
-2. CPU-bound work is delegated to a thread pool via `asyncio.to_thread`
-3. `get_or_build_graph()` checks an in-memory cache keyed by `(mode, tolerance_m)`; on miss, fetches from the Go backend via `src/infrastructure/go_client/client.py` (falls back to `map.geojson` if unavailable)
-4. `VFTGraphBuilder` constructs the NetworkX graph in two phases: base network (stations→nodes, routes→edges), then optional pedestrian snapping (transfer edges between stations within tolerance)
-5. `VFTImpedanceModel` weights edges by travel time: `(haversine_distance / velocity) × friction_coefficient + boarding_cost`
-6. A topological analyzer runs on the graph and returns a Pandas DataFrame
-7. FastAPI returns JSON
+**Flujo de un endpoint topológico:**
+1. FastAPI valida request con schemas Pydantic
+2. CPU-bound → `asyncio.to_thread`
+3. `get_or_build_graph()` revisa caché en memoria `(mode, tolerance_m)`; en miss, fetch del Go backend (fallback a `map.geojson`)
+4. `VFTGraphBuilder` construye grafo NetworkX: red base (estaciones→nodos, rutas→aristas) + snapping peatonal opcional
+5. `VFTImpedanceModel` pondera aristas: `(haversine / velocidad) × fricción + boarding_cost`
+6. Analizador topológico → DataFrame → JSON
 
-## Core Components
+### Graph Builder — Modos
 
-### `src/core/services/graph_builder.py` — `VFTGraphBuilder`
+- `STRICT_TOPOLOGY`: Grafo matemático sin transferencias intermodales
+- `REALISTIC_INTEGRATION`: Agrega aristas de caminata dentro de tolerancia configurable
 
-Two build modes:
-- `STRICT_TOPOLOGY`: Mathematical graph, no intermodal transfers
-- `REALISTIC_INTEGRATION`: Adds pedestrian walking edges within a configurable tolerance
+Umbrales pre-configurados (metros): `MIN=15, Q1=85, Q2=180, MEAN=245, Q3=420, MAX=880`
 
-Pre-configured distance thresholds (meters): `MIN=15, Q1=85, Q2=180, MEAN=245, Q3=420, MAX=880`
+### Impedance Model
 
-### `src/core/models/impedance.py` — `VFTImpedanceModel`
-
-Friction coefficients based on right-of-way type. Travel time formula:
 ```
 impedance = (haversine(a, b) / velocity) × friction + frequency/2
 ```
 
-### `src/core/algorithms/topologicalIndicators/`
+Fricción basada en tipo de derecho de vía. `BETA_SATURACION_CDMX = 0.759` (TomTom Traffic Index).
 
-| File | Class | What it computes |
-|------|-------|-----------------|
-| `capillar_strength.py` | `CapillaryStrengthAnalyzer` | Nodal degree centrality with spatial grid hashing (0.001° cells); filters internal trace nodes |
-| `spatial_coverage.py` | `SpatialCoverageAnalyzer` | % of each jurisdiction (alcaldía/municipio) covered by 800m station buffers |
-| `detaur_factor.py` | `DetourFactorAnalyzer` | DF = Network distance / Euclidean distance for sampled O-D pairs |
+## Indicadores Topológicos — Roadmap
 
-### `src/api/schemas/` — Pydantic Validation
+| # | Indicador | Fase | Estado | Archivo / Issue |
+|---|-----------|------|--------|-----------------|
+| 1 | Cobertura (C) | 1 | ✅ | `spatial_coverage.py` |
+| 2 | Fuerza Capilar (k_in) | 1 | ✅ | `capillar_strength.py` |
+| 3 | Detour Factor (DI) | 1 | ✅ | `detaur_factor.py` |
+| 4 | Fricción Vial (CF) | 2 | ✅ | `impedance.py` |
+| 5 | Penalización Transferencia (W) | 2 | ✅ parcial | `graph_builder.py` |
+| 6 | Tiempo Promedio (T) | 3 | ❌ | Issue #2 |
+| 7 | Intermediación (B) | 3 | ❌ | Issue #3 |
+| 8 | Robustez (ΔE) | 4 | ❌ | Issue #5 |
 
-- 4-level transport hierarchy enum: heavy mass → light surface
-- 4 right-of-way types: exclusive / confined / shared / mixed
-- Taxonomy imputation rules for missing fields
-- CETRAM (transit center) node support
+**Regla de dependencia:** sin Fases 1-2 completadas no se avanza a Fase 3-4.
 
-### `src/infrastructure/go_client/`
-
-- `client.py`: Fetches stations + lines from Go backend concurrently; merges into a single FeatureCollection
-- `client_spatial.py`: Fetches territorial polygons (CDMX + State of Mexico) with fan-out/fan-in pattern
+**Prerequisito Fase 3:** verificar SCC del grafo (Issue #1). Si componente gigante > 80% nodos → implementar T y B directamente.
 
 ## API Endpoints
 
-| Endpoint | Description |
+| Endpoint | Descripción |
 |----------|-------------|
-| `POST /api/v1/network/build-auto` | Build and cache graph |
-| `GET /api/v1/network/spatial-coverage` | Coverage % by jurisdiction |
-| `GET /api/v1/network/topological/capillary-strength` | Nodal degree ranking |
-| `GET /api/v1/network/topological/geo-capillary` | Proximity macro-hub detection |
-| `GET /api/v1/network/topological/detour-factor` | Route efficiency (general + arbitrary nodes) |
+| `POST /api/v1/network/build-auto` | Construir y cachear grafo |
+| `GET /api/v1/network/spatial-coverage` | Cobertura % por jurisdicción |
+| `GET /api/v1/network/topological/capillary-strength` | Ranking de grado nodal |
+| `GET /api/v1/network/topological/geo-capillary` | Detección de macro-hubs |
+| `GET /api/v1/network/topological/detour-factor` | Eficiencia de rutas |
+| GeoLayers API (`src/api/routes/geo_layers.py`) | 7 layers GeoJSON para cobertura, capilar, detour |
 
-## Notebooks
+## Convenciones del Proyecto
 
-`notebooks/` contains four sequential analysis notebooks. They use local GeoJSON data in `notebooks/ASSETS/` and are the primary exploratory/validation environment (no formal test suite exists).
+### Git — Branching y Commits
 
-## Open Development Items (from NOTES.txt)
+```
+feature/mi-cambio  →  PR a DEV  →  merge  →  PR de DEV a main  →  merge
+```
 
-- Verify Haversine formula for segment velocities and average speeds
-- Correct impedance analysis notebook and code
-- Check analysis by AGEBs (Electoral Section) in CDMX and State of Mexico
-- Improve capillary force documentation with component formulas
+Nunca push directo a `main` ni `DEV`. Todo vía Pull Request. Ver `CONTRIBUTING.md` para detalles completos.
+
+**Commits:** `tipo(scope): descripción en imperativo` — tipos: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`.
+
+**Ramas:** `feature/`, `fix/`, `docs/`, `refactor/` + nombre descriptivo.
+
+### Idioma
+
+- Código: nombres de variables y funciones en inglés
+- Documentación, notas y comunicación: español
+- Comentarios en código: español
+
+### Tests
+
+Suite pytest de integración (39 tests). Requiere servidor activo + apimetro corriendo:
+```bash
+make run-dev   # terminal 1
+make test      # terminal 2
+```
+
+No hay suite unitaria formal. Validación adicional vía notebooks y schemas Pydantic.
+
+## Reglas de Trabajo con Claude Code
+
+### Aprobación antes de editar código
+
+Antes de modificar archivos de código (`src/`) o celdas de notebook, presentar:
+1. El archivo/celda exacta que cambia
+2. Diff legible (actual vs. nuevo)
+3. Razón del cambio
+
+Pedir aprobación explícita antes de ejecutar la edición. No aplica a archivos de documentación/notas donde el cambio es claramente aditivo.
+
+### Scope por notebook
+
+No mezclar indicadores entre notebooks. Solo incluir análisis de indicadores cuyo algoritmo esté implementado en `src/core/algorithms/`. Si un indicador está pendiente, mencionarlo como "pendiente en notebook XX" sin estimar valores.
+
+Scope: 01=impedancia/velocidades/Haversine, 02=cobertura, 03=fuerza capilar + detour factor.
+
+## Tracking de Issues
+
+Todos los issues pendientes están en GitHub Issues: https://github.com/galigaribaldi/VFTModel/issues
+
+Categorías: `fase-3`, `fase-4`, `deuda-tecnica`, `documentation`, `bloqueado`.
+
+## Compilar Documentación LaTeX
+
+```bash
+cd DOCSL/
+xelatex main.tex && biber main && xelatex main.tex && xelatex main.tex
+```
+
+Genera `main.pdf` (~25 páginas). Requiere XeLaTeX + Biber.

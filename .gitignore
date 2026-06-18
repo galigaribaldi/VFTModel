@@ -218,8 +218,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-#CLAUDE
-.claude/
+# Claude Code — trackear settings.json (permisos compartidos), ignorar config local
+.claude/settings.local.json
 # Archivos generados y datos crudos locales
 requestss.json
 VFT_Render.jpg
