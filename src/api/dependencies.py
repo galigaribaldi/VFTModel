@@ -12,7 +12,7 @@ from src.api.schemas.schemas import GeoJSONTransportSchema
 from src.infrastructure.go_client.client import fetch_full_network
 from src.core.services.graph_builder import VFTGraphBuilder
 from src.core.utils.logger import vft_logger
-from src.core.algorithms.topologicalIndicators.scc_analysis import SCCOrchestrator
+from src.core.algorithms.topological.scc_analysis import SCCOrchestrator
 
 ## Constante de rolerancia pro defecto (Q1)
 DEFAULT_TOLERANCE = VFTGraphBuilder.STATISTICAL_THRESHOLDS["Q1"]

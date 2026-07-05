@@ -30,9 +30,9 @@ from src.api.dependencies import DEFAULT_TOLERANCE, get_or_build_graph, get_scc_
 from src.api.routes import router as geo_router
 
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
-from src.core.algorithms.topologicalIndicators.spatial_coverate import SpatialCoverageAnalyzer
-from src.core.algorithms.topologicalIndicators.capillar_strength import CapillaryStrengthAnalyzer
-from src.core.algorithms.topologicalIndicators.detaurFactor import DetourFactorOrchestrator
+from src.core.algorithms.spatial.spatial_coverage import SpatialCoverageAnalyzer
+from src.core.algorithms.topological.capillar_strength import CapillaryStrengthAnalyzer
+from src.core.algorithms.topological.detaurFactor import DetourFactorOrchestrator
 from src.core.utils.logger import vft_logger
 
 app = FastAPI(
