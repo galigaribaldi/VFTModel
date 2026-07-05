@@ -26,7 +26,7 @@ from src.api.schemas.schemas import GeoJSONTransportSchema
 from src.infrastructure.go_client.client import fetch_full_network
 
 from src.core.services.graph_builder import VFTGraphBuilder
-from src.api.dependencies import DEFAULT_TOLERANCE, get_or_build_graph
+from src.api.dependencies import DEFAULT_TOLERANCE, get_or_build_graph, get_scc_report
 from src.api.routes import router as geo_router
 
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
@@ -238,6 +238,31 @@ async def get_detour_factor_any_node(
     except Exception as e:
         vft_logger.error(f"Error en Detour Factor Arbitrario: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error en el motor: {str(e)}")
+
+@app.get("/api/v1/network/topological/scc-analysis",
+         summary="Diagnóstico de Componentes Fuertemente Conexas (SCC)")
+async def get_scc_analysis(
+    mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo")
+):
+    """
+    Verifica la estructura de conectividad del grafo (Tarjan).
+    Prerequisito para Fase 3: si la componente gigante > 80% → apto para T y B.
+    """
+    try:
+        G = await get_or_build_graph(mode, tolerance_m)
+        report = get_scc_report(mode, tolerance_m)
+        if report is None:
+            raise HTTPException(500, "SCC analysis no disponible — reconstruir grafo.")
+        return {
+            "status": "success",
+            "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+            "data": report
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en análisis SCC: {str(e)}")
 
 if __name__ == "__main__":
     """Arranca el servidor de desarrollo Uvicorn en el puerto 8000."""
