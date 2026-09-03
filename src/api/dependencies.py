@@ -20,6 +20,8 @@ DEFAULT_TOLERANCE = VFTGraphBuilder.STATISTICAL_THRESHOLDS["Q1"]
 ## Caché en memoria - Singleton por proceso
 GRAPH_CACHE = {}
 SCC_CACHE = {}
+T_CACHE = {}
+B_CACHE = {}
 
 async def get_or_build_graph(mode: str, tolerance_m: float):
     """
@@ -56,3 +58,15 @@ def get_giant_component(mode: str, tolerance_m: float):
     """Recupera el subgrafo de la componente gigante cacheado."""
     cache_key = f"{mode}_{tolerance_m}"
     return SCC_CACHE.get(cache_key, {}).get("giant_component")
+
+
+def get_travel_time_report(mode: str, tolerance_m: float) -> dict | None:
+    """Recupera el reporte T cacheado para los parámetros dados."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return T_CACHE.get(cache_key)
+
+
+def get_betweenness_report(mode: str, tolerance_m: float) -> dict | None:
+    """Recupera el reporte B cacheado para los parámetros dados."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return B_CACHE.get(cache_key)

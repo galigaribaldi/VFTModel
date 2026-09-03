@@ -26,13 +26,19 @@ from src.api.schemas.schemas import GeoJSONTransportSchema
 from src.infrastructure.go_client.client import fetch_full_network
 
 from src.core.services.graph_builder import VFTGraphBuilder
-from src.api.dependencies import DEFAULT_TOLERANCE, get_or_build_graph, get_scc_report
+from src.api.dependencies import (
+    DEFAULT_TOLERANCE, get_or_build_graph, get_scc_report,
+    get_giant_component, get_travel_time_report, get_betweenness_report,
+    T_CACHE, B_CACHE
+)
 from src.api.routes import router as geo_router
 
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
 from src.core.algorithms.spatial.spatial_coverage import SpatialCoverageAnalyzer
 from src.core.algorithms.topological.capillar_strength import CapillaryStrengthAnalyzer
 from src.core.algorithms.topological.detaurFactor import DetourFactorOrchestrator
+from src.core.algorithms.topological.average_travel_time import AverageTravelTimeOrchestrator
+from src.core.algorithms.topological.betweenness_centrality import BetweennessOrchestrator
 from src.core.utils.logger import vft_logger
 
 app = FastAPI(
@@ -263,6 +269,100 @@ async def get_scc_analysis(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en análisis SCC: {str(e)}")
+
+@app.get("/api/v1/network/topological/average-travel-time",
+         summary="T — Tiempo Promedio de Viaje (Indicador VFT Fase 3)")
+async def get_average_travel_time(
+    mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo")
+):
+    """
+    Calcula T = promedio de caminos más cortos ponderados sobre la componente gigante.
+    Prerequisito: SCC verificado y apto (componente gigante > 80%).
+    Nota: Primera ejecución tarda ~2-5 min por all-pairs shortest paths.
+    """
+    try:
+        await get_or_build_graph(mode, tolerance_m)
+
+        cached = get_travel_time_report(mode, tolerance_m)
+        if cached:
+            return {
+                "status": "success",
+                "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+                "data": cached
+            }
+
+        G_scc = get_giant_component(mode, tolerance_m)
+        if G_scc is None:
+            raise HTTPException(500, "Componente gigante no disponible — reconstruir grafo.")
+
+        orchestrator = AverageTravelTimeOrchestrator(G_scc)
+        report = await asyncio.to_thread(orchestrator.analyze)
+
+        T_CACHE[f"{mode}_{tolerance_m}"] = report
+        return {
+            "status": "success",
+            "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+            "data": report
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en cálculo de T: {str(e)}")
+
+
+@app.get("/api/v1/network/topological/betweenness-centrality",
+         summary="B — Centralidad de Intermediación (Indicador VFT Fase 3)")
+async def get_betweenness_centrality(
+    mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo"),
+    limit: int = Query(100, description="Límite de resultados para no congestar Swagger UI")
+):
+    """
+    Calcula B(v) = centralidad de intermediación normalizada sobre la componente gigante.
+    Prerequisito: SCC verificado y apto (componente gigante > 80%).
+    Nota: Primera ejecución tarda ~30-90s (algoritmo de Brandes).
+    """
+    try:
+        await get_or_build_graph(mode, tolerance_m)
+
+        cached = get_betweenness_report(mode, tolerance_m)
+        if cached:
+            df_ranking = cached["ranking"]
+            df_limpio = df_ranking.where(pd.notna(df_ranking), None).head(limit)
+            return {
+                "status": "success",
+                "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+                "data": {
+                    "summary": cached["summary"],
+                    "ranking": df_limpio.to_dict(orient="records")
+                }
+            }
+
+        G_scc = get_giant_component(mode, tolerance_m)
+        if G_scc is None:
+            raise HTTPException(500, "Componente gigante no disponible — reconstruir grafo.")
+
+        orchestrator = BetweennessOrchestrator(G_scc)
+        report = await asyncio.to_thread(orchestrator.analyze)
+
+        B_CACHE[f"{mode}_{tolerance_m}"] = report
+
+        df_ranking = report["ranking"]
+        df_limpio = df_ranking.where(pd.notna(df_ranking), None).head(limit)
+        return {
+            "status": "success",
+            "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+            "data": {
+                "summary": report["summary"],
+                "ranking": df_limpio.to_dict(orient="records")
+            }
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en cálculo de B: {str(e)}")
+
 
 if __name__ == "__main__":
     """Arranca el servidor de desarrollo Uvicorn en el puerto 8000."""
