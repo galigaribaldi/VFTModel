@@ -1,7 +1,8 @@
 """
 @author: Hernán Galileo Cabrera Garibaldi
 @description: Motor matemático puro para cálculos topológicos y trigonométricos del Factor de Desviación.
-@route: src/core/algorithms/topologicalIndicators/detaurFactor/engine.py
+@phase: 1
+@route: src/core/algorithms/topological/detaurFactor/engine.py
 """
 
 import networkx as nx

@@ -1,8 +1,9 @@
 """
 @author: Hernán Galileo Cabrera Garibaldi
 @description: Motor analítico para evaluar indicadores topológicos del grafo VFT.
+@phase: 1
 @date: 7/04/2026
-@route: src/core/algorithms/topologicalIndicators/capillar_strength.py
+@route: src/core/algorithms/topological/capillar_strength.py
 @nothes: Se agrupan dos tipos indicadores "Fuerza Capilar (Grado Nodal)" y 
         "Factor de Desviación (Detour Factor)". Es importante hacer la división
         De Fuerza Capilar, ya que existe la función puramente matemática

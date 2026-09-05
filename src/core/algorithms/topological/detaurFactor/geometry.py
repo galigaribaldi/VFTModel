@@ -1,7 +1,8 @@
 """
 @author: Hernán Galileo Cabrera Garibaldi
 @description: Traductor espacial para generar coordenadas de rutas teóricas y topológicas.
-@route: src/core/algorithms/topologicalIndicators/detaurFactor/geometry.py
+@phase: 1
+@route: src/core/algorithms/topological/detaurFactor/geometry.py
 """
 
 import networkx as nx

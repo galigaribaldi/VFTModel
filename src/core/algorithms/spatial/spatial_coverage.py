@@ -1,7 +1,8 @@
 """
 @author: Hernán Galileo Cabrera Garibaldi
 @description: Motor analítico para evaluar el Nivel de Cobertura Espacial (C).
-@route: src/core/algorithms/spatial_coverage.py
+@phase: 1
+@route: src/core/algorithms/spatial/spatial_coverage.py
 """
 
 import geopandas as gpd

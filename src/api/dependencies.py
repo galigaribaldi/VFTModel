@@ -12,12 +12,16 @@ from src.api.schemas.schemas import GeoJSONTransportSchema
 from src.infrastructure.go_client.client import fetch_full_network
 from src.core.services.graph_builder import VFTGraphBuilder
 from src.core.utils.logger import vft_logger
+from src.core.algorithms.topological.scc_analysis import SCCOrchestrator
 
 ## Constante de rolerancia pro defecto (Q1)
 DEFAULT_TOLERANCE = VFTGraphBuilder.STATISTICAL_THRESHOLDS["Q1"]
 
 ## Caché en memoria - Singleton por proceso
 GRAPH_CACHE = {}
+SCC_CACHE = {}
+T_CACHE = {}
+B_CACHE = {}
 
 async def get_or_build_graph(mode: str, tolerance_m: float):
     """
@@ -34,4 +38,35 @@ async def get_or_build_graph(mode: str, tolerance_m: float):
     builder = VFTGraphBuilder(validated_payload)
     G = await asyncio.to_thread(builder.build_graph, mode, tolerance_m)
     GRAPH_CACHE[cache_key] = G
+
+    # --- SCC: diagnóstico post-build ---
+    analyzer = SCCOrchestrator(G)
+    scc_report = analyzer.analyze()
+    giant = analyzer.get_giant_component()
+    SCC_CACHE[cache_key] = {"report": scc_report, "giant_component": giant}
+
     return G
+
+
+def get_scc_report(mode: str, tolerance_m: float) -> dict | None:
+    """Recupera el reporte SCC cacheado para los parámetros dados."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return SCC_CACHE.get(cache_key, {}).get("report")
+
+
+def get_giant_component(mode: str, tolerance_m: float):
+    """Recupera el subgrafo de la componente gigante cacheado."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return SCC_CACHE.get(cache_key, {}).get("giant_component")
+
+
+def get_travel_time_report(mode: str, tolerance_m: float) -> dict | None:
+    """Recupera el reporte T cacheado para los parámetros dados."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return T_CACHE.get(cache_key)
+
+
+def get_betweenness_report(mode: str, tolerance_m: float) -> dict | None:
+    """Recupera el reporte B cacheado para los parámetros dados."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return B_CACHE.get(cache_key)

@@ -1,7 +1,8 @@
 """
 @author: Hernán Galileo Cabrera Garibaldi
 @description: Orquestador principal del Detour Factor, gestiona el estado del grafo y ensambla respuestas.
-@route: src/core/algorithms/topologicalIndicators/detaurFactor/orchestrator.py
+@phase: 1
+@route: src/core/algorithms/topological/detaurFactor/orchestator.py
 """
 
 import networkx as nx
@@ -9,8 +10,8 @@ import pandas as pd
 import random
 from src.core.models.impedance import VFTImpedanceModel
 from src.core.utils.logger import vft_logger
-from src.core.algorithms.topologicalIndicators.detaurFactor.engine import get_closest_node_and_walking_distance, calculate_network_distance
-from src.core.algorithms.topologicalIndicators.detaurFactor.geometry import format_network_geometry, format_imaginary_geometry
+from src.core.algorithms.topological.detaurFactor.engine import get_closest_node_and_walking_distance, calculate_network_distance
+from src.core.algorithms.topological.detaurFactor.geometry import format_network_geometry, format_imaginary_geometry
 
 class DetourFactorOrchestrator:
     def __init__(self, G: nx.DiGraph):
