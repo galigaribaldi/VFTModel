@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>VFT Model — Web Data Connector</title>
+  <script src="https://connectors.tableau.com/libs/tableauwdc-2.3.latest.js" type="text/javascript"></script>
+  <style>
+    body { font-family: sans-serif; max-width: 520px; margin: 40px auto; padding: 0 20px; color: #222; }
+    h1   { font-size: 1.2rem; margin-bottom: 4px; }
+    p    { font-size: 0.85rem; color: #555; margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; margin-bottom: 4px; }
+    input { width: 100%; box-sizing: border-box; padding: 7px 10px; border: 1px solid #ccc;
+            border-radius: 4px; font-size: 0.9rem; margin-bottom: 14px; }
+    button { padding: 9px 22px; background: #1d5fa6; color: #fff; border: none;
+             border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
+    button:disabled { background: #aaa; cursor: default; }
+    #status { margin-top: 14px; font-size: 0.82rem; color: #444; min-height: 20px; }
+    .warn   { color: #b45309; }
+  </style>
+</head>
+<body>
+  <h1>VFT Model — Web Data Connector</h1>
+  <p>
+    Conecta Tableau con los indicadores topológicos de la red de transporte ZMVM.<br>
+    Requiere VFTModel corriendo en local y el grafo en caché
+    (<code>/api/v1/network/build-auto</code>).
+  </p>
+
+  <label for="baseUrl">URL base de VFTModel</label>
+  <input id="baseUrl" type="text" value="http://localhost:8000" />
+
+  <label for="sampleSize">Tamaño de muestra — Detour Factor</label>
+  <input id="sampleSize" type="number" value="100" min="10" max="500" />
+
+  <label for="radioM">Radio de cobertura (metros)</label>
+  <input id="radioM" type="number" value="800" min="100" max="2000" />
+
+  <button id="btnLoad" onclick="startConnector()">Cargar datos en Tableau</button>
+  <div id="status"></div>
+
+  <script>
+    // ─── Conector ────────────────────────────────────────────────────────────
+    (function () {
+      var myConnector = tableau.makeConnector();
+
+      // ── Esquemas de tablas ────────────────────────────────────────────────
+      myConnector.getSchema = function (schemaCallback) {
+
+        var estacionesCols = [
+          { id: "id",            alias: "ID",            dataType: tableau.dataTypeEnum.string },
+          { id: "nombre",        alias: "Nombre",        dataType: tableau.dataTypeEnum.string },
+          { id: "sistema",       alias: "Sistema",       dataType: tableau.dataTypeEnum.string },
+          { id: "tipo_entidad",  alias: "Tipo Entidad",  dataType: tableau.dataTypeEnum.string },
+          { id: "sistemas_count",alias: "Nº Sistemas",   dataType: tableau.dataTypeEnum.int    },
+          { id: "lat",           alias: "Latitud",       dataType: tableau.dataTypeEnum.float  },
+          { id: "lon",           alias: "Longitud",      dataType: tableau.dataTypeEnum.float  }
+        ];
+
+        var fcPuntosCols = [
+          { id: "id",             alias: "ID Nodo",         dataType: tableau.dataTypeEnum.string },
+          { id: "nombre",         alias: "Nombre",          dataType: tableau.dataTypeEnum.string },
+          { id: "fc_total",       alias: "FC Total",        dataType: tableau.dataTypeEnum.float  },
+          { id: "cx_entrada",     alias: "Conexiones Ent.", dataType: tableau.dataTypeEnum.int    },
+          { id: "cx_salida",      alias: "Conexiones Sal.", dataType: tableau.dataTypeEnum.int    },
+          { id: "sistemas",       alias: "Sistemas (JSON)", dataType: tableau.dataTypeEnum.string },
+          { id: "sistemas_count", alias: "Nº Sistemas",     dataType: tableau.dataTypeEnum.int    },
+          { id: "tipo_nodo",      alias: "Tipo Nodo",       dataType: tableau.dataTypeEnum.string },
+          { id: "lat",            alias: "Latitud",         dataType: tableau.dataTypeEnum.float  },
+          { id: "lon",            alias: "Longitud",        dataType: tableau.dataTypeEnum.float  }
+        ];
+
+        var fcHubsCols = [
+          { id: "id",                   alias: "ID Hub",           dataType: tableau.dataTypeEnum.string },
+          { id: "nombre",               alias: "Nombre Hub",       dataType: tableau.dataTypeEnum.string },
+          { id: "estaciones_agrupadas", alias: "Estaciones",       dataType: tableau.dataTypeEnum.int    },
+          { id: "fc_total",             alias: "FC Total",         dataType: tableau.dataTypeEnum.float  },
+          { id: "sistemas",             alias: "Sistemas (JSON)",  dataType: tableau.dataTypeEnum.string },
+          { id: "sistemas_count",       alias: "Nº Sistemas",      dataType: tableau.dataTypeEnum.int    },
+          { id: "lat",                  alias: "Latitud",          dataType: tableau.dataTypeEnum.float  },
+          { id: "lon",                  alias: "Longitud",         dataType: tableau.dataTypeEnum.float  }
+        ];
+
+        var dfPuntosCols = [
+          { id: "id",               alias: "ID Ruta",        dataType: tableau.dataTypeEnum.string },
+          { id: "nombre",           alias: "Origen→Destino", dataType: tableau.dataTypeEnum.string },
+          { id: "factor_desviacion",alias: "Factor Desviación", dataType: tableau.dataTypeEnum.float },
+          { id: "origen",           alias: "Origen",         dataType: tableau.dataTypeEnum.string },
+          { id: "destino",          alias: "Destino",        dataType: tableau.dataTypeEnum.string },
+          { id: "dist_red_km",      alias: "Dist. Red (km)", dataType: tableau.dataTypeEnum.float  },
+          { id: "dist_recta_km",    alias: "Dist. Recta (km)",dataType: tableau.dataTypeEnum.float },
+          { id: "sistemas",         alias: "Sistemas (JSON)",dataType: tableau.dataTypeEnum.string },
+          { id: "categoria_df",     alias: "Categoría DF",   dataType: tableau.dataTypeEnum.string },
+          { id: "lat",              alias: "Latitud",        dataType: tableau.dataTypeEnum.float  },
+          { id: "lon",              alias: "Longitud",       dataType: tableau.dataTypeEnum.float  }
+        ];
+
+        // Fase 3 — B (Betweenness Centrality), un punto por nodo
+        var bPuntosCols = [
+          { id: "node_id",                 alias: "ID Nodo",          dataType: tableau.dataTypeEnum.string },
+          { id: "nombre",                  alias: "Nombre",           dataType: tableau.dataTypeEnum.string },
+          { id: "sistema",                 alias: "Sistema",          dataType: tableau.dataTypeEnum.string },
+          { id: "alcaldia_municipio",      alias: "Alcaldía/Municipio",dataType: tableau.dataTypeEnum.string},
+          { id: "es_cetram",               alias: "Es CETRAM",        dataType: tableau.dataTypeEnum.bool   },
+          { id: "betweenness_centrality",  alias: "Centralidad B",    dataType: tableau.dataTypeEnum.float  },
+          { id: "lat",                     alias: "Latitud",          dataType: tableau.dataTypeEnum.float  },
+          { id: "lon",                     alias: "Longitud",         dataType: tableau.dataTypeEnum.float  }
+        ];
+
+        // Fase 3 — T (Tiempo Promedio), escalar global — 1 fila
+        var tEscalarCols = [
+          { id: "T_minutos",        alias: "T Promedio (min)",   dataType: tableau.dataTypeEnum.float },
+          { id: "nodos_scc",        alias: "Nodos SCC",          dataType: tableau.dataTypeEnum.int   },
+          { id: "aristas_scc",      alias: "Aristas SCC",        dataType: tableau.dataTypeEnum.int   },
+          { id: "referencia_cdmx",  alias: "Referencia CDMX (min)", dataType: tableau.dataTypeEnum.float }
+        ];
+
+        var tables = [
+          { id: "estaciones",  alias: "Estaciones de transporte",          columns: estacionesCols  },
+          { id: "fc_puntos",   alias: "Fuerza Capilar — por nodo",         columns: fcPuntosCols    },
+          { id: "fc_hubs",     alias: "Fuerza Capilar — macro-hubs",       columns: fcHubsCols      },
+          { id: "df_puntos",   alias: "Factor de Desviación — rutas O-D",  columns: dfPuntosCols    },
+          { id: "b_puntos",    alias: "Centralidad de Intermediación (B)", columns: bPuntosCols     },
+          { id: "t_escalar",   alias: "Tiempo Promedio de Viaje (T)",      columns: tEscalarCols    }
+        ];
+
+        schemaCallback(tables);
+      };
+
+      // ── Obtener datos ─────────────────────────────────────────────────────
+      myConnector.getData = function (table, doneCallback) {
+        var BASE  = tableau.connectionData ? JSON.parse(tableau.connectionData).baseUrl : "http://localhost:8000";
+        var CFG   = tableau.connectionData ? JSON.parse(tableau.connectionData) : {};
+        var sample = CFG.sampleSize || 100;
+        var radio  = CFG.radioM     || 800;
+        var tid    = table.tableInfo.id;
+        var url    = "";
+
+        // ── helpers ──────────────────────────────────────────────────────
+        function rowsFromFeatures(features, mapFn) {
+          return features.map(mapFn).filter(Boolean);
+        }
+
+        function extractLatLon(feature) {
+          var c = feature.geometry && feature.geometry.coordinates;
+          return c ? { lat: c[1], lon: c[0] } : { lat: null, lon: null };
+        }
+
+        // ── rutas por tabla ───────────────────────────────────────────────
+        if (tid === "estaciones") {
+          url = BASE + "/api/v1/network/geolayers/coverage?layer=estaciones&radio_m=" + radio + "&entidades=Ciudad+de+M%C3%A9xico";
+          $.getJSON(url, function (resp) {
+            var rows = rowsFromFeatures(resp.features || [], function (f) {
+              var p  = f.properties;
+              var ll = extractLatLon(f);
+              return { id: p.id, nombre: p.nombre, sistema: p.sistema,
+                       tipo_entidad: p.tipo_entidad, sistemas_count: p.sistemas_count,
+                       lat: ll.lat, lon: ll.lon };
+            });
+            table.appendRows(rows);
+            doneCallback();
+          }).fail(function () { doneCallback(); });
+
+        } else if (tid === "fc_puntos") {
+          url = BASE + "/api/v1/network/geolayers/capillary?layer=fc_puntos&min_fc=3&snap_tolerance_m=50";
+          $.getJSON(url, function (resp) {
+            var rows = rowsFromFeatures(resp.features || [], function (f) {
+              var p  = f.properties;
+              var ll = extractLatLon(f);
+              return { id: p.id, nombre: p.nombre, fc_total: p.fc_total,
+                       cx_entrada: p.cx_entrada, cx_salida: p.cx_salida,
+                       sistemas: p.sistemas, sistemas_count: p.sistemas_count,
+                       tipo_nodo: p.tipo_nodo, lat: ll.lat, lon: ll.lon };
+            });
+            table.appendRows(rows);
+            doneCallback();
+          }).fail(function () { doneCallback(); });
+
+        } else if (tid === "fc_hubs") {
+          url = BASE + "/api/v1/network/geolayers/capillary?layer=fc_hubs&top_n=20&snap_tolerance_m=50";
+          $.getJSON(url, function (resp) {
+            var rows = rowsFromFeatures(resp.features || [], function (f) {
+              var p  = f.properties;
+              var ll = extractLatLon(f);
+              return { id: p.id, nombre: p.nombre, estaciones_agrupadas: p.estaciones_agrupadas,
+                       fc_total: p.fc_total, sistemas: p.sistemas,
+                       sistemas_count: p.sistemas_count, lat: ll.lat, lon: ll.lon };
+            });
+            table.appendRows(rows);
+            doneCallback();
+          }).fail(function () { doneCallback(); });
+
+        } else if (tid === "df_puntos") {
+          url = BASE + "/api/v1/network/geolayers/detour?layer=df_puntos&sample_size=" + sample + "&seed=42";
+          $.getJSON(url, function (resp) {
+            var rows = rowsFromFeatures(resp.features || [], function (f) {
+              var p  = f.properties;
+              var ll = extractLatLon(f);
+              return { id: p.id, nombre: p.nombre, factor_desviacion: p.factor_desviacion,
+                       origen: p.origen, destino: p.destino,
+                       dist_red_km: p.dist_red_km, dist_recta_km: p.dist_recta_km,
+                       sistemas: p.sistemas, categoria_df: p.categoria_df,
+                       lat: ll.lat, lon: ll.lon };
+            });
+            table.appendRows(rows);
+            doneCallback();
+          }).fail(function () { doneCallback(); });
+
+        } else if (tid === "b_puntos") {
+          // Endpoint Fase 3 — respuesta no es FeatureCollection, es ranking plano
+          url = BASE + "/api/v1/network/topological/betweenness-centrality?limit=2000";
+          $.getJSON(url, function (resp) {
+            var ranking = (resp.data && resp.data.ranking) ? resp.data.ranking : [];
+            var rows = ranking.map(function (r) {
+              return { node_id: r.node_id, nombre: r.nombre, sistema: r.sistema,
+                       alcaldia_municipio: r.alcaldia_municipio,
+                       es_cetram: r.es_cetram,
+                       betweenness_centrality: r.betweenness_centrality,
+                       lat: r.lat, lon: r.lon };
+            });
+            table.appendRows(rows);
+            doneCallback();
+          }).fail(function () { doneCallback(); });
+
+        } else if (tid === "t_escalar") {
+          // Endpoint Fase 3 — un único escalar global → 1 fila
+          url = BASE + "/api/v1/network/topological/average-travel-time";
+          $.getJSON(url, function (resp) {
+            var d = resp.data || {};
+            var gi = d.graph_info || {};
+            var ref = d.reference || {};
+            table.appendRows([{
+              T_minutos:       d.T_average_travel_time_minutes || null,
+              nodos_scc:       gi.nodes  || null,
+              aristas_scc:     gi.edges  || null,
+              referencia_cdmx: ref.expected_cdmx_approx || null
+            }]);
+            doneCallback();
+          }).fail(function () { doneCallback(); });
+        }
+      };
+
+      tableau.registerConnector(myConnector);
+    })();
+
+    // ─── UI ──────────────────────────────────────────────────────────────────
+    function setStatus(msg, warn) {
+      var el = document.getElementById("status");
+      el.textContent = msg;
+      el.className = warn ? "warn" : "";
+    }
+
+    function startConnector() {
+      var baseUrl    = document.getElementById("baseUrl").value.trim().replace(/\/$/, "");
+      var sampleSize = parseInt(document.getElementById("sampleSize").value, 10);
+      var radioM     = parseInt(document.getElementById("radioM").value, 10);
+
+      if (!baseUrl) { setStatus("Ingresa la URL base de VFTModel.", true); return; }
+
+      setStatus("Verificando que el servidor esté activo...");
+      document.getElementById("btnLoad").disabled = true;
+
+      // Verificar que el servidor responde y el grafo está en caché
+      fetch(baseUrl + "/api/v1/network/build-auto?mode=REALISTIC_INTEGRATION&tolerance_m=85")
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.status === "success") {
+            setStatus("Grafo en caché (" + data.nodos + " nodos). Cargando tablas...");
+            tableau.connectionName = "VFT Model";
+            tableau.connectionData = JSON.stringify({ baseUrl: baseUrl, sampleSize: sampleSize, radioM: radioM });
+            tableau.submit();
+          } else {
+            setStatus("El servidor respondió pero el grafo no está listo.", true);
+            document.getElementById("btnLoad").disabled = false;
+          }
+        })
+        .catch(function () {
+          setStatus("No se pudo conectar a " + baseUrl + ". ¿Está corriendo VFTModel?", true);
+          document.getElementById("btnLoad").disabled = false;
+        });
+    }
+  </script>
+
+  <!-- jQuery requerido por tableau.makeConnector / $.getJSON -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</body>
+</html>
