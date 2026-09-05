@@ -124,18 +124,19 @@ Fricción basada en tipo de derecho de vía. `BETA_SATURACION_CDMX = 0.759` (Tom
 
 | # | Indicador | Fase | Estado | Archivo / Issue |
 |---|-----------|------|--------|-----------------|
-| 1 | Cobertura (C) | 1 | ✅ | `spatial_coverage.py` |
-| 2 | Fuerza Capilar (k_in) | 1 | ✅ | `capillar_strength.py` |
-| 3 | Detour Factor (DI) | 1 | ✅ | `detaur_factor.py` |
-| 4 | Fricción Vial (CF) | 2 | ✅ | `impedance.py` |
-| 5 | Penalización Transferencia (W) | 2 | ✅ parcial | `graph_builder.py` |
-| 6 | Tiempo Promedio (T) | 3 | ❌ | Issue #2 |
-| 7 | Intermediación (B) | 3 | ❌ | Issue #3 |
-| 8 | Robustez (ΔE) | 4 | ❌ | Issue #5 |
+| 1 | Cobertura (C) | 1 | ✅ | `spatial/spatial_coverage.py` |
+| 2 | Fuerza Capilar (k_in) | 1 | ✅ | `topological/capillar_strength.py` |
+| 3 | Detour Factor (DI) | 1 | ✅ | `topological/detaurFactor/` |
+| 4 | Fricción Vial (CF) | 2 | ✅ | `models/impedance.py` |
+| 5 | Penalización Transferencia (W) | 2 | ✅ parcial | `services/graph_builder.py` |
+| 6 | SCC Verificación | 3 | ✅ | `topological/scc_analysis/` |
+| 7 | Tiempo Promedio (T) | 3 | ✅ | `topological/average_travel_time/` |
+| 8 | Intermediación (B) | 3 | ✅ | `topological/betweenness_centrality/` |
+| 9 | Robustez (ΔE) | 4 | ❌ | Issue #5 |
 
 **Regla de dependencia:** sin Fases 1-2 completadas no se avanza a Fase 3-4.
 
-**Prerequisito Fase 3:** verificar SCC del grafo (Issue #1). Si componente gigante > 80% nodos → implementar T y B directamente.
+**SCC verificado (Issue #1):** componente gigante 95.02% (10,561/11,115 nodos) → Fases 3-4 desbloqueadas.
 
 ## API Endpoints
 
@@ -146,6 +147,9 @@ Fricción basada en tipo de derecho de vía. `BETA_SATURACION_CDMX = 0.759` (Tom
 | `GET /api/v1/network/topological/capillary-strength` | Ranking de grado nodal |
 | `GET /api/v1/network/topological/geo-capillary` | Detección de macro-hubs |
 | `GET /api/v1/network/topological/detour-factor` | Eficiencia de rutas |
+| `GET /api/v1/network/topological/scc-analysis` | Análisis SCC del grafo |
+| `GET /api/v1/network/topological/average-travel-time` | Tiempo promedio de viaje (T) |
+| `GET /api/v1/network/topological/betweenness-centrality` | Centralidad de intermediación (B) |
 | GeoLayers API (`src/api/routes/geo_layers.py`) | 7 layers GeoJSON para cobertura, capilar, detour |
 
 ## Convenciones del Proyecto
