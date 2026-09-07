@@ -1,11 +1,15 @@
 # VFTModel — Manual de Integración con Tableau
 
-Este documento describe cómo VFTModel expone sus datos para ser consumidos por Tableau Desktop. Está escrito para ser leído por un humano o por una IA que retome el trabajo: contiene el estado actual, las decisiones de diseño, los esquemas exactos de cada capa y el protocolo para incorporar nuevos indicadores cuando se implementen.
+Este documento tiene dos audiencias:
+
+- **Analista de Tableau / Transport GIS** — busca la sección "Inicio rápido" (§0) y el "Protocolo de actualización" (§10). No necesita leer más.
+- **Desarrollador / IA que retoma el trabajo** — documento completo: decisiones de diseño, esquemas exactos, protocolo para agregar nuevos indicadores.
 
 ---
 
 ## Índice
 
+0. [Inicio rápido — cargar datos en Tableau Desktop](#0-inicio-rápido--cargar-datos-en-tableau-desktop)
 1. [Contexto y responsabilidades](#1-contexto-y-responsabilidades)
 2. [Arquitectura de conectores](#2-arquitectura-de-conectores)
 3. [Prerrequisitos de ejecución](#3-prerrequisitos-de-ejecución)
@@ -15,7 +19,75 @@ Este documento describe cómo VFTModel expone sus datos para ser consumidos por 
 7. [Tiempos de respuesta medidos](#7-tiempos-de-respuesta-medidos)
 8. [Protocolo para agregar nuevos indicadores](#8-protocolo-para-agregar-nuevos-indicadores)
 9. [Estructura de archivos del directorio](#9-estructura-de-archivos-del-directorio)
-10. [Referencia de endpoints](#10-referencia-de-endpoints)
+10. [Protocolo de actualización — re-exportar cuando VFTModel cambie](#10-protocolo-de-actualización--re-exportar-cuando-vftmodel-cambie)
+11. [Referencia de endpoints](#11-referencia-de-endpoints)
+
+---
+
+## 0. Inicio rápido — cargar datos en Tableau Desktop
+
+### Qué necesitas
+
+Dos carpetas del repositorio **Transport GIS**:
+
+```
+vft_wdc.html                          ← conector de tablas de puntos
+exports/
+  cobertura_por_alcaldia.geojson      ← polígonos de cobertura por alcaldía
+  cobertura_800m.geojson              ← mancha de cobertura unificada
+  df_por_alcaldia.geojson             ← Factor de Desviación agregado por alcaldía
+```
+
+### Paso 1 — Servicios activos (quien opera VFTModel)
+
+Antes de abrir Tableau, los dos servicios deben estar corriendo:
+
+| Servicio | Puerto | Comando |
+|----------|--------|---------|
+| Apimetro (backend Go) | 8080 | `make dev` en el repo apimetro |
+| VFTModel API | 8000 | `make run` en el repo VFTModel |
+
+> Si solo vas a trabajar con las capas de polígonos (GeoJSON estáticos), los servicios **no son necesarios** — Tableau los abre desde disco.
+
+### Paso 2 — Cargar las 6 tablas de puntos (WDC)
+
+1. Tableau Desktop → **Conectar** → **Conector de datos web**
+2. Ingresar la ruta local al archivo `vft_wdc.html` (o arrastrarlo a la ventana)
+3. En el formulario del conector:
+   - **URL base de VFTModel**: `http://localhost:8000`
+   - **Tamaño de muestra**: 100 (aumentar para más precisión en Factor de Desviación)
+   - **Radio de cobertura**: 800 m
+4. Clic en **Cargar datos en Tableau**
+5. El conector llama primero a `build-auto` para calentar el grafo (~18 ms si ya está en caché, ~30 s la primera vez), luego descarga las 6 tablas
+
+Tablas que aparecerán en Tableau:
+
+| Tabla | Indicador | Filas aprox. |
+|-------|-----------|-------------|
+| `estaciones` | Estaciones de toda la red | ~800 |
+| `fc_puntos` | Fuerza Capilar por nodo | ~10,537 |
+| `fc_hubs` | Macro-hubs intermodales | top 20 |
+| `df_puntos` | Factor de Desviación (pares O-D) | según muestra |
+| `b_puntos` | Centralidad de Intermediación (B) | ~10,561 |
+| `t_escalar` | Tiempo Promedio de Viaje (T) | 1 fila (KPI global) |
+
+### Paso 3 — Cargar las 3 capas de polígonos (Spatial File)
+
+Para cada archivo `.geojson` en `exports/`:
+
+1. Tableau Desktop → **Conectar** → **Archivo espacial**
+2. Seleccionar el archivo `.geojson`
+3. Tableau lo abrirá como una capa geográfica con geometría de polígono
+
+| Archivo | Contiene | Geometría |
+|---------|----------|-----------|
+| `cobertura_por_alcaldia.geojson` | % cobertura peatonal (800 m) por alcaldía | Polygon |
+| `cobertura_800m.geojson` | Mancha unificada de cobertura | MultiPolygon |
+| `df_por_alcaldia.geojson` | Factor de Desviación promedio por alcaldía | Polygon |
+
+### Paso 4 — Crear extracto (recomendado)
+
+Después de cargar todas las fuentes, crear un extracto `.hyper` (**Datos → Extraer datos**) para trabajar sin conexión y mejorar el rendimiento.
 
 ---
 
@@ -148,12 +220,17 @@ Tableau Desktop puede abrir un archivo `.geojson` directamente desde **Conectar 
 
 **Capas que van como Spatial File:** `cobertura_por_alcaldia`, `cobertura_800m`, `df_por_alcaldia`.
 
-El script `export_geojson.sh` descarga estas tres capas desde la API y las guarda en `exports/`. Ejecutar cuando los datos de base cambien (nueva versión de Apimetro, nuevo cálculo).
+El script `export_geojson.py` descarga estas tres capas desde la API, valida que la respuesta sea GeoJSON válido y las guarda en `exports/`. Ejecutar cuando los datos de base cambien (nueva versión de Apimetro, nuevo cálculo).
 
 ```bash
 # Desde la raíz del repositorio VFTModel, con el servidor activo:
-bash src/tableau_conectors/export_geojson.sh
+make export-geojson
+
+# Puerto personalizado:
+make export-geojson PORT=9000
 ```
+
+El script llama `build-auto` automáticamente para asegurar que el grafo esté en caché antes de exportar. Si el servidor no está activo o devuelve un error, falla con un mensaje claro en lugar de guardar silenciosamente un archivo inválido.
 
 ---
 
@@ -336,8 +413,8 @@ Revisar qué devuelve el nuevo endpoint:
 | Tipo de geometría | Acción en el conector |
 |-------------------|-----------------------|
 | `Point` | Agregar tabla nueva al WDC |
-| `LineString` / `MultiLineString` | No entra en WDC. Agregar al script `export_geojson.sh` |
-| `Polygon` / `MultiPolygon` | No entra en WDC. Agregar al script `export_geojson.sh` |
+| `LineString` / `MultiLineString` | No entra en WDC. Agregar al script `export_geojson.py` |
+| `Polygon` / `MultiPolygon` | No entra en WDC. Agregar al script `export_geojson.py` |
 
 ### Paso 2 — Documentar el esquema de la tabla (en este archivo)
 
@@ -377,12 +454,19 @@ case "tiempo_promedio":
 
 ### Paso 4 — Si es capa de polígonos/líneas: agregar al script de exportación
 
-En `export_geojson.sh`, agregar la descarga correspondiente:
+En `export_geojson.py`, agregar una entrada al array `LAYERS`:
+
+```python
+{
+    "name": "nueva_capa",
+    "url": "/api/v1/network/geolayers/nuevo_endpoint?layer=nueva_capa&param=valor",
+},
+```
+
+Luego re-exportar con:
 
 ```bash
-curl -s "http://localhost:8000/api/v1/network/geolayers/nuevo_endpoint?layer=nueva_capa" \
-  -o "$EXPORTS_DIR/nueva_capa.geojson"
-echo "✓ nueva_capa.geojson"
+make export-geojson
 ```
 
 ### Paso 5 — Actualizar la tabla de estado (sección 4 de este documento)
@@ -416,7 +500,7 @@ src/tableau_conectors/
 ├── requerimientos_apimetro_tableau.md  ← Referencia: cómo apimetro se conectó a Tableau.
 │
 ├── vft_wdc.html                   ← WDC con 6 tablas (5 de puntos + t_escalar).
-├── export_geojson.sh              ← Script de exportación de capas de polígonos.
+├── export_geojson.py              ← Script de exportación de capas de polígonos (make export-geojson).
 │
 └── exports/                       ← GeoJSON estáticos generados por el script.
     ├── cobertura_por_alcaldia.geojson
@@ -426,7 +510,73 @@ src/tableau_conectors/
 
 ---
 
-## 10. Referencia de endpoints
+## 10. Protocolo de actualización — re-exportar cuando VFTModel cambie
+
+Ejecutar este protocolo cuando:
+- Se mergea un PR con cambios en algoritmos o datos de red
+- Se actualiza la versión de Apimetro (nuevas estaciones o líneas)
+- Se implementa un indicador nuevo de Fase 4
+
+### Pasos
+
+**En el repo VFTModel** (quien opera el motor):
+
+```bash
+# 1. Jalar los últimos cambios
+git pull origin DEV
+
+# 2. Levantar el servidor
+source .venv/bin/activate
+make run                          # Terminal 1 — dejar corriendo
+
+# 3. Re-exportar los GeoJSON estáticos
+make export-geojson               # Terminal 2
+
+# Salida esperada:
+# Verificando grafo en caché... OK — success, 11115 nodos
+# cobertura_por_alcaldia... ✓  16 features
+# cobertura_800m...         ✓  1 features
+# df_por_alcaldia...        ✓  16 features
+```
+
+Los 3 archivos se generan en `src/tableau_conectors/exports/`.  
+> Estos archivos están en `.gitignore` de VFTModel — **no** se commitean aquí.
+
+**En el repo Transport GIS** (quien mantiene la visualización):
+
+```bash
+# 4. Copiar los GeoJSON regenerados al repo de Transport GIS
+cp /ruta/a/VFTModel/src/tableau_conectors/exports/*.geojson \
+   /ruta/a/TransportGIS/data/vftmodel/
+
+# 5. Commitear y pushear
+cd /ruta/a/TransportGIS
+git add data/vftmodel/*.geojson
+git commit -m "chore(data): actualizar GeoJSON VFTModel — <fecha o versión>"
+git push
+```
+
+**En Tableau Desktop** (el analista):
+
+```
+6. Abrir el libro .twb / .twbx
+7. Datos → [cada GeoJSON] → Actualizar ahora
+8. Si usas extracto: Datos → Extraer datos → Actualizar extracto
+```
+
+### Cuándo NO es necesario re-exportar
+
+| Cambio en VFTModel | ¿Re-exportar? |
+|--------------------|---------------|
+| Fix de bug en API sin cambio de datos | No |
+| Nueva versión de Apimetro (nuevas estaciones) | **Sí** |
+| Cambio en parámetros de `radio_m` o `sample_size` | **Sí**, si cambia el análisis |
+| Refactor de código sin cambio de resultados | No |
+| Indicador nuevo agregado | **Sí**, y también actualizar el WDC |
+
+---
+
+## 11. Referencia de endpoints
 
 Base URL local: `http://localhost:8000`
 
@@ -493,4 +643,4 @@ GET /api/v1/network/geolayers/detour
 
 ---
 
-*Última actualización: 2026-09-05. Basado en la medición directa contra el servidor local con apimetro en `localhost:8080`.*
+*Última actualización: 2026-09-06. Incluye §0 Inicio rápido, §10 Protocolo de actualización y migración de export_geojson.sh → export_geojson.py (make export-geojson). Basado en la medición directa contra el servidor local con apimetro en `localhost:8080`.*

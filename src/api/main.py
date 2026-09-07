@@ -17,6 +17,7 @@ import asyncio
 import pandas as pd
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query, Body
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv(os.getenv("ENV_FILE", ".env.local"))
 from typing import List, Optional, Union, Tuple
@@ -45,6 +46,12 @@ app = FastAPI(
     title="VFT Model API",
     description="Motor analítico para topología de red de la Ciudad de México y su área Metropolitana.",
     version="1.0.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
 )
 app.include_router(geo_router)
 
