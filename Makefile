@@ -40,6 +40,9 @@ install:
 test:
 	pytest tests/ -v
 
+export-geojson:
+	python src/tableau_conectors/export_geojson.py --port $(PORT)
+
 help:
 	@echo ""
 	@echo "VFT Model — Comandos disponibles"
@@ -51,9 +54,10 @@ help:
 	@echo "  make docker-run         Docker DEV     (apimetro.dev)"
 	@echo "  make docker-run-local   Docker LOCAL   (localhost:8080)"
 	@echo "  make test               Corre la suite pytest"
+	@echo "  make export-geojson     Exporta capas GeoJSON para Tableau"
 	@echo ""
 	@echo "  Puerto personalizado:   make <comando> PORT=8001"
 	@echo "─────────────────────────────────────────────────────"
 	@echo ""
 
-.PHONY: run run-dev docker-build docker-run docker-run-local install test help
+.PHONY: run run-dev docker-build docker-run docker-run-local install test export-geojson help
