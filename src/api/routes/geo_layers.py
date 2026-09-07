@@ -23,7 +23,11 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException, Query
 from shapely.geometry import Point, mapping
 
-from src.api.dependencies import DEFAULT_TOLERANCE, get_or_build_graph
+from src.api.dependencies import (
+    DEFAULT_TOLERANCE, get_or_build_graph,
+    get_giant_component, get_betweenness_report, B_CACHE
+)
+from src.core.algorithms.topological.betweenness_centrality import BetweennessOrchestrator
 from src.infrastructure.go_client.client import fetch_full_network
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
 from src.core.algorithms.spatial.spatial_coverage import SpatialCoverageAnalyzer
@@ -436,3 +440,66 @@ async def get_geolayer_detour(
     except Exception as e:
         vft_logger.error(f"Error en GeoLayer detour [{layer}]: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error en GeoLayer detour: {str(e)}")
+
+# ----------------------------------------------------------------------
+## Sección G — Endpoint /betweenness
+# ----------------------------------------------------------------------
+
+@router.get("/betweenness", summary="Centralidad de Intermediación como FeatureCollection GeoJSON")
+async def get_geolayer_betweenness(
+    layer:       str   = Query("b_puntos", description="b_puntos"),
+    limit:       int   = Query(0,          description="Límite de nodos (0 = todos)"),
+    mode:        str   = Query("REALISTIC_INTEGRATION"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE)
+):
+    try:
+        await get_or_build_graph(mode, tolerance_m)
+
+        cached = get_betweenness_report(mode, tolerance_m)
+        if cached:
+            df_ranking = cached["ranking"]
+        else:
+            G_scc = get_giant_component(mode, tolerance_m)
+            if G_scc is None:
+                raise HTTPException(500, "Componente gigante no disponible — reconstruir grafo.")
+            orchestrator = BetweennessOrchestrator(G_scc)
+            report = await asyncio.to_thread(orchestrator.analyze)
+            B_CACHE[f"{mode}_{tolerance_m}"] = report
+            df_ranking = report["ranking"]
+
+        if limit > 0:
+            df_ranking = df_ranking.head(limit)
+
+        df_clean = df_ranking.where(pd.notna(df_ranking), None)
+        features = []
+        for _, row in df_clean.iterrows():
+            lon, lat = row["lon"], row["lat"]
+            if lon is None or lat is None:
+                continue
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [lon, lat]},
+                "properties": {
+                    "id":                     row["node_id"],
+                    "nombre":                 row["nombre"],
+                    "indicador":              "betweenness",
+                    "layer":                  layer,
+                    "sistema":                row["sistema"],
+                    "alcaldia_municipio":     row["alcaldia_municipio"],
+                    "es_cetram":              row["es_cetram"],
+                    "betweenness_centrality": row["betweenness_centrality"]
+                }
+            })
+
+        return _build_feature_collection(
+            indicador  = "betweenness",
+            layer      = layer,
+            feature    = features,
+            parametros = {"limit": limit}
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        vft_logger.error(f"Error en GeoLayer betweenness [{layer}]: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error en GeoLayer betweenness: {str(e)}")

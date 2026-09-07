@@ -206,16 +206,16 @@
           }).fail(function () { doneCallback(); });
 
         } else if (tid === "b_puntos") {
-          // Endpoint Fase 3 — respuesta no es FeatureCollection, es ranking plano
-          url = BASE + "/api/v1/network/topological/betweenness-centrality?limit=2000";
+          url = BASE + "/api/v1/network/geolayers/betweenness?layer=b_puntos&limit=2000";
           $.getJSON(url, function (resp) {
-            var ranking = (resp.data && resp.data.ranking) ? resp.data.ranking : [];
-            var rows = ranking.map(function (r) {
-              return { node_id: r.node_id, nombre: r.nombre, sistema: r.sistema,
-                       alcaldia_municipio: r.alcaldia_municipio,
-                       es_cetram: r.es_cetram,
-                       betweenness_centrality: r.betweenness_centrality,
-                       lat: r.lat, lon: r.lon };
+            var rows = rowsFromFeatures(resp.features || [], function (f) {
+              var p  = f.properties;
+              var ll = extractLatLon(f);
+              return { node_id: p.id, nombre: p.nombre, sistema: p.sistema,
+                       alcaldia_municipio: p.alcaldia_municipio,
+                       es_cetram: p.es_cetram,
+                       betweenness_centrality: p.betweenness_centrality,
+                       lat: ll.lat, lon: ll.lon };
             });
             table.appendRows(rows);
             doneCallback();
