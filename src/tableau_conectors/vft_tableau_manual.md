@@ -165,7 +165,7 @@ Si el grafo no está en caché, los endpoints de cobertura, fuerza capilar y det
 
 ---
 
-## 4. Estado actual — 7 GeoLayers implementados
+## 4. Estado actual — 8 GeoLayers implementados
 
 Fuente canónica: `src/api/routes/geo_layers.py`. Cada layer es una capa GeoJSON `FeatureCollection` con la envoltura estándar VFT.
 
@@ -178,10 +178,12 @@ Fuente canónica: `src/api/routes/geo_layers.py`. Cada layer es una capa GeoJSON
 | `fc_hubs` | `/geolayers/capillary` | Point | WDC | 1 | ✅ |
 | `df_puntos` | `/geolayers/detour` | Point | WDC | 1 | ✅ |
 | `df_por_alcaldia` | `/geolayers/detour` | Polygon | Spatial File | 1 | ✅ |
-| `b_puntos` | `/topological/betweenness-centrality` | Point (lat/lon por nodo) | WDC | 3 | ✅ |
+| `b_puntos` | `/geolayers/betweenness` | Point | WDC | 3 | ✅ |
 | `t_escalar` | `/topological/average-travel-time` | Sin geometría (escalar global) | WDC — 1 fila | 3 | ✅ |
 
-> **Nota Fase 3:** `b_puntos` y `t_escalar` usan endpoints en `main.py`, no en `geo_layers.py`. No son FeatureCollections — tienen su propia estructura JSON documentada en la sección 6.
+> **Nota `b_puntos`:** migrado a GeoLayer estándar en `geo_layers.py` (2026-09-06). El WDC ahora lo parsea con `rowsFromFeatures()` igual que los otros 4 layers de puntos. El endpoint anterior `/topological/betweenness-centrality` se mantiene en `main.py` para uso en Swagger UI con `summary` y `limit`.
+
+> **Nota `t_escalar`:** se decidió **no** homologar a GeoLayer. Es un KPI escalar global sin geometría espacial — forzarlo a `FeatureCollection` sería artificial. Permanece en `main.py` como endpoint analítico independiente. El WDC lo trata como caso especial de 1 fila.
 
 ### Envoltura estándar de toda respuesta
 
@@ -634,6 +636,25 @@ GET /api/v1/network/geolayers/detour
   &entidades=Ciudad de México
 ```
 
+### GeoLayers — Centralidad de Intermediación (Fase 3)
+
+```
+GET /api/v1/network/geolayers/betweenness
+  ?layer=b_puntos
+  &limit=2000
+```
+
+`limit=0` devuelve todos los nodos (~10,561). Primera ejecución: 30–90 s. Con caché: <100 ms.
+
+### Endpoints analíticos no-GeoLayer (Fase 3)
+
+```
+GET /api/v1/network/topological/average-travel-time
+GET /api/v1/network/topological/betweenness-centrality?limit=100
+```
+
+Estos endpoints usan la envoltura `{ "status", "parametros", "data" }` en lugar de `FeatureCollection`. Se mantienen para consumo directo en Swagger UI y para `t_escalar` en el WDC.
+
 ### Parámetros de modo de grafo (todos los endpoints analíticos)
 
 | Parámetro | Default | Opciones |
@@ -643,4 +664,4 @@ GET /api/v1/network/geolayers/detour
 
 ---
 
-*Última actualización: 2026-09-06. Incluye §0 Inicio rápido, §10 Protocolo de actualización y migración de export_geojson.sh → export_geojson.py (make export-geojson). Basado en la medición directa contra el servidor local con apimetro en `localhost:8080`.*
+*Última actualización: 2026-09-07. b_puntos migrado a GeoLayer estándar (`/geolayers/betweenness`); t_escalar documentado como KPI no-GeoLayer por diseño. Incluye §0 Inicio rápido, §10 Protocolo de actualización. Basado en la medición directa contra el servidor local con apimetro en `localhost:8080`.*
