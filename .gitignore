@@ -84,9 +84,7 @@ profile_default/
 ipython_config.py
 
 # pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+.python-version
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -224,14 +222,14 @@ __marimo__/
 requestss.json
 VFT_Render.jpg
 *.geojson
-*.PNG
 *.png
-# Excepción: imágenes del libro (necesarias para GitHub Pages)
-!notebooks/ASSETS/**/*.png
-!notebooks/ASSETS/**/*.PNG
+*.PNG
+*.jpg
+*.jpeg
+*.JPEG
+*.pdf
 dataEstacion.json
 dataLinea.json
 dataLine.json
-tesis.pdf
 
 .DS_Store

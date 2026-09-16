@@ -1,8 +1,0 @@
-format: jb-book
-root: notebooks/intro
-
-chapters:
-  - file: notebooks/NOTES/graph_builder
-  - file: notebooks/NOTES/impedance
-  - file: notebooks/NOTES/detaur_factor
-  - file: notebooks/NOTES/issues
