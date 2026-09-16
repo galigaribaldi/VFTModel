@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "VFTModel — Arquitectura Hexagonal",
+    "output": "vftmodel-architecture.html",
+    "quality_profile": "showcase",
+    "viewBox": [1200, 700]
+  },
+  "components": [
+    { "id": "client",        "type": "external",  "label": "Cliente HTTP",          "sublabel": "REST / Swagger UI",           "pos": [40,   310], "size": [130, 60] },
+
+    { "id": "main_py",       "type": "backend",   "label": "main.py",               "sublabel": "FastAPI entry point",         "pos": [240,  200], "size": [160, 60] },
+    { "id": "geo_routes",    "type": "backend",   "label": "geo_layers.py",          "sublabel": "GeoLayers Routes",            "pos": [240,  305], "size": [160, 60] },
+    { "id": "schemas",       "type": "backend",   "label": "Schemas Pydantic",       "sublabel": "4 niveles · 4 tipos vía",     "pos": [240,  410], "size": [160, 60] },
+
+    { "id": "topo_algos",    "type": "backend",   "label": "Indicadores Topológicos","sublabel": "C · k_in · DI · T · B · SCC","pos": [490,   80], "size": [175, 64] },
+    { "id": "orchestrator",  "type": "backend",   "label": "Orchestrator",           "sublabel": "gestión de cálculo",          "pos": [490,  200], "size": [175, 60] },
+    { "id": "graph_builder", "type": "backend",   "label": "VFTGraphBuilder",        "sublabel": "STRICT | REALISTIC",          "pos": [490,  305], "size": [175, 64] },
+    { "id": "impedance",     "type": "backend",   "label": "VFTImpedanceModel",      "sublabel": "(haversine/v)×CF + freq/2",   "pos": [490,  420], "size": [175, 60] },
+
+    { "id": "go_client",     "type": "backend",   "label": "Go Client",              "sublabel": "client.py · client_spatial.py","pos": [760, 220], "size": [165, 64] },
+    { "id": "apimetro",      "type": "external",  "label": "Apimetro Go",            "sublabel": "estaciones + líneas",         "pos": [1000, 220], "size": [150, 64] },
+    { "id": "map_geojson",   "type": "database",  "label": "map.geojson",            "sublabel": "fallback local",              "pos": [760,  380], "size": [165, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "src/api — Capa FastAPI",  "wraps": ["main_py", "geo_routes", "schemas"] },
+    { "kind": "region", "label": "src/core — Dominio",      "wraps": ["topo_algos", "orchestrator", "graph_builder", "impedance"] },
+    { "kind": "region", "label": "src/infrastructure",      "wraps": ["go_client", "map_geojson"] }
+  ],
+  "connections": [
+    { "from": "client",        "to": "main_py",      "label": "POST/GET /api/v1/…",      "variant": "emphasis", "fromSide": "top", "labelAt": [170, 218] },
+    { "from": "main_py",       "to": "orchestrator", "label": "asyncio.to_thread" },
+    { "from": "geo_routes",    "to": "orchestrator" },
+    { "from": "orchestrator",  "to": "topo_algos",   "label": "C / k_in / DI / T / B" },
+    { "from": "orchestrator",  "to": "graph_builder","label": "get_or_build_graph()",     "labelAt": [578, 274] },
+    { "from": "graph_builder", "to": "impedance",    "label": "pondera aristas",          "labelAt": [578, 383] },
+    { "from": "graph_builder", "to": "go_client",    "label": "fetch red de transporte",  "variant": "emphasis", "labelAt": [713, 298] },
+    { "from": "graph_builder", "to": "map_geojson",  "variant": "dashed" },
+    { "from": "go_client",     "to": "apimetro",     "label": "Apimetro API",             "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan",    "title": "Capa FastAPI",   "items": ["Pydantic valida automáticamente via schemas (4 niveles, 4 tipos de vía, CETRAM)", "Delega trabajo CPU-bound a asyncio.to_thread — main.py y geo_layers.py son los dos entry points", "Swagger UI disponible en localhost:8000/docs"] },
+    { "dot": "emerald", "title": "Dominio",        "items": ["VFTGraphBuilder: STRICT_TOPOLOGY vs REALISTIC_INTEGRATION + snapping peatonal", "VFTImpedanceModel: BETA_SATURACION_CDMX = 0.759 (TomTom Traffic Index)", "8 indicadores en 4 fases — caché en memoria por (mode, tolerance_m)"] },
+    { "dot": "orange",  "title": "Infraestructura","items": ["Apimetro Go: fuente primaria de estaciones, líneas y polígonos territoriales", "map.geojson: fallback local si Go no responde"] }
+  ]
+}

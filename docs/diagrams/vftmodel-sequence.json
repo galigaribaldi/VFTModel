@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "VFTModel — Flujo de Request Topológico",
+    "output": "vftmodel-sequence.html",
+    "quality_profile": "showcase",
+    "viewBox": [1060, 760],
+    "column_fit": "spread"
+  },
+  "participants": [
+    { "id": "cliente", "type": "external", "label": "Cliente HTTP" },
+    { "id": "fastapi", "type": "backend", "label": "FastAPI", "sublabel": "Pydantic validation" },
+    { "id": "cache", "type": "database", "label": "Graph Cache", "sublabel": "(mode, tolerance_m)" },
+    { "id": "go_backend", "type": "external", "label": "Apimetro Go" },
+    { "id": "map_geojson", "type": "database", "label": "map.geojson", "sublabel": "fallback local" },
+    { "id": "graph_builder", "type": "backend", "label": "GraphBuilder",   "sublabel": "VFTGraphBuilder" },
+    { "id": "impedance",     "type": "backend", "label": "ImpedanceModel", "sublabel": "VFTImpedanceModel" },
+    { "id": "analyzer", "type": "backend", "label": "Analizador" }
+  ],
+  "segments": [
+    { "from": 155, "to": 248, "label": "Validación + Caché" },
+    { "from": 258, "to": 372, "label": "Fetch Red de Transporte" },
+    { "from": 382, "to": 502, "label": "Construcción del Grafo" },
+    { "from": 515, "to": 638, "label": "Cálculo Topológico" }
+  ],
+  "messages": [
+    { "id": "req",               "from": "cliente",       "to": "fastapi",       "y": 165, "label": "GET /network/topological/…",       "variant": "emphasis" },
+    { "id": "cache_lookup",      "from": "fastapi",       "to": "cache",         "y": 198, "label": "lookup (mode, tolerance_m)" },
+    { "id": "cache_miss",        "from": "cache",         "to": "fastapi",       "y": 230, "label": "miss",                             "variant": "return" },
+    { "id": "fetch_go",          "from": "fastapi",       "to": "go_backend",    "y": 265, "label": "fetch estaciones + líneas",        "variant": "emphasis" },
+    { "id": "go_response",       "from": "go_backend",    "to": "fastapi",       "y": 298, "label": "JSON red de transporte",           "variant": "return" },
+    { "id": "fetch_fallback",    "from": "fastapi",       "to": "map_geojson",   "y": 332, "label": "fallback si Go falla",             "variant": "dashed" },
+    { "id": "fallback_response", "from": "map_geojson",   "to": "fastapi",       "y": 364, "label": "GeoJSON local",                   "variant": "return" },
+    { "id": "build_graph",       "from": "fastapi",       "to": "graph_builder", "y": 397, "label": "build NetworkX graph",            "note": "STRICT_TOPOLOGY o REALISTIC_INTEGRATION + snapping peatonal" },
+    { "id": "weight_edges",      "from": "graph_builder", "to": "impedance",     "y": 430, "label": "ponderar aristas (CF)" },
+    { "id": "impedance_ret",     "from": "impedance",     "to": "graph_builder", "y": 462, "label": "(haversine/v)×CF + freq/2",       "variant": "return" },
+    { "id": "graph_ready",       "from": "graph_builder", "to": "fastapi",       "y": 494, "label": "grafo listo",                     "variant": "return" },
+    { "id": "cache_store",       "from": "fastapi",       "to": "cache",         "y": 528, "label": "store graph",                     "variant": "dashed" },
+    { "id": "run_topo",          "from": "fastapi",       "to": "analyzer",      "y": 561, "label": "ejecutar C / k_in / DI / T / B",  "variant": "emphasis" },
+    { "id": "topo_result",       "from": "analyzer",      "to": "fastapi",       "y": 594, "label": "DataFrame resultados",            "variant": "return" },
+    { "id": "response",          "from": "fastapi",       "to": "cliente",       "y": 625, "label": "200 JSON",                        "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "fastapi",       "from": 160, "to": 631, "type": "backend" },
+    { "participant": "cache",         "from": 193, "to": 235, "type": "database" },
+    { "participant": "go_backend",    "from": 260, "to": 303, "type": "external" },
+    { "participant": "map_geojson",   "from": 327, "to": 369, "type": "database" },
+    { "participant": "graph_builder", "from": 392, "to": 499, "type": "backend" },
+    { "participant": "impedance",     "from": 425, "to": 467, "type": "backend" },
+    { "participant": "cache",         "from": 523, "to": 538, "type": "database" },
+    { "participant": "analyzer",      "from": 556, "to": 599, "type": "backend" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Validación + Caché", "items": ["Pydantic valida el request antes de cualquier trabajo CPU", "Graph Cache usa (mode, tolerance_m) como clave — evita reconstrucción en requests repetidos"] },
+    { "dot": "emerald", "title": "Construcción del Grafo", "items": ["Apimetro Go es la fuente primaria; map.geojson actúa como fallback si Go no responde", "VFTImpedanceModel: (haversine / velocidad) × CF + frecuencia/2 — BETA_SATURACION_CDMX = 0.759"] },
+    { "dot": "orange", "title": "Cálculo Topológico", "items": ["El analizador recibe el grafo ya ponderado y ejecuta el indicador del endpoint solicitado", "Resultado: DataFrame serializado a JSON en la respuesta HTTP 200"] }
+  ]
+}
