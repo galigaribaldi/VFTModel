@@ -18,6 +18,14 @@ run:
 run-dev:
 	ENV_FILE=.env.dev python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT) --reload
 
+# ── Escenarios Anillo Periférico ─────────────────────────────────────────────
+
+run-scenario-mb:
+	ENV_FILE=.env.scenario-mb python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT) --reload
+
+run-scenario-metro:
+	ENV_FILE=.env.scenario-metro python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT) --reload
+
 # ── Docker ────────────────────────────────────────────────────────────────────
 
 docker-build:
@@ -50,6 +58,8 @@ help:
 	@echo "  make install            Instala dependencias Python"
 	@echo "  make run                uvicorn LOCAL  (default: puerto 8000)"
 	@echo "  make run-dev            uvicorn DEV    (apimetro.dev)"
+	@echo "  make run-scenario-mb    uvicorn escenario MB   (localhost:8083)"
+	@echo "  make run-scenario-metro uvicorn escenario METRO (localhost:8084)"
 	@echo "  make docker-build       Construye la imagen Docker"
 	@echo "  make docker-run         Docker DEV     (apimetro.dev)"
 	@echo "  make docker-run-local   Docker LOCAL   (localhost:8080)"
@@ -60,4 +70,4 @@ help:
 	@echo "─────────────────────────────────────────────────────"
 	@echo ""
 
-.PHONY: run run-dev docker-build docker-run docker-run-local install test export-geojson help
+.PHONY: run run-dev run-scenario-mb run-scenario-metro docker-build docker-run docker-run-local install test export-geojson help
