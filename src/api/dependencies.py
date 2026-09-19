@@ -22,6 +22,7 @@ GRAPH_CACHE = {}
 SCC_CACHE = {}
 T_CACHE = {}
 B_CACHE = {}
+P_CACHE = {}
 
 async def get_or_build_graph(mode: str, tolerance_m: float):
     """
@@ -70,3 +71,9 @@ def get_betweenness_report(mode: str, tolerance_m: float) -> dict | None:
     """Recupera el reporte B cacheado para los parámetros dados."""
     cache_key = f"{mode}_{tolerance_m}"
     return B_CACHE.get(cache_key)
+
+
+def get_profile_report(mode: str, tolerance_m: float) -> dict | None:
+    """Recupera el reporte PRE cacheado para los parámetros dados."""
+    cache_key = f"{mode}_{tolerance_m}"
+    return P_CACHE.get(cache_key)
