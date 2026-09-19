@@ -503,3 +503,83 @@ async def get_geolayer_betweenness(
     except Exception as e:
         vft_logger.error(f"Error en GeoLayer betweenness [{layer}]: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error en GeoLayer betweenness: {str(e)}")
+
+# ----------------------------------------------------------------------
+## Sección H — Endpoint /profile  (Clasificación Garibelt — enriquecimiento por nodo)
+# ----------------------------------------------------------------------
+
+def _clasify_profile_band(val_norm: float) -> str:
+    """Escala Garibelt — consistente con normalization.classify_band."""
+    if val_norm < 0.25:
+        return "critico"
+    elif val_norm < 0.50:
+        return "debil"
+    elif val_norm < 0.75:
+        return "aceptable"
+    return "idoneo"
+
+
+@router.get("/profile", summary="Clasificación Garibelt — Enriquecimiento por nodo")
+async def get_geolayer_profile(
+    layer:       str   = Query("perfil_nodos", description="perfil_nodos"),
+    mode:        str   = Query("REALISTIC_INTEGRATION"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE),
+):
+    """
+    Devuelve el enriquecimiento por nodo de la Clasificación Garibelt como FeatureCollection (Point).
+    Requiere que /topological/network-profile haya sido calculado primero.
+    """
+    if layer != "perfil_nodos":
+        raise HTTPException(400, f"Layer '{layer}' no reconocida. Disponible: perfil_nodos")
+
+    try:
+        from src.api.dependencies import P_CACHE
+        cached = P_CACHE.get(f"{mode}_{tolerance_m}")
+        if not cached or "node_enrichment" not in cached:
+            raise HTTPException(
+                404,
+                "Perfil no calculado. Llamar primero a GET /topological/network-profile"
+            )
+
+        df = cached["node_enrichment"]
+        features = []
+        for _, row in df.iterrows():
+            lon = row.get("lon")
+            lat = row.get("lat")
+            if lon is None or lat is None:
+                continue
+
+            b_norm = row.get("b_normalizado", None)
+            b_banda = row.get("b_banda", "no_disponible")
+            bc = row.get("betweenness_centrality", None)
+
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [lon, lat]},
+                "properties": {
+                    "id":                     row["node_id"],
+                    "nombre":                 row["nombre"],
+                    "indicador":              "profile",
+                    "layer":                  layer,
+                    "fc_total":               int(row["Fuerza_Capilar_Total"]),
+                    "fc_normalizado":         round(float(row["fc_normalizado"]), 4),
+                    "fc_banda":               row["fc_banda"],
+                    "betweenness_centrality": round(float(bc), 6) if bc is not None and not pd.isna(bc) else None,
+                    "b_normalizado":          round(float(b_norm), 4) if b_norm is not None and not pd.isna(b_norm) else None,
+                    "b_banda":                b_banda,
+                    "banda_dominante":        row["banda_dominante"],
+                },
+            })
+
+        return _build_feature_collection(
+            indicador  = "profile",
+            layer      = layer,
+            feature    = features,
+            parametros = {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        vft_logger.error(f"Error en GeoLayer profile [{layer}]: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error en GeoLayer profile: {str(e)}")

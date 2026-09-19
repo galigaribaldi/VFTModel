@@ -30,8 +30,9 @@ from src.core.services.graph_builder import VFTGraphBuilder
 from src.api.dependencies import (
     DEFAULT_TOLERANCE, get_or_build_graph, get_scc_report,
     get_giant_component, get_travel_time_report, get_betweenness_report,
-    T_CACHE, B_CACHE
+    get_profile_report, T_CACHE, B_CACHE, P_CACHE, GRAPH_CACHE
 )
+from src.core.algorithms.composite.network_profile import NetworkProfiler
 from src.api.routes import router as geo_router
 
 from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
@@ -369,6 +370,120 @@ async def get_betweenness_centrality(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en cálculo de B: {str(e)}")
+
+
+@app.get("/api/v1/network/topological/network-profile",
+         summary="Clasificación Garibelt — Tablero de Diagnóstico Topológico VFT")
+async def get_network_profile(
+    mode: str = Query("REALISTIC_INTEGRATION", description="Modo de construcción del grafo"),
+    tolerance_m: float = Query(DEFAULT_TOLERANCE, description="Tolerancia de transbordo"),
+    radio_cobertura_m: float = Query(800.0, description="Radio peatonal para dimensión de accesibilidad"),
+    entidades: Optional[List[str]] = Query(["Ciudad de México", "Estado de México"], description="Entidades para análisis de cobertura"),
+    sample_size_di: int = Query(500, description="Muestra de pares O-D para Detour Factor"),
+    seed_di: Optional[int] = Query(42, description="Semilla para reproducibilidad del Detour Factor"),
+):
+    """
+    Clasificación Garibelt: tablero de diagnóstico topológico multi-dimensional de la ZMVM.
+    Compila los 5 indicadores disponibles en la Escala Garibelt: crítico / débil / aceptable / idóneo.
+    Nota: primera ejecución tarda varios minutos si T y B no están en caché.
+    Recomendado: ejecutar warmup-all en Transport-GIS antes de llamar este endpoint.
+    """
+    try:
+        await get_or_build_graph(mode, tolerance_m)
+
+        cached = get_profile_report(mode, tolerance_m)
+        if cached:
+            return {
+                "status": "success",
+                "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+                "data": cached["report"],
+            }
+
+        G_scc = get_giant_component(mode, tolerance_m)
+        G = GRAPH_CACHE.get(f"{mode}_{tolerance_m}")
+        if G_scc is None or G is None:
+            raise HTTPException(500, "Componente gigante no disponible — reconstruir grafo.")
+
+        # T — usa caché si disponible
+        t_data = get_travel_time_report(mode, tolerance_m)
+        if not t_data:
+            t_orch = AverageTravelTimeOrchestrator(G_scc)
+            t_data = await asyncio.to_thread(t_orch.analyze)
+            T_CACHE[f"{mode}_{tolerance_m}"] = t_data
+        travel_time_min = t_data["T_average_travel_time_minutes"]
+
+        # B — usa caché si disponible
+        b_data = get_betweenness_report(mode, tolerance_m)
+        if not b_data:
+            b_orch = BetweennessOrchestrator(G_scc)
+            b_data = await asyncio.to_thread(b_orch.analyze)
+            B_CACHE[f"{mode}_{tolerance_m}"] = b_data
+        betweenness_df = b_data["ranking"]
+
+        # Capilar y Detour — rápidos, sin caché individual
+        cap_analyzer = CapillaryStrengthAnalyzer(G)
+        capillar_df = await asyncio.to_thread(cap_analyzer.calculate_capillary_strength)
+
+        detour_orch = DetourFactorOrchestrator(G)
+        detour_df = await asyncio.to_thread(
+            detour_orch.calculate_sample_routes, sample_size_di, seed_di
+        )
+
+        # Cobertura — graceful degradation si Go backend no disponible
+        coverage_df = None
+        try:
+            geojson_transporte = await fetch_full_network()
+            geojson_poligono = await fetch_territorial_polygons(entidades=entidades)
+            cov_analyzer = SpatialCoverageAnalyzer(geojson_transporte, geojson_poligono)
+            coverage_df = await asyncio.to_thread(
+                cov_analyzer.calculate_general_coverage, radio_cobertura_m
+            )
+        except Exception:
+            vft_logger.warning("Garibelt: cobertura no disponible — dimensión omitida.")
+
+        profiler = NetworkProfiler(
+            coverage_df=coverage_df,
+            capillar_df=capillar_df,
+            detour_df=detour_df,
+            travel_time_min=travel_time_min,
+            betweenness_df=betweenness_df,
+        )
+        result = await asyncio.to_thread(profiler.build_profile)
+
+        report = {
+            "dimensions": [
+                {
+                    "dimension": d.dimension,
+                    "indicador_fuente": d.indicador_fuente,
+                    "valor_bruto": d.valor_bruto,
+                    "valor_normalizado": d.valor_normalizado,
+                    "banda": d.banda,
+                    "metrica_descripcion": d.metrica_descripcion,
+                }
+                for d in result.dimensions
+            ],
+            "node_enrichment_count": len(result.node_enrichment),
+            "parametros_calculo": {
+                "radio_cobertura_m": radio_cobertura_m,
+                "sample_size_di": sample_size_di,
+                "seed_di": seed_di,
+            },
+        }
+
+        P_CACHE[f"{mode}_{tolerance_m}"] = {
+            "report": report,
+            "node_enrichment": result.node_enrichment,
+        }
+
+        return {
+            "status": "success",
+            "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
+            "data": report,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en Clasificación Garibelt: {str(e)}")
 
 
 if __name__ == "__main__":
