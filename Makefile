@@ -8,7 +8,9 @@
 #   make run-dev PORT=8002    → uvicorn DEV en puerto 8002
 #   make docker-run PORT=8003 → Docker DEV en puerto 8003
 
-PORT ?= 8000
+PORT          ?= 8000
+NOTEBOOK_PORT ?= 8888
+LOG_LEVEL     ?= DEBUG
 
 # ── Desarrollo (uvicorn) ──────────────────────────────────────────────────────
 
@@ -43,6 +45,9 @@ test:
 export-geojson:
 	python src/tableau_conectors/export_geojson.py --port $(PORT)
 
+notebook:
+	.venv/bin/jupyter notebook --no-browser --port=$(NOTEBOOK_PORT) --log-level=$(LOG_LEVEL)
+
 help:
 	@echo ""
 	@echo "VFT Model — Comandos disponibles"
@@ -55,9 +60,11 @@ help:
 	@echo "  make docker-run-local   Docker LOCAL   (localhost:8080)"
 	@echo "  make test               Corre la suite pytest"
 	@echo "  make export-geojson     Exporta capas GeoJSON para Tableau"
+	@echo "  make notebook           Jupyter con logs en terminal (puerto 8888, DEBUG)"
 	@echo ""
-	@echo "  Puerto personalizado:   make <comando> PORT=8001"
+	@echo "  Puerto API:             make <comando> PORT=8001"
+	@echo "  Puerto/log notebook:    make notebook NOTEBOOK_PORT=8889 LOG_LEVEL=INFO"
 	@echo "─────────────────────────────────────────────────────"
 	@echo ""
 
-.PHONY: run run-dev docker-build docker-run docker-run-local install test export-geojson help
+.PHONY: run run-dev docker-build docker-run docker-run-local install test export-geojson notebook help
