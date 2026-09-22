@@ -368,6 +368,15 @@ warmup-scenarios:
 | `Makefile` | 2 targets nuevos: `run-scenario-mb`, `run-scenario-metro` |
 | `docs/NOTAS_REPLICABILIDAD_PROPUESTA.md` | Este documento |
 
+### Correcciones de serialización (2026-09-21)
+
+Dos archivos de la capa API fueron modificados por bug fix y observabilidad — no afectan algoritmos ni replicabilidad de escenarios:
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/api/routes/geo_layers.py` | Bug fix: `b_banda` devolvía `NaN` para 554 nodos fuera del componente gigante → 500 en `/geolayers/profile?layer=perfil_nodos`. Guard `isinstance(raw, str)` aplicado. `fc_banda` con el mismo patrón defensivo. |
+| `src/api/main.py` | Campo `scc_stats` añadido al response de `/topological/network-profile`. Disponible en ambos paths (caché y cómputo fresco). Permite verificar que los +94 nodos del anillo quedaron absorbidos por el componente gigante. |
+
 ---
 
 ## 10. Indicadores Esperados por Escenario
@@ -411,6 +420,13 @@ warmup-scenarios:
 - [ ] Levantar las 3 instancias (`:8000`, `:8001`, `:8002`)
 - [ ] Verificar que cada instancia responde en Swagger
 - [ ] `build-auto` en las 3 → confirmar que MB/METRO tienen ~98 nodos más que baseline
+- [ ] Verificar `scc_stats` en `/topological/network-profile` — confirmar que nodos del anillo absorbidos por componente gigante:
+  ```bash
+  curl -s "http://localhost:8001/api/v1/network/topological/network-profile" \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); s=d['data']['scc_stats']; \
+      print('MB — gigante:', s['giant_component_nodes'], '| aislados:', s['isolated_nodes'], '| %:', s['pct_giant'])"
+  ```
+  Resultado esperado: `aislados` igual o menor que baseline (554). Si es mayor, algún nodo del anillo quedó desconectado.
 
 ### Ejecución — Transport-gis (repo transport-gis-zmvm-mjg)
 - [ ] Warmup de indicadores pesados (T, B) en los 3 puertos

@@ -393,16 +393,35 @@ async def get_network_profile(
 
         cached = get_profile_report(mode, tolerance_m)
         if cached:
+            scc_r = get_scc_report(mode, tolerance_m)
+            scc_stats = None
+            if scc_r:
+                _g = scc_r["giant_component"]
+                scc_stats = {
+                    "giant_component_nodes": _g["nodes"],
+                    "isolated_nodes": scc_r["total_nodes"] - _g["nodes"],
+                    "pct_giant": _g["pct_of_total_nodes"],
+                }
             return {
                 "status": "success",
                 "parametros": {"modo_grafo": mode, "tolerancia_transbordo_m": tolerance_m},
-                "data": cached["report"],
+                "data": {**cached["report"], "scc_stats": scc_stats},
             }
 
         G_scc = get_giant_component(mode, tolerance_m)
         G = GRAPH_CACHE.get(f"{mode}_{tolerance_m}")
         if G_scc is None or G is None:
             raise HTTPException(500, "Componente gigante no disponible — reconstruir grafo.")
+
+        scc_r = get_scc_report(mode, tolerance_m)
+        scc_stats = None
+        if scc_r:
+            _g = scc_r["giant_component"]
+            scc_stats = {
+                "giant_component_nodes": _g["nodes"],
+                "isolated_nodes": scc_r["total_nodes"] - _g["nodes"],
+                "pct_giant": _g["pct_of_total_nodes"],
+            }
 
         # T — usa caché si disponible
         t_data = get_travel_time_report(mode, tolerance_m)
@@ -468,6 +487,7 @@ async def get_network_profile(
                 "sample_size_di": sample_size_di,
                 "seed_di": seed_di,
             },
+            "scc_stats": scc_stats,
         }
 
         P_CACHE[f"{mode}_{tolerance_m}"] = {

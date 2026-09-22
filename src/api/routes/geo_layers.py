@@ -550,7 +550,10 @@ async def get_geolayer_profile(
                 continue
 
             b_norm = row.get("b_normalizado", None)
-            b_banda = row.get("b_banda", "no_disponible")
+            b_banda_raw = row.get("b_banda")
+            b_banda = b_banda_raw if isinstance(b_banda_raw, str) else "no_disponible"
+            fc_banda_raw = row.get("fc_banda")
+            fc_banda = fc_banda_raw if isinstance(fc_banda_raw, str) else "no_disponible"
             bc = row.get("betweenness_centrality", None)
 
             features.append({
@@ -563,7 +566,7 @@ async def get_geolayer_profile(
                     "layer":                  layer,
                     "fc_total":               int(row["Fuerza_Capilar_Total"]),
                     "fc_normalizado":         round(float(row["fc_normalizado"]), 4),
-                    "fc_banda":               row["fc_banda"],
+                    "fc_banda":               fc_banda,
                     "betweenness_centrality": round(float(bc), 6) if bc is not None and not pd.isna(bc) else None,
                     "b_normalizado":          round(float(b_norm), 4) if b_norm is not None and not pd.isna(b_norm) else None,
                     "b_banda":                b_banda,
