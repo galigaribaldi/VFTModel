@@ -34,6 +34,7 @@ from src.core.algorithms.spatial.spatial_coverage import SpatialCoverageAnalyzer
 from src.core.algorithms.topological.capillar_strength import CapillaryStrengthAnalyzer
 from src.core.algorithms.topological.detaurFactor import DetourFactorOrchestrator
 
+from src.core.algorithms.composite.normalization import GARIBELT_COLORS
 from src.core.utils.logger import vft_logger
 
 ## Router
@@ -549,17 +550,32 @@ async def get_geolayer_profile(
             if lon is None or lat is None:
                 continue
 
-            b_norm = row.get("b_normalizado", None)
-            b_banda_raw = row.get("b_banda")
-            b_banda = b_banda_raw if isinstance(b_banda_raw, str) else "no_disponible"
+            b_norm       = row.get("b_normalizado")
+            b_banda_raw  = row.get("b_banda")
+            b_banda      = b_banda_raw if isinstance(b_banda_raw, str) else "no_disponible"
             fc_banda_raw = row.get("fc_banda")
-            fc_banda = fc_banda_raw if isinstance(fc_banda_raw, str) else "no_disponible"
-            bc = row.get("betweenness_centrality", None)
+            fc_banda     = fc_banda_raw if isinstance(fc_banda_raw, str) else "no_disponible"
+            bc           = row.get("betweenness_centrality")
+            banda_dom    = row.get("banda_dominante", "no_disponible")
+
+            # nota_metodologica — guard pd.isna (Bug 2 corregido)
+            _b = row.get("b_normalizado")
+            nota = (
+                "sin_betweenness — nodo fuera del SCC gigante"
+                if (_b is None or pd.isna(_b)) else ""
+            )
+
+            # dims_disponibles — solo dimensiones usadas en banda_dominante
+            _dims = sum(
+                1 for v in [row.get("fc_normalizado"), _b]
+                if v is not None and not pd.isna(v)
+            )
 
             features.append({
                 "type": "Feature",
                 "geometry": {"type": "Point", "coordinates": [lon, lat]},
                 "properties": {
+                    # ── existentes ────────────────────────────────────────────
                     "id":                     row["node_id"],
                     "nombre":                 row["nombre"],
                     "indicador":              "profile",
@@ -570,7 +586,18 @@ async def get_geolayer_profile(
                     "betweenness_centrality": round(float(bc), 6) if bc is not None and not pd.isna(bc) else None,
                     "b_normalizado":          round(float(b_norm), 4) if b_norm is not None and not pd.isna(b_norm) else None,
                     "b_banda":                b_banda,
-                    "banda_dominante":        row["banda_dominante"],
+                    "banda_dominante":        banda_dom,
+                    # ── nuevos ────────────────────────────────────────────────
+                    "sistema":                row.get("sistema"),
+                    "tipo_nodo":              row.get("tipo_nodo"),
+                    "dim_capilar":            round(float(row["fc_normalizado"]), 4),
+                    "dim_centralidad":        round(float(b_norm), 4) if b_norm is not None and not pd.isna(b_norm) else None,
+                    "dim_accesibilidad":      row.get("dim_accesibilidad"),
+                    "dim_eficiencia":         None,
+                    "dim_fluidez":            None,
+                    "banda_color":            GARIBELT_COLORS.get(banda_dom, "#95A5A6"),
+                    "dims_disponibles":       _dims,
+                    "nota_metodologica":      nota,
                 },
             })
 

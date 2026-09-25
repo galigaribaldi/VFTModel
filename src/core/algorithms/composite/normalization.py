@@ -7,6 +7,15 @@
 """
 
 
+GARIBELT_COLORS: dict[str, str] = {
+    "critico":       "#E74C3C",
+    "debil":         "#F39C12",
+    "aceptable":     "#F1C40F",
+    "idoneo":        "#27AE60",
+    "no_disponible": "#95A5A6",
+}
+
+
 def normalize_scalar(value: float, low: float, high: float) -> float:
     """Min-max normalización a [0, 1]. Clamp a los límites si value está fuera del rango."""
     if high == low:

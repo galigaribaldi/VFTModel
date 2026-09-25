@@ -374,8 +374,12 @@ Dos archivos de la capa API fueron modificados por bug fix y observabilidad — 
 
 | Archivo | Cambio |
 |---------|--------|
-| `src/api/routes/geo_layers.py` | Bug fix: `b_banda` devolvía `NaN` para 554 nodos fuera del componente gigante → 500 en `/geolayers/profile?layer=perfil_nodos`. Guard `isinstance(raw, str)` aplicado. `fc_banda` con el mismo patrón defensivo. |
-| `src/api/main.py` | Campo `scc_stats` añadido al response de `/topological/network-profile`. Disponible en ambos paths (caché y cómputo fresco). Permite verificar que los +94 nodos del anillo quedaron absorbidos por el componente gigante. |
+| `src/api/routes/geo_layers.py` | Bug fix NaN + serialización extendida: 11 campos nuevos para Transport-GIS (`sistema`, `tipo_nodo`, `dim_capilar`, `dim_centralidad`, `dim_accesibilidad`, `banda_color`, `dims_disponibles`, `nota_metodologica`, etc.). Ver `docs/SPEC_PERFIL_NODOS_GARIBELT.md`. |
+| `src/api/main.py` | `scc_stats` en `/network-profile` (ambos paths). `G` pasado al `NetworkProfiler` para enriquecimiento por nodo. |
+| `src/core/algorithms/composite/network_profile.py` | `G` opcional en `NetworkProfiler`. Columnas `sistema`, `tipo_nodo`, `dim_accesibilidad` en `_build_node_enrichment()`. Guard `betweenness_df=None`. |
+| `src/core/algorithms/composite/normalization.py` | `GARIBELT_COLORS` dict — fuente única de colores de banda. |
+| `notebooks/07_Verificacion_Perfil_Nodos.ipynb` | Verificación del endpoint `perfil_nodos` — 5 secciones, 11 checks. Pendiente de ejecución (requiere warmup). |
+| `docs/SPEC_PERFIL_NODOS_GARIBELT.md` | Spec técnica corregida (4 bugs del prompt Transport-GIS). |
 
 ---
 
@@ -436,6 +440,7 @@ Dos archivos de la capa API fueron modificados por bug fix y observabilidad — 
 - [ ] Verificar que los 3 conjuntos de GeoJSON están en carpetas separadas
 
 ### Post-ejecución
+- [ ] Ejecutar notebook `07_Verificacion_Perfil_Nodos.ipynb` — verificar campos nuevos en perfil_nodos (ver guía de pasos al inicio del notebook)
 - [ ] Comparar indicadores escalares (T, SCC) entre los 3 escenarios
 - [ ] Mapas comparativos en QGIS/Tableau
 - [ ] Documentar hallazgos para la tesis

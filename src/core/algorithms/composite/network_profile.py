@@ -12,6 +12,7 @@ import ast
 from dataclasses import dataclass
 from typing import Optional
 
+import networkx as nx
 import pandas as pd
 
 from src.core.algorithms.composite.normalization import (
@@ -77,13 +78,15 @@ class NetworkProfiler:
         capillar_df: pd.DataFrame,
         detour_df: pd.DataFrame,
         travel_time_min: float,
-        betweenness_df: pd.DataFrame,
+        betweenness_df: Optional[pd.DataFrame] = None,
+        G: Optional[nx.DiGraph] = None,
     ):
         self.coverage_df = coverage_df
         self.capillar_df = capillar_df
         self.detour_df = detour_df
         self.travel_time_min = travel_time_min
         self.betweenness_df = betweenness_df
+        self.G = G
 
     def build_profile(self) -> ProfileResult:
         dimensions = [
@@ -188,6 +191,9 @@ class NetworkProfiler:
         )
 
     def _dim_centralidad(self) -> DimensionProfile:
+        if self.betweenness_df is None or self.betweenness_df.empty:
+            return DimensionProfile("centralidad_critica", "B(v) — Centralidad de Intermediación",
+                                    0.0, 0.0, "critico", "Sin datos")
         values = self.betweenness_df["betweenness_centrality"].dropna().tolist()
         if not values:
             return DimensionProfile("centralidad_critica", "B(v) — Centralidad de Intermediación",
@@ -253,11 +259,47 @@ class NetworkProfiler:
 
         merged["banda_dominante"] = merged.apply(_dominant_band, axis=1)
 
+        if self.G is not None:
+            merged["sistema"] = merged["Nodo_ID"].apply(
+                lambda nid: self.G.nodes.get(ast.literal_eval(nid), {}).get("sistema")
+            )
+
+            p75 = merged["fc_normalizado"].quantile(0.75)
+            p50 = merged["fc_normalizado"].quantile(0.50)
+
+            def _tipo(fc):
+                if fc >= p75: return "hub_principal"
+                if fc >= p50: return "nodo_integrador"
+                return "nodo_terminal"
+
+            merged["tipo_nodo"] = merged["fc_normalizado"].apply(_tipo)
+
+            if self.coverage_df is not None and not self.coverage_df.empty:
+                cov_map = dict(zip(
+                    self.coverage_df["Demarcacion"],
+                    self.coverage_df["Cobertura_Porcentaje"]
+                ))
+                merged["_alcaldia"] = merged["Nodo_ID"].apply(
+                    lambda nid: self.G.nodes.get(ast.literal_eval(nid), {}).get("alcaldia_municipio")
+                )
+                merged["dim_accesibilidad"] = merged["_alcaldia"].apply(
+                    lambda alc: round(normalize_scalar(cov_map.get(alc, 0.0), 0.0, COVERAGE_BEST), 4)
+                    if alc else None
+                )
+                merged.drop(columns=["_alcaldia"], inplace=True)
+            else:
+                merged["dim_accesibilidad"] = None
+        else:
+            merged["sistema"]           = None
+            merged["tipo_nodo"]         = None
+            merged["dim_accesibilidad"] = None
+
         return merged[
             [
                 "Nodo_ID", "Estacion", "lon", "lat",
                 "Fuerza_Capilar_Total", "fc_normalizado", "fc_banda",
                 "betweenness_centrality", "b_normalizado", "b_banda",
                 "banda_dominante",
+                "sistema", "tipo_nodo", "dim_accesibilidad",
             ]
         ].rename(columns={"Nodo_ID": "node_id", "Estacion": "nombre"})

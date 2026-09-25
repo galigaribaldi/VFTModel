@@ -466,6 +466,7 @@ async def get_network_profile(
             detour_df=detour_df,
             travel_time_min=travel_time_min,
             betweenness_df=betweenness_df,
+            G=G,
         )
         result = await asyncio.to_thread(profiler.build_profile)
 
