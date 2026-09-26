@@ -9,6 +9,8 @@
 #   make docker-run PORT=8003 → Docker DEV en puerto 8003
 
 PORT          ?= 8000
+PORT_MB       ?= 8001
+PORT_METRO    ?= 8002
 NOTEBOOK_PORT ?= 8888
 LOG_LEVEL     ?= DEBUG
 
@@ -23,10 +25,10 @@ run-dev:
 # ── Escenarios Anillo Periférico ─────────────────────────────────────────────
 
 run-scenario-mb:
-	ENV_FILE=.env.scenario-mb python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT) --reload
+	ENV_FILE=.env.scenario-mb python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT_MB) --reload
 
 run-scenario-metro:
-	ENV_FILE=.env.scenario-metro python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT) --reload
+	ENV_FILE=.env.scenario-metro python -m uvicorn src.api.main:app --host 0.0.0.0 --port $(PORT_METRO) --reload
 
 # ── Docker ────────────────────────────────────────────────────────────────────
 
@@ -63,8 +65,8 @@ help:
 	@echo "  make install            Instala dependencias Python"
 	@echo "  make run                uvicorn LOCAL  (default: puerto 8000)"
 	@echo "  make run-dev            uvicorn DEV    (apimetro.dev)"
-	@echo "  make run-scenario-mb    uvicorn escenario MB   (localhost:8083)"
-	@echo "  make run-scenario-metro uvicorn escenario METRO (localhost:8084)"
+	@echo "  make run-scenario-mb    uvicorn escenario MB   (default: puerto 8001)"
+	@echo "  make run-scenario-metro uvicorn escenario METRO (default: puerto 8002)"
 	@echo "  make docker-build       Construye la imagen Docker"
 	@echo "  make docker-run         Docker DEV     (apimetro.dev)"
 	@echo "  make docker-run-local   Docker LOCAL   (localhost:8080)"
