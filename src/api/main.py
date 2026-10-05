@@ -32,11 +32,12 @@ from src.api.dependencies import (
     get_giant_component, get_travel_time_report, get_betweenness_report,
     get_profile_report, T_CACHE, B_CACHE, P_CACHE, GRAPH_CACHE
 )
-from src.core.algorithms.composite.network_profile import NetworkProfiler
+from src.core.algorithms.composite.network_profile import NetworkProfiler, summarize_coverage
 from src.api.routes import router as geo_router
 
-from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons
-from src.core.algorithms.spatial.spatial_coverage import SpatialCoverageAnalyzer
+from src.infrastructure.go_client.client_spatial import fetch_territorial_polygons, fetch_zmvm_complement
+from src.core.utils.zmvm import ZMVM_CVEGEO
+from src.core.algorithms.spatial.spatial_coverage import SpatialCoverageAnalyzer, calculate_zmvm_coverage
 from src.core.algorithms.topological.capillar_strength import CapillaryStrengthAnalyzer
 from src.core.algorithms.topological.detaurFactor import DetourFactorOrchestrator
 from src.core.algorithms.topological.average_travel_time import AverageTravelTimeOrchestrator
@@ -104,8 +105,22 @@ async def calculate_spatial_coverage(
         analyzer = SpatialCoverageAnalyzer(geojson_transporte, geojson_poligono)
         # También mandamos el cálculo espacial a un hilo separado por ser pesado
         df_resultados = await asyncio.to_thread(analyzer.calculate_general_coverage, radio_m)
+
+        # Issue #26: dominio adicional ZMVM (76); `data` conserva el cálculo por entidades
+        complemento = await fetch_zmvm_complement(entidades)
+        df_zmvm = await asyncio.to_thread(
+            calculate_zmvm_coverage, geojson_transporte, geojson_poligono,
+            df_resultados, complemento, ZMVM_CVEGEO, radio_m
+        )
         
-        return {"status": "success", "data": df_resultados.to_dict(orient="records")}
+        return {
+            "status": "success",
+            "data": df_resultados.to_dict(orient="records"),
+            "resumen_dominios": {
+                "entidades": summarize_coverage(df_resultados),
+                "zmvm_76": summarize_coverage(df_zmvm),
+            },
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fallo en cobertura espacial: {str(e)}")
 
@@ -450,6 +465,7 @@ async def get_network_profile(
 
         # Cobertura — graceful degradation si Go backend no disponible
         coverage_df = None
+        cobertura_dominios = None
         try:
             geojson_transporte = await fetch_full_network()
             geojson_poligono = await fetch_territorial_polygons(entidades=entidades)
@@ -459,6 +475,22 @@ async def get_network_profile(
             )
         except Exception:
             vft_logger.warning("Garibelt: cobertura no disponible — dimensión omitida.")
+
+        # Issue #26: dominio adicional ZMVM (76). Bloque independiente: si falla, la
+        # dimensión de accesibilidad y perfil_nodos (coverage_df por entidades) no cambian
+        if coverage_df is not None:
+            try:
+                complemento = await fetch_zmvm_complement(entidades)
+                coverage_zmvm = await asyncio.to_thread(
+                    calculate_zmvm_coverage, geojson_transporte, geojson_poligono,
+                    coverage_df, complemento, ZMVM_CVEGEO, radio_cobertura_m
+                )
+                cobertura_dominios = {
+                    "entidades": summarize_coverage(coverage_df),
+                    "zmvm_76": summarize_coverage(coverage_zmvm),
+                }
+            except Exception:
+                vft_logger.warning("Garibelt: cobertura ZMVM (76) no disponible — se omite.")
 
         profiler = NetworkProfiler(
             coverage_df=coverage_df,
@@ -483,6 +515,7 @@ async def get_network_profile(
                 for d in result.dimensions
             ],
             "node_enrichment_count": len(result.node_enrichment),
+            "cobertura_dominios": cobertura_dominios,
             "parametros_calculo": {
                 "radio_cobertura_m": radio_cobertura_m,
                 "sample_size_di": sample_size_di,

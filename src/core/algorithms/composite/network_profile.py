@@ -33,6 +33,29 @@ DI_WORST: float = 2.5
 COVERAGE_BEST: float = 80.0
 
 
+def summarize_coverage(df: pd.DataFrame) -> dict:
+    """
+    Issue #26: resume la cobertura C de un dominio con la misma fórmula que
+    `_dim_accesibilidad` (media de cobertura % ponderada por área, normalizada 0–80 %).
+    """
+    if df is None or df.empty:
+        return {"valor_bruto": None, "valor_normalizado": None, "banda": "no_disponible",
+                "n_demarcaciones": 0, "area_total_km2": 0.0}
+    total_area = df["Area_Total_km2"].sum()
+    if total_area > 0:
+        valor_bruto = float((df["Cobertura_Porcentaje"] * df["Area_Total_km2"]).sum() / total_area)
+    else:
+        valor_bruto = float(df["Cobertura_Porcentaje"].mean())
+    valor_norm = normalize_scalar(valor_bruto, 0.0, COVERAGE_BEST)
+    return {
+        "valor_bruto": round(valor_bruto, 4),
+        "valor_normalizado": round(valor_norm, 4),
+        "banda": classify_band(valor_norm),
+        "n_demarcaciones": int(len(df)),
+        "area_total_km2": round(float(total_area), 2),
+    }
+
+
 @dataclass
 class DimensionProfile:
     dimension: str

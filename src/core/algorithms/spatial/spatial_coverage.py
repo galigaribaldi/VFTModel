@@ -112,3 +112,31 @@ class SpatialCoverageAnalyzer():
             resultados_por_sistema[sistema] = df_resultado
         
         return resultados_por_sistema
+
+
+def calculate_zmvm_coverage(
+    estaciones_geojson: Dict[str, Any],
+    poligonos_entidades: Dict[str, Any],
+    df_entidades: pd.DataFrame,
+    complemento: Dict[str, Any],
+    zmvm_cvegeo: set,
+    radio_caminable_m: float = 800,
+) -> pd.DataFrame:
+    """
+    Issue #26: cobertura sobre las 76 demarcaciones oficiales de la ZMVM, como dominio
+    ADICIONAL. No modifica el cálculo por entidades: reutiliza sus filas (`df_entidades`)
+    para las demarcaciones ZMVM ya incluidas y calcula aparte solo el complemento
+    (demarcaciones ZMVM de entidades no solicitadas, p. ej. Tizayuca, Hgo.).
+    La cobertura de cada demarcación es independiente del resto, así que el resultado
+    es idéntico a calcular las 76 en una sola pasada.
+    """
+    feats = poligonos_entidades.get("features", []) or poligonos_entidades.get("data", {}).get("features", [])
+    nombres_zmvm = {
+        f["properties"].get("nombre") for f in feats
+        if f.get("properties", {}).get("cvegeo") in zmvm_cvegeo
+    }
+    partes = [df_entidades[df_entidades["Demarcacion"].isin(nombres_zmvm)]]
+    if complemento.get("features"):
+        df_comp = SpatialCoverageAnalyzer(estaciones_geojson, complemento).calculate_general_coverage(radio_caminable_m)
+        partes.append(df_comp)
+    return pd.concat(partes, ignore_index=True)
