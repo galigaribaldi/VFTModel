@@ -45,8 +45,9 @@ def test_df_puntos_geometry_point(fc_df_puntos):
 
 def test_df_puntos_factor_desviacion_minimo(fc_df_puntos):
     """Factor de desviación >= 0.95.
-    El límite teórico es 1.0, pero coordenadas snapeadas al KDTree acumulan
-    ~3% de error geométrico en rutas cortas (<1.5 km). Ver NOTES.txt.
+    El límite teórico es 1.0 y, desde el Fix #22 (proyección de estaciones sobre
+    el trazo + offsets perpendiculares), el grafo lo garantiza por desigualdad
+    triangular. Se conserva 0.95 como margen aceptable de error estadístico.
     """
     fds = [f["properties"]["factor_desviacion"] for f in fc_df_puntos["features"]]
     bajo_umbral = [v for v in fds if v < 0.95]
@@ -67,16 +68,17 @@ def test_df_puntos_categoria_df_valida(fc_df_puntos):
 
 
 def test_df_puntos_dist_red_mayor_recta(fc_df_puntos):
-    """dist_red_km >= dist_recta_km con tolerancia de 50 m.
-    El snapping KDTree puede acumular ~30 m de error en segmentos cortos. Ver NOTES.txt.
+    """dist_red_km >= dist_recta_km con tolerancia de 10 m.
+    Desde el Fix #22 la distancia de red nunca es menor que la recta. La tolerancia
+    solo absorbe el redondeo a 2 decimales en km (±5 m por cada valor).
     """
-    TOLERANCIA_KM = 0.05  # 50 metros
+    TOLERANCIA_KM = 0.01  # 10 metros (redondeo)
     pares_invalidos = [
         (f["properties"]["dist_red_km"], f["properties"]["dist_recta_km"])
         for f in fc_df_puntos["features"]
         if f["properties"]["dist_red_km"] < f["properties"]["dist_recta_km"] - TOLERANCIA_KM
     ]
-    assert not pares_invalidos, f"dist_red < dist_recta - 50m en: {pares_invalidos[:3]}"
+    assert not pares_invalidos, f"dist_red < dist_recta - 10m en: {pares_invalidos[:3]}"
 
 
 # ──────────────────────────────────────────────────────────────────────────────

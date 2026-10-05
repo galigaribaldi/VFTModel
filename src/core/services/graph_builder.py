@@ -8,6 +8,7 @@
         umbrales estadísticos de "snapping" peatonal.
 """
 
+import math
 import numpy as np
 from scipy.spatial import KDTree
 from collections import defaultdict
@@ -40,6 +41,26 @@ class VFTGraphBuilder:
     # Umbral de snapping espacial: ~50 m convertidos a grados decimales en CDMX (lat ~19°N)
     # 1° lat ≈ 111,000 m — tolerancia uniforme para el KDTree de Fase 2
     SNAP_TOLERANCE_DEG: float = 50.0 / 111_000.0   # ≈ 0.000450 °
+
+    # Filtro phantom (Fix #23): una arista larga solo es phantom si su trazo cruza una
+    # discontinuidad real entre sublíneas (salto > PHANTOM_GAP_M). Los tramos largos con
+    # trazo continuo (SUB, INTERURBANO, MB/MEXIBÚS exprés) son legítimos.
+    PHANTOM_THRESHOLD_M: float = 5_000.0
+    PHANTOM_GAP_M: float = 50.0
+
+    # Excepción metodológica EXCLUSIVA del Tren Suburbano (Fix #23).
+    # Con la tolerancia Q1 (85 m) el SUB queda sin ningún transbordo intermodal: sus puntos
+    # de estación son centroides de andén de tren pesado (150-200 m) y los accesos a los
+    # sistemas vecinos quedan a 300-450 m. Para el resto de sistemas rige únicamente el
+    # snapping Q1. Formato: estación SUB → (sistema destino, nombre de estación destino).
+    # Se conectan todos los nodos homónimos del destino a ≤ SUB_TRANSFER_MAX_M.
+    SUB_OFFICIAL_TRANSFERS = [
+        ("Buenavista",   ("METRO",   "Buenavista")),
+        ("Buenavista",   ("MB",      "Buenavista")),
+        ("Lechería",     ("MEXIBÚS", "Lechería")),
+        ("Tlalnepantla", ("CC",      "Suburbano")),
+    ]
+    SUB_TRANSFER_MAX_M: float = 500.0
 
     def __init__(self, validated_data: GeoJSONTransportSchema):
         """Inicializa el constructor con los datos validados de Go."""
@@ -124,12 +145,17 @@ class VFTGraphBuilder:
             # Concatenar sublíneas en una secuencia continua,
             # deduplicando el punto de unión entre sublíneas adyacentes
             all_coords = []
+            saltos_union = {}   # índice del primer vértice de la sublínea → salto (m) desde la anterior
             for sublinea in raw_sublineas:
                 if len(sublinea) < 2:
                     continue
                 if all_coords and tuple(all_coords[-1]) == tuple(sublinea[0]):
                     all_coords.extend(sublinea[1:])
                 else:
+                    if all_coords:
+                        saltos_union[len(all_coords)] = VFTImpedanceModel.haversine(
+                            all_coords[-1][0], all_coords[-1][1], sublinea[0][0], sublinea[0][1]
+                        )
                     all_coords.extend(sublinea)
 
             if len(all_coords) < 2:
@@ -157,41 +183,87 @@ class VFTGraphBuilder:
                 "tipo":                   "transit",
             }
 
-            # Caminata de detección de waypoints de estación
-            ultimo_waypoint = None   # node_id de la última estación encontrada
-            dist_acumulada  = 0.0
+            # Caminata de detección de waypoints de estación (Fix #22)
+            # La distancia se mide a lo largo del trazo SIN reinicios. Cada estación se
+            # ancla en su proyección sobre el trazo (punto de máxima aproximación) y se
+            # suma su offset perpendicular. Por desigualdad triangular:
+            #   d_seg = off_a + trazo(ancla_a → ancla_b) + off_b  ≥  haversine(a, b)
+            # lo que garantiza DI ≥ 1.0 a nivel arista y, por tanto, de ruta.
+            coords = [(c[0], c[1]) for c in all_coords]
+            dist_acumulada = [0.0]
+            for k in range(1, len(coords)):
+                dist_acumulada.append(
+                    dist_acumulada[-1] + VFTImpedanceModel.haversine(*coords[k - 1], *coords[k])
+                )
 
-            for i, coord in enumerate(all_coords):
-                lon, lat = coord[0], coord[1]
-
-                # Acumular haversine desde el punto anterior del trazo
-                if i > 0:
-                    lon_p, lat_p = all_coords[i - 1][0], all_coords[i - 1][1]
-                    dist_acumulada += VFTImpedanceModel.haversine(lon_p, lat_p, lon, lat)
-
+            # Visita = racha de vértices consecutivos dentro del radio de la misma estación.
+            # Se conserva la proyección más cercana de la racha: [estacion, d_ancla, offset, ultimo_i, primer_i]
+            visitas = []
+            for i, (lon, lat) in enumerate(coords):
                 # ¿Hay una estación del mismo sistema a ≤ SNAP_TOLERANCE_DEG? (Fix 1)
                 dist_deg, idx = kdtree_s.query([lon, lat])
+                if dist_deg > self.SNAP_TOLERANCE_DEG:
+                    continue
 
-                if dist_deg <= self.SNAP_TOLERANCE_DEG:
-                    estacion_node = station_subset[idx]
+                estacion_node = station_subset[idx]
+                offset_m, d_ancla = self._project_station_on_trace(
+                    estacion_node, i, coords, dist_acumulada
+                )
+                if visitas and visitas[-1][0] == estacion_node and visitas[-1][3] == i - 1:
+                    if offset_m < visitas[-1][2]:
+                        visitas[-1][1], visitas[-1][2] = d_ancla, offset_m
+                    visitas[-1][3] = i
+                else:
+                    visitas.append([estacion_node, d_ancla, offset_m, i, i])
 
-                    if estacion_node != ultimo_waypoint:
-                        # Estación nueva → crear arista desde el último waypoint
-                        if ultimo_waypoint is not None:
-                            self.G.add_edge(
-                                ultimo_waypoint, estacion_node,
-                                color=color,
-                                distancia_segmento_m=round(dist_acumulada, 2),
-                                **edge_attr_base,
-                            )
-                            aristas_creadas += 1
-                        ultimo_waypoint = estacion_node
-
-                    # Resetear siempre al estar dentro del radio de tolerancia
-                    # (evita acumular distancia de "rebote" cerca de la estación)
-                    dist_acumulada = 0.0
+            # Una arista por cada cambio de estación (mismo criterio topológico previo:
+            # re-visitar la misma estación no crea arista; la salida se mide desde la última visita)
+            ultimo_waypoint = None   # (estacion, d_ancla, offset, ultimo_i)
+            for estacion_node, d_ancla, offset_m, ultimo_i, primer_i in visitas:
+                if ultimo_waypoint is not None and estacion_node != ultimo_waypoint[0]:
+                    distancia_m = ultimo_waypoint[2] + (d_ancla - ultimo_waypoint[1]) + offset_m
+                    # Mayor discontinuidad entre sublíneas recorrida por esta arista (Fix #23)
+                    salto_max_m = max(
+                        (sl for k, sl in saltos_union.items() if ultimo_waypoint[3] < k <= primer_i),
+                        default=0.0,
+                    )
+                    self.G.add_edge(
+                        ultimo_waypoint[0], estacion_node,
+                        color=color,
+                        distancia_segmento_m=round(distancia_m, 2),
+                        salto_union_max_m=round(salto_max_m, 2),
+                        **edge_attr_base,
+                    )
+                    aristas_creadas += 1
+                ultimo_waypoint = (estacion_node, d_ancla, offset_m, ultimo_i)
 
         vft_logger.info(f"Fase 2 completada: {aristas_creadas} aristas interestación creadas.")
+
+    @staticmethod
+    def _project_station_on_trace(station, i, coords, dist_acumulada):
+        """
+        Proyecta la estación sobre los segmentos del trazo adyacentes al vértice i.
+        Retorna (offset_m, d_ancla): distancia perpendicular estación→trazo y
+        distancia acumulada a lo largo del trazo hasta el punto proyectado.
+        Proyección local equirectangular (error despreciable a escala < 100 m).
+        """
+        lon_s, lat_s = station
+        best = (VFTImpedanceModel.haversine(lon_s, lat_s, *coords[i]), dist_acumulada[i])
+        kx = math.cos(math.radians(lat_s))
+        for a, b in ((i - 1, i), (i, i + 1)):
+            if a < 0 or b >= len(coords):
+                continue
+            (ax, ay), (bx, by) = coords[a], coords[b]
+            dx, dy = (bx - ax) * kx, (by - ay)
+            l2 = dx * dx + dy * dy
+            if l2 == 0:
+                continue
+            t = max(0.0, min(1.0, ((lon_s - ax) * kx * dx + (lat_s - ay) * dy) / l2))
+            px, py = ax + t * (bx - ax), ay + t * (by - ay)
+            offset_m = VFTImpedanceModel.haversine(lon_s, lat_s, px, py)
+            if offset_m < best[0]:
+                best = (offset_m, dist_acumulada[a] + t * (dist_acumulada[b] - dist_acumulada[a]))
+        return best
 
     def _apply_pedestrian_snapping(self, tolerance_m: float):
         """
@@ -222,36 +294,60 @@ class VFTGraphBuilder:
                 
                 # Validar la conexión
                 if 0 < distancia_m <= tolerance_m:
-                    # 1. Calcular tiempo de caminata a 5 km/h (5000m / 60min = 83.33 m/min)
-                    tiempo_caminata_min = distancia_m / (5000.0 / 60.0) 
-                    
-                    # 2. Calcular Boarding Cost de cada destino (Frecuencia / 2)
-                    wait_v = self.FALLBACK_FRECUENCIA.get(sistema_v, 10.0) / 2.0
-                    wait_u = self.FALLBACK_FRECUENCIA.get(sistema_u, 10.0) / 2.0
-                    
-                    # 3. Arista de Ida (El usuario camina hacia V, y espera el transporte V)
-                    self.G.add_edge(u_id, v_id, 
-                               sistema="Transbordo Peatonal", 
-                               tipo="transfer",
-                               color="blue",
-                               distancia_segmento_m=round(distancia_m, 2),
-                               travel_time_min=round(tiempo_caminata_min, 2),
-                               boarding_cost_min=round(wait_v, 2),
-                               weight=round(tiempo_caminata_min + wait_v, 4))
-                               
-                    # 4. Arista de Vuelta (El usuario camina hacia U, y espera el transporte U)
-                    self.G.add_edge(v_id, u_id, 
-                               sistema="Transbordo Peatonal",
-                               tipo="transfer", 
-                               color="blue",
-                               distancia_segmento_m=round(distancia_m, 2),
-                               travel_time_min=round(tiempo_caminata_min, 2),
-                               boarding_cost_min=round(wait_u, 2),
-                               weight=round(tiempo_caminata_min + wait_u, 4))
-                               
+                    self._add_transfer_pair(u_id, v_id, sistema_u, sistema_v, distancia_m)
                     transbordos_creados += 2
 
         vft_logger.info(f"Se crearon {transbordos_creados} aristas de Transbordo Peatonal.")
+
+    def _add_transfer_pair(self, u_id, v_id, sistema_u: str, sistema_v: str, distancia_m: float):
+        """
+        Crea el par de aristas de Transbordo Peatonal u↔v cobrando caminata a 5 km/h
+        más el Costo de Abordaje (frecuencia / 2) del sistema destino.
+        """
+        # 1. Tiempo de caminata a 5 km/h (5000m / 60min = 83.33 m/min)
+        tiempo_caminata_min = distancia_m / (5000.0 / 60.0)
+
+        # 2. Boarding Cost de cada destino (Frecuencia / 2)
+        wait_v = self.FALLBACK_FRECUENCIA.get(sistema_v, 10.0) / 2.0
+        wait_u = self.FALLBACK_FRECUENCIA.get(sistema_u, 10.0) / 2.0
+
+        # 3. Arista de Ida (el usuario camina hacia V y espera el transporte V)
+        # 4. Arista de Vuelta (el usuario camina hacia U y espera el transporte U)
+        for a, b, wait in ((u_id, v_id, wait_v), (v_id, u_id, wait_u)):
+            self.G.add_edge(a, b,
+                       sistema="Transbordo Peatonal",
+                       tipo="transfer",
+                       color="blue",
+                       distancia_segmento_m=round(distancia_m, 2),
+                       travel_time_min=round(tiempo_caminata_min, 2),
+                       boarding_cost_min=round(wait, 2),
+                       weight=round(tiempo_caminata_min + wait, 4))
+
+    def _apply_sub_transfers(self):
+        """
+        Fase 3b (Fix #23): conecta los transbordos oficiales del Tren Suburbano
+        (SUB_OFFICIAL_TRANSFERS) cuya distancia supera la tolerancia peatonal.
+        Solo aplica a nodos SUB; ningún otro sistema recibe transbordos fuera de Q1.
+        """
+        by_key = defaultdict(list)
+        for n, attr in self.G.nodes(data=True):
+            if attr.get('tipo') == 'estacion':
+                by_key[(attr.get('sistema'), attr.get('nombre'))].append(n)
+
+        creados = 0
+        for nombre_sub, key_b in self.SUB_OFFICIAL_TRANSFERS:
+            key_a = ("SUB", nombre_sub)
+            nodos_a, nodos_b = by_key.get(key_a, []), by_key.get(key_b, [])
+            if not nodos_a or not nodos_b:
+                vft_logger.warning(f"Transbordo SUB sin match: {key_a} ↔ {key_b}")
+                continue
+            for u in nodos_a:
+                for v in nodos_b:
+                    distancia_m = VFTImpedanceModel.haversine(u[0], u[1], v[0], v[1])
+                    if 0 < distancia_m <= self.SUB_TRANSFER_MAX_M:
+                        self._add_transfer_pair(u, v, key_a[0], key_b[0], distancia_m)
+                        creados += 2
+        vft_logger.info(f"Fase 3b: {creados} aristas de transbordo oficial del Tren Suburbano.")
 
     def build_graph(self, mode: str = "REALISTIC_INTEGRATION", tolerance_m: float = None) -> nx.DiGraph:
         """
@@ -274,16 +370,19 @@ class VFTGraphBuilder:
         # más de 5 km en línea recta de la siguiente estación registrada.
         # Impacto en algoritmos: B (betweenness) y T (tiempo promedio) son sensibles
         # a estos edges si son el único puente entre fragmentos desconectados.
-        PHANTOM_THRESHOLD_M = 5_000.0
+        # Fix #23: además de la longitud, se exige que el trazo cruce una discontinuidad
+        # real entre sublíneas; los tramos largos con trazo continuo se conservan.
         phantom_edges = [
             (u, v) for u, v, d in self.G.edges(data=True)
             if d.get('tipo') == 'transit'
-            and d.get('distancia_segmento_m', 0.0) > PHANTOM_THRESHOLD_M
+            and d.get('distancia_segmento_m', 0.0) > self.PHANTOM_THRESHOLD_M
+            and d.get('salto_union_max_m', float('inf')) > self.PHANTOM_GAP_M
         ]
         if phantom_edges:
             self.G.remove_edges_from(phantom_edges)
             vft_logger.warning(
-                f"Eliminadas {len(phantom_edges)} aristas phantom (distancia > {PHANTOM_THRESHOLD_M/1000:.0f} km). "
+                f"Eliminadas {len(phantom_edges)} aristas phantom (distancia > {self.PHANTOM_THRESHOLD_M/1000:.0f} km "
+                f"y discontinuidad > {self.PHANTOM_GAP_M:.0f} m). "
                 f"Causa probable: geometría MultiLineString fragmentada en el backend."
             )
 
@@ -294,6 +393,7 @@ class VFTGraphBuilder:
                 tolerance_m = self.STATISTICAL_THRESHOLDS["Q1"]
             
             self._apply_pedestrian_snapping(tolerance_m)
+            self._apply_sub_transfers()
 
         # 4. Aplicar Impedancia
         vft_logger.info("Aplicando Motor de Impedancia...")
